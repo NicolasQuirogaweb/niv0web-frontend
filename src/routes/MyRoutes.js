@@ -8,14 +8,7 @@ import Playlist from '../components/Playlist';
 import CreatePlaylist from '../components/CreatePlaylist';
 import PlaylistList from '../components/PlaylistList';
 import PlaylistManager from '../components/PlaylistManager';
-
-
-
-
-
-
-
-
+import { Inventario } from '../components/Inventario';
 
 // Aquí importamos el componente Playlist que vamos a crear
 
@@ -44,8 +37,8 @@ export const MyRoutes = () => {
                     {/* PlaylistManager */}
                     <Route path="/playlistmanager" element={<PlaylistManager />} />
 
-
-
+                    {/* Inventario de prueba */}
+                    <Route path="/inventario" element={<Inventario />} />
 
                     {/* Página 404 */}
                     <Route path="*" element={

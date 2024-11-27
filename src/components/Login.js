@@ -20,12 +20,12 @@ export const Login = () => {
 
     // Función que se ejecuta cuando el login es exitoso
     const onSuccess = async (response) => {
+        try {
         console.log(response.profileObj); // Muestra el perfil en la consola
     
         const { email, name, imageUrl } = response.profileObj;
     
         // Llama a la API de backend para verificar el usuario y obtener el token JWT
-        try {
             const res = await axios.post('http://localhost:5000/api/auth/google-login', {
                 email,
                 name,
@@ -59,6 +59,8 @@ export const Login = () => {
         alert("Hubo un problema con el inicio de sesión. Por favor, inténtalo de nuevo.");
     };
 
+    const profileClass = user.name ? "profile" : "hidden"
+
     return (
         <section className="login-section">
             <div>
@@ -75,7 +77,7 @@ export const Login = () => {
                 </div>
 
                 {/* Mostrar el perfil del usuario cuando haya iniciado sesión */}
-                <div className={user.name ? "profile" : "hidden"}>
+                <div className={profileClass}>
                     <img src={user.imageUrl} alt="Usuario" />
                     <h3>{user.name}</h3>
                     <p>{user.email}</p>
