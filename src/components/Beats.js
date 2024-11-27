@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CardPlaylist from '../components/CardPlaylist';
+import { useFetch } from '../hooks/useFetch';
 
+// TODO limpar esta URL
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';  // Asegúrate de que esta URL sea correcta
 
 export const Beats = () => {
+  const { customFetch } = useFetch()
   const [userEmail, setUserEmail] = useState(null);
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,9 +23,11 @@ export const Beats = () => {
     }
 
     // Función para obtener las playlists desde el backend
+    // TODO mover esta declaracion
     const fetchPlaylists = async () => {
       try {
         const response = await fetch(`${BACKEND_URL}/api/playlists`);  // Solicita las playlists al backend
+        const response2 = await customFetch(`/api/playlists`);  // Solicita las playlists al backend
         if (!response.ok) {
           throw new Error('Error al obtener las playlists');  // Manejo de error si la respuesta no es correcta
         }
@@ -38,13 +43,14 @@ export const Beats = () => {
 
     fetchPlaylists();  // Llama a la función para obtener las playlists
   }, [navigate]);
+  
 
   return (
     <section className="beats-section">
       <div className="beats-content">
         <div className="beats-info">
           <h3><a href="/homelogued">niv0 beats</a></h3>
-          <h4><a href="/">{userEmail ? userEmail : "Cargando..."}</a></h4>
+          <h4><a href="/">{userEmail || "Cargando..."}</a></h4>
           <h5><a href="/home">Log out</a></h5>
         </div>
 

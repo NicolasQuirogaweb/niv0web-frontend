@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useFetch } from '../hooks/useFetch';
 
 const CreatePlaylist = () => {
+    const { customFetch } = useFetch()
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
@@ -16,7 +18,7 @@ const CreatePlaylist = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/playlists', {
+            const response = await customFetch('/api/playlists', {
                 title,
                 description,
                 imageUrl,
