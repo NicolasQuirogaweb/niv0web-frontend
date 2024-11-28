@@ -635,7 +635,7 @@ p {
   display: flex;
   gap: 15px; /* Reducir el espacio entre la imagen y los detalles */
   margin-bottom: 15px;
-  margin-left: 400px;
+  margin-left: 200px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   max-height: 120px; /* Reducir la altura de las tarjetas */
   height: 120px; /* Altura fija para las tarjetas */
