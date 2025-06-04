@@ -1,86 +1,112 @@
-import React, { useEffect, useState } from 'react';
-import GoogleLogin from 'react-google-login';
-import { gapi } from 'gapi-script';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-import axios from 'axios'; // Importa Axios para hacer peticiones HTTP
+import React, { useEffect, useState, useCallback } from "react";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"; // Asegúrate de importar GoogleOAuthProvider
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Login = () => {
-    const clientID = "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com"; // Tu clientID de Google
-    const [user, setUser] = useState({}); // Estado para almacenar la información del usuario
-    const navigate = useNavigate(); // Inicializa navigate para redirigir
+  const clientID =
+    "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com";
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const start = () => {
-            gapi.auth2.init({
-                clientId: clientID,
-            });
-        };
-        gapi.load("client:auth2", start);
-    }, []);
+  const verifyToken = useCallback(
+    async (token) => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/auth/verify-token",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-    // Función que se ejecuta cuando el login es exitoso
-    const onSuccess = async (response) => {
-        console.log(response.profileObj); // Muestra el perfil en la consola
-    
-        const { email, name, imageUrl } = response.profileObj;
-    
-        // Llama a la API de backend para verificar el usuario y obtener el token JWT
-        try {
-            const res = await axios.post('http://localhost:5000/api/auth/google-login', {
-                email,
-                name,
-                imageUrl,
-            });
-    
-            const { token } = res.data; // El servidor devuelve el token JWT
-    
-            // Almacena el token JWT en el localStorage o sessionStorage
-            localStorage.setItem('authToken', token);
-    
-            // Almacena los datos del usuario (incluyendo el email) en el localStorage
-            localStorage.setItem('userEmail', email);
-    
-            // Actualiza el estado con la información del usuario de Google
-            setUser({
-                name,
-                imageUrl,
-                email,
-            });
-    
-            // Redirige a la página de bienvenida o dashboard
-            navigate('/homelogued');
-        } catch (error) {
-            console.error('Error en la autenticación de Google:', error);
+        setUser({
+          name: res.data.name,
+          email: res.data.email,
+          imageUrl: res.data.imageUrl,
+        });
+
+        navigate("/homelogued");
+      } catch (error) {
+        console.error("Token inválido o expirado:", error);
+        clearLocalStorage();
+      }
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      verifyToken(token);
+    }
+  }, [verifyToken]);
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+  };
+
+  const onSuccess = async (response) => {
+    console.log("Respuesta de Google:", response);
+
+    // No es necesario decodificar el token aquí, ya que Google ya pasa los datos
+    const { credential } = response;
+
+    try {
+      // Enviar el token a tu backend para validarlo y crear sesión
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/google-login",
+        {
+          credential, // Envías el token JWT directamente
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-    };
-    // Función que se ejecuta cuando el login falla
-    const onFailure = (error) => {
-        console.log("Algo salió mal", error);
-        alert("Hubo un problema con el inicio de sesión. Por favor, inténtalo de nuevo.");
-    };
+      );
 
-    return (
-        <section className="login-section">
-            <div>
-                <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
+      // Obtén el token del backend
+      const { token, user } = res.data;
 
-                <div className="btnauth">
-                    <GoogleLogin
-                        clientId={clientID}
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}  // Aquí se pasa la función onFailure
-                        cookiePolicy={"single_host_origin"}
-                        buttonText="Iniciar sesión con Google"
-                    />
-                </div>
+      // Guarda los datos del usuario en localStorage
+      storeUserData(token, user.email, user.name, user.imageUrl);
 
-                {/* Mostrar el perfil del usuario cuando haya iniciado sesión */}
-                <div className={user.name ? "profile" : "hidden"}>
-                    <img src={user.imageUrl} alt="Usuario" />
-                    <h3>{user.name}</h3>
-                    <p>{user.email}</p>
-                </div>
+      // Redirige a la página después del login
+      navigate("/homelogued");
+    } catch (error) {
+      console.error("Error en la autenticación de Google:", error);
+      alert("Hubo un problema con el inicio de sesión. Intenta de nuevo.");
+    }
+  };
+
+  const storeUserData = (token, email, name, picture) => {
+    localStorage.setItem("authToken", token);
+    localStorage.setItem("userEmail", email);
+    setUser({ name, email, imageUrl: picture });
+  };
+
+  const onFailure = (error) => {
+    console.error("Error en Google Login:", error);
+    alert("Hubo un problema con el inicio de sesión. Intenta nuevamente.");
+  };
+
+  return (
+    <GoogleOAuthProvider clientId={clientID}>
+      <section className="login-section">
+        <div className="login-container">
+          <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
+          <div className="btnauth">
+            <div className="google-btn-wrapper">
+              <GoogleLogin
+                onSuccess={onSuccess}
+                onError={onFailure}
+                useOneTap
+              />
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </section>
+    </GoogleOAuthProvider>
+  );
 };

@@ -1,99 +1,98 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 
-// Importar Font Awesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Playlist = () => {
-    const { id } = useParams();
-    const [playlist, setPlaylist] = useState(null);
-    const [beats, setBeats] = useState([]);
-    const [activeBeat, setActiveBeat] = useState(null);
+  const { playlistId } = useParams();
+  const [playlist, setPlaylist] = useState(null);
+  const [error, setError] = useState(null);
+  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
+  const audioRefs = useRef([]);
 
-    useEffect(() => {
-        if (!BACKEND_URL) {
-            console.error("La variable de entorno BACKEND_URL no está definida.");
-            return;
-        }
-
-        const fetchPlaylistAndBeats = async () => {
-            try {
-                const playlistResponse = await fetch(`${BACKEND_URL}/api/playlists/${id}`);
-                const playlistData = await playlistResponse.json();
-                setPlaylist(playlistData);
-
-                const beatsResponse = await fetch(`${BACKEND_URL}/api/beats/playlist/${id}`);
-                const beatsData = await beatsResponse.json();
-                setBeats(beatsData);
-            } catch (error) {
-                console.error("Error al obtener la playlist o los beats:", error);
-            }
-        };
-
-        fetchPlaylistAndBeats();
-    }, [id]);
-
-    const handlePlay = (beatId) => {
-        setActiveBeat(beatId);
-
-        beats.forEach((beat) => {
-            if (beat._id !== beatId) {
-                const audioElement = document.getElementById(`audio-${beat._id}`);
-                if (audioElement) {
-                    audioElement.pause();
-                    audioElement.currentTime = 0;
-                }
-            }
-        });
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/resources/beats/playlist/${playlistId}`);
+        if (!response.ok) throw new Error("Error al obtener la playlist");
+        const data = await response.json();
+        console.log("Beats Data:", data);
+        setPlaylist(data);
+      } catch (error) {
+        setError(error.message);
+      }
     };
+    fetchPlaylist();
+  }, [playlistId]);
 
-    if (!playlist || beats.length === 0) {
-        return <div className="loading">Cargando...</div>;
+  const handlePlay = (index) => {
+    audioRefs.current.forEach((audio, i) => {
+      if (audio && i !== index) {
+        audio.pause();
+      }
+    });
+
+    setCurrentPlayingIndex(index);
+  };
+
+  const handleEnded = (index) => {
+    const nextAudio = audioRefs.current[index + 1];
+    if (nextAudio) {
+      nextAudio.play();
     }
+  };
 
-    return (
-        <div className="playlist-page">
-            {/* Imagen de la playlist al lado */}
-            <div className="playlist-header">
-                <img src={playlist.imageUrl} alt={playlist.title} className="playlist-image" />
-                <div className="playlist-info">
-                    <h1 className="playlist-title">{playlist.title}</h1>
-                    <p className="playlist-description">{playlist.description}</p>
-                </div>
-            </div>
+  if (error) return <p>Error: {error}</p>;
+  if (!playlist) return <p>Cargando...</p>;
 
-            {/* Lista de beats */}
-            <ul className="beat-list">
-                {beats.map((beat) => (
-                    <li 
-                        key={beat._id} 
-                        className={`beat-card ${activeBeat === beat._id ? 'active' : ''}`}
-                    >
-                        <div className="beat-card-image" style={{ backgroundImage: `url(${playlist.imageUrl})` }}></div>
-                        <div className="beat-details">
-                            <h3 className="beat-title">{beat.title}</h3>
-                            <p className="beat-artist">{beat.artist}</p>
-                            <audio 
-                                controls 
-                                onPlay={() => handlePlay(beat._id)}
-                                onPause={() => setActiveBeat(null)}
-                                id={`audio-${beat._id}`}
-                            >
-                                <source src={beat.audioFile} type="audio/mp3" />
-                                Tu navegador no soporta el elemento de audio.
-                            </audio>
-                            <a href={beat.audioFile} download={beat.title} className="btn-download">
-                                <FontAwesomeIcon icon={faDownload} /> {/* Ícono de descarga */}
-                            </a>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+  return (
+    <div className="playlist-container">
+      {playlist.backgroundVideo && (
+        <video src={playlist.backgroundVideo} autoPlay loop muted className="background-video" />
+      )}
+      <div className="playlist-content">
+        <div className="Playlist-niv0beats">
+          <h3>
+            <a href="/homelogued">niv0 beats</a>
+          </h3>
         </div>
-    );
+        {playlist.imageUrl && <img src={playlist.imageUrl} alt={playlist.title} className="playlist-image" />}
+        <h2>{playlist.title}</h2>
+        <p>{playlist.description}</p>
+        <div className="beats-list">
+          {playlist.beats && playlist.beats.length > 0 ? (
+            playlist.beats.map((beat, index) => (
+              <div key={beat._id} className={`beat-item ${currentPlayingIndex === index ? "playing" : ""}`}>
+                <h3 className="beat-title">{beat.title}</h3>
+                <audio
+                  controls
+                  ref={(el) => (audioRefs.current[index] = el)}
+                  onPlay={() => handlePlay(index)}
+                  onEnded={() => handleEnded(index)}
+                >
+                  <source src={beat.audioFile} type="audio/mp3" />
+                </audio>
+              </div>
+            ))
+          ) : (
+            <p>No se encontraron beats para esta playlist.</p>
+          )}
+        </div>
+        <div className="back-button-container">
+          <a href="/beats">
+            <button className="back-to-catalogue-btn">Back to catalogue</button>
+          </a>
+        </div>
+        <p>Free for non profit use only, contact me and buy a license.</p>
+       
+      </div>
+    </div>
+  );
 };
 
 export default Playlist;
+
+
+
+

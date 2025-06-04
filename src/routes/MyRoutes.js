@@ -4,55 +4,36 @@ import { HomeLogued } from '../components/HomeLogued';
 import { Login } from '../components/Login';
 import { Beats } from '../components/Beats';
 import Playlist from '../components/Playlist';
-
-import CreatePlaylist from '../components/CreatePlaylist';
-import PlaylistList from '../components/PlaylistList';
-import PlaylistManager from '../components/PlaylistManager';
-
-
+import { Samples } from '../components/Samples';
+import { SamplePacks } from '../components/SamplePacks';
+import { Loops } from '../components/Loops';
+import { ProdMixMaster } from '../components/ProdMixMaster';
 
 
 
-
-
-
-
-// Aquí importamos el componente Playlist que vamos a crear
 
 export const MyRoutes = () => {
     return (
         <BrowserRouter>
-            {/*LAYOUT*/}
             <section className="content">
                 <Routes>
-                    {/*Ruta base, redirige a /home */}
                     <Route path="/" element={<Navigate to="/home" />} />
-
-                    {/*Rutas para cada seccion*/}
                     <Route path="/home" element={<Home />} />
                     <Route path="/homelogued" element={<HomeLogued />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/beats" element={<Beats />} />
+                    <Route path="/samplepacks" element={< SamplePacks />} />
+                    <Route path="/samples" element={< Samples />} />
+                    {/* Ruta dinámica corregida */}
+                    <Route path="/:resourceType/playlist/:playlistId" element={<Playlist />} />
+                    <Route path="/samples/samplepack/:samplepackId" element={<Samples />} />
+                    <Route path="/loops" element={< Loops />} />
+                    <Route path="/prodmixmaster" element={< ProdMixMaster />} />
+                    
+                    
 
-                    {/* Rutas de las playlists */}
-                    <Route path="/playlist/:id" element={<Playlist />} />
-
-                    {/* Rutas de CREAR  playlists */}
-                    <Route path="/createplaylist" element={<CreatePlaylist />} />
-                    {/* Rutas de playlistList */}
-                    <Route path="/playlistlist" element={<PlaylistList />} />
-                    {/* PlaylistManager */}
-                    <Route path="/playlistmanager" element={<PlaylistManager />} />
-
-
-
-
-                    {/* Página 404 */}
-                    <Route path="*" element={
-                        <div className='page'>
-                            <h1 className='heading'>Error 404</h1>
-                        </div>
-                    } />
+                    
+                    <Route path="*" element={<h1>Error 404 - Página no encontrada</h1>} />
                 </Routes>
             </section>
         </BrowserRouter>

@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-export const Beats = () => {
+export const SamplePacks = () => {
   const [userEmail, setUserEmail] = useState(null);
-  const [playlists, setPlaylists] = useState([]);
+  const [samplepacks, setSamples] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -20,27 +20,29 @@ export const Beats = () => {
     } else {
       navigate("/");
     }
-    const fetchPlaylists = async () => {
+    const fetchSamples = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/resources/playlists`);
-        if (!response.ok) throw new Error("Error al obtener las playlists");
+        const response = await fetch(
+          `${BACKEND_URL}/api/resources/samplepacks`
+        );
+        if (!response.ok) throw new Error("Error al obtener los samples");
         const data = await response.json();
-        console.log("Datos de las playlists:", data);
-        setPlaylists(data);
+        console.log("Datos de los samplepacks:", data);
+        setSamples(data);
       } catch (error) {
-        console.error("Error al obtener las playlists:", error);
+        console.error("Error al obtener los samplepacks:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPlaylists();
+    fetchSamples();
   }, [navigate]);
 
   return (
-    <section className="beats-section">
-      <div className="beats-content">
-        <div className="beats-info">
+    <section className="samplepacks-section">
+      <div className="samplepacks-content">
+        <div className="samplepacks-info">
           <h3>
             <a href="/homelogued">niv0 beats</a>
           </h3>
@@ -52,27 +54,20 @@ export const Beats = () => {
           </h5>
         </div>
 
-        <div className="beats-list">
+        <div className="beats-list-samplepacks">
           {loading ? (
-            <p>Cargando playlists...</p>
-          ) : playlists.length > 0 ? (
-            playlists.map((playlist) => (
+            <p>Cargando samplepacks...</p>
+          ) : samplepacks.length > 0 ? (
+            samplepacks.map((samplepack) => (
               <CardPlaylist
-                key={playlist._id}
-                playlist={playlist}
-                resourceType="playlists"
+                key={samplepack._id}
+                playlist={samplepack}
+                resourceType="samples"
               />
             ))
           ) : (
             <p>No se encontraron playlists.</p>
           )}
-        </div>
-
-        <div className="beats-description">
-          <h2>LICENSES</h2>
-          <p>Exclusive + stems $80usd $80mil AR</p>
-          <p>Exclusive wav $40usd $40mil AR</p>
-          <p>common lease wav $20usd $20mil AR</p>
         </div>
       </div>
       <div className="back-to-catalogue">
