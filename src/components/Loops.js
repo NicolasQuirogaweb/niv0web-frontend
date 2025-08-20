@@ -53,7 +53,7 @@ export const Loops = () => {
   return (
     <section className="loops-section">
       <img
-        src="../images/Loops/fljueguito.webp"
+        src="/images/Loops/loopimg.jpg"
         alt="Icono loops"
         className="loops-imagen"
       />

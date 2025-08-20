@@ -70,8 +70,8 @@ export const Beats = () => {
 
         <div className="beats-description">
           <h2>LICENSES</h2>
-          <p>Exclusive + stems $80usd $80mil AR</p>
-          <p>Exclusive wav $40usd $40mil AR</p>
+          <p>Exclusive + stems $100usd $100mil AR</p>
+          <p>Exclusive wav $80usd $80mil AR</p>
           <p>common lease wav $20usd $20mil AR</p>
         </div>
       </div>

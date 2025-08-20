@@ -403,8 +403,8 @@ code {
 /*SECCION DE BEATS*/
 
 .beats-section {
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(./images/beats/beatsimgdolares.webp);
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75));
+  background-color: black;
   overflow: hidden;
   position: relative;
 
@@ -453,8 +453,8 @@ code {
 
 /*SECCION DE SAMPLEPACKS */
 .samplepacks-section {
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(./images/beats/beatsimgdolares.webp);
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75));
+  background-color: black;
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -994,16 +994,15 @@ audio {
 
 /* LOOPS SECCION */
 .loops-section {
-  position: relative;
-  text-align: center;
-  min-height: 100vh;
-  color: white;
-
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("./images/Loops/loopsfondo.webp") center/cover no-repeat;
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)); 
+  background-color: black; 
+  overflow: hidden;
+   position: relative; 
+   z-index: 2;
+    color: white;
+     font-family: 
+     "Inter", sans-serif;
+      min-height: 100vh;
 }
 
 .loops-imagen {
@@ -1066,8 +1065,8 @@ audio {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("./images/mixmaster/mixinfondo.webp") center/cover no-repeat;
+   background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75));
+  background-color: black;
 }
 
 .prod-mix-master-section p {
@@ -1086,7 +1085,7 @@ audio {
   border-radius: 10px;
   width: 250px;
   transition: background 0.3s ease-in-out;
-  margin-right: 50px;
+
 }
 
 .prod-mix-master-item.playing {
