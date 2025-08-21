@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-
+//LINDA NENE
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
