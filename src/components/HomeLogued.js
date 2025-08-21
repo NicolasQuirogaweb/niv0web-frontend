@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,14 +8,18 @@ export const HomeLogued = () => {
   const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
 
- 
+  // 👇 handleLogout envuelto en useCallback
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    navigate("/");
+  }, [navigate]);
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
     const token = localStorage.getItem("authToken");
 
     if (email && token) {
-      // Verificar el token con el backend
       axios
         .get("http://localhost:5000/api/auth/verify-token", {
           headers: {
@@ -23,7 +27,6 @@ export const HomeLogued = () => {
           },
         })
         .then((response) => {
-          // Si el token es válido, se actualiza el estado
           setUserEmail(response.data.email);
         })
         .catch((error) => {
@@ -32,17 +35,10 @@ export const HomeLogued = () => {
         });
     } else {
       console.warn("No se encontró token o email. Redirigiendo al login.");
-      navigate("/");
+      handleLogout();
     }
-  }, [navigate]);
+  }, [handleLogout]); 
 
-   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userEmail");
-    navigate("/");
-  };
-
-  
   return (
     <section className="home-section-logued">
       <div>
@@ -55,14 +51,11 @@ export const HomeLogued = () => {
         <h5>
           <button onClick={handleLogout}>Log out</button>
         </h5>
-          <h6 className="beats-home">
+        <h6 className="beats-home">
           <Link to="/beats">BEATS</Link>
         </h6>
-         <h6 className="samplepacks-home">
-          <Link to="/samplepacks">
-            SAMPLe
-            PACKS
-          </Link>
+        <h6 className="samplepacks-home">
+          <Link to="/samplepacks">SAMPLe PACKS</Link>
         </h6>
         <h6 className="loops-home">
           <Link to="/loops">LOOPS</Link>
@@ -76,8 +69,8 @@ export const HomeLogued = () => {
           <FontAwesomeIcon icon={faInstagram} className="instagram-icon" />
         </Link>
       </div>
-        <p>Contact me</p>
-        <p>THANK YOU FOR SIGNING IN. ENJOY!</p>
+      <p>Contact me</p>
+      <p>THANK YOU FOR SIGNING IN. ENJOY!</p>
     </section>
   );
 };

@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"; // Asegúrate de importar GoogleOAuthProvider
+import React, { useEffect, useCallback } from "react";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Login = () => {
   const clientID =
     "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com";
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const verifyToken = useCallback(
@@ -19,11 +18,9 @@ export const Login = () => {
           }
         );
 
-        setUser({
-          name: res.data.name,
-          email: res.data.email,
-          imageUrl: res.data.imageUrl,
-        });
+        // Guardamos en localStorage para usar en otros componentes
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userEmail", res.data.email);
 
         navigate("/homelogued");
       } catch (error) {
@@ -48,42 +45,26 @@ export const Login = () => {
 
   const onSuccess = async (response) => {
     console.log("Respuesta de Google:", response);
-
-    // No es necesario decodificar el token aquí, ya que Google ya pasa los datos
     const { credential } = response;
 
     try {
-      // Enviar el token a tu backend para validarlo y crear sesión
       const res = await axios.post(
         "http://localhost:5000/api/auth/google-login",
-        {
-          credential, // Envías el token JWT directamente
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { credential },
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      // Obtén el token del backend
       const { token, user } = res.data;
 
-      // Guarda los datos del usuario en localStorage
-      storeUserData(token, user.email, user.name, user.imageUrl);
+      // Guardamos solo lo necesario en localStorage
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("userEmail", user.email);
 
-      // Redirige a la página después del login
       navigate("/homelogued");
     } catch (error) {
       console.error("Error en la autenticación de Google:", error);
       alert("Hubo un problema con el inicio de sesión. Intenta de nuevo.");
     }
-  };
-
-  const storeUserData = (token, email, name, picture) => {
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("userEmail", email);
-    setUser({ name, email, imageUrl: picture });
   };
 
   const onFailure = (error) => {
