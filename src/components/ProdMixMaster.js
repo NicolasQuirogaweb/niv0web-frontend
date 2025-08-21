@@ -57,7 +57,7 @@ export const ProdMixMaster = () => {
   return (
     <section className="prod-mix-master-section">
       <img
-        src="/images/Loops/loopimg.jpg" /**eventualmente cambiar a la imagen que va  */
+        src="/images/Loops/loopimg.webp" /**eventualmente cambiar a la imagen que va  */
         alt="Icono loops"
         className="prodmixmaster-imagen"
       />
