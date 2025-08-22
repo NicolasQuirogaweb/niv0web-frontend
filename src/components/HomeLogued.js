@@ -8,7 +8,9 @@ export const HomeLogued = () => {
   const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
 
-  // 👇 handleLogout envuelto en useCallback
+  // Traer la URL del backend desde variable de entorno
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
   const handleLogout = useCallback(() => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userEmail");
@@ -21,7 +23,7 @@ export const HomeLogued = () => {
 
     if (email && token) {
       axios
-        .get("http://localhost:5000/api/auth/verify-token", {
+        .get(`${BACKEND_URL}/api/auth/verify-token`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,7 +39,7 @@ export const HomeLogued = () => {
       console.warn("No se encontró token o email. Redirigiendo al login.");
       handleLogout();
     }
-  }, [handleLogout]); 
+  }, [handleLogout, BACKEND_URL]);
 
   return (
     <section className="home-section-logued">
