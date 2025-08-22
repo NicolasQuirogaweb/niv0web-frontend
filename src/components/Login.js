@@ -7,9 +7,7 @@ export const Login = () => {
   const clientID =
     "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com";
 
-  // Usar variable de entorno para el backend
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
   const navigate = useNavigate();
 
   const verifyToken = useCallback(
@@ -21,7 +19,6 @@ export const Login = () => {
 
         localStorage.setItem("authToken", token);
         localStorage.setItem("userEmail", res.data.email);
-
         navigate("/homelogued");
       } catch (error) {
         console.error("Token inválido o expirado:", error);
@@ -44,10 +41,8 @@ export const Login = () => {
   };
 
   const onSuccess = async (response) => {
-    console.log("Respuesta de Google:", response);
-    const { credential } = response;
-
     try {
+      const { credential } = response;
       const res = await axios.post(
         `${BACKEND_URL}/api/auth/google-login`,
         { credential },
@@ -55,13 +50,15 @@ export const Login = () => {
       );
 
       const { token, user } = res.data;
-
       localStorage.setItem("authToken", token);
       localStorage.setItem("userEmail", user.email);
 
       navigate("/homelogued");
     } catch (error) {
-      console.error("Error en la autenticación de Google:", error);
+      console.error(
+        "Error en la autenticación de Google (posible bloqueo por adblock):",
+        error
+      );
       alert("Hubo un problema con el inicio de sesión. Intenta de nuevo.");
     }
   };
@@ -78,7 +75,7 @@ export const Login = () => {
           <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
           <div className="btnauth">
             <div className="google-btn-wrapper">
-              <GoogleLogin onSuccess={onSuccess} onError={onFailure} useOneTap />
+              <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
             </div>
           </div>
         </div>
