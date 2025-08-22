@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Login = () => {
   const clientID =
-    "637641906869-2ccg1rhghuasa13gmkkcogtq0940.apps.googleusercontent.com";
+    "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com";
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
