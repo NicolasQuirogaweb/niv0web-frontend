@@ -6,19 +6,19 @@ import axios from "axios";
 export const Login = () => {
   const clientID =
     "637641906869-2ccg1rhghuasa13gmkkcogtq0948pu05.apps.googleusercontent.com";
+
+  // Usar variable de entorno para el backend
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
   const navigate = useNavigate();
 
   const verifyToken = useCallback(
     async (token) => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/auth/verify-token",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${BACKEND_URL}/api/auth/verify-token`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        // Guardamos en localStorage para usar en otros componentes
         localStorage.setItem("authToken", token);
         localStorage.setItem("userEmail", res.data.email);
 
@@ -28,7 +28,7 @@ export const Login = () => {
         clearLocalStorage();
       }
     },
-    [navigate]
+    [navigate, BACKEND_URL]
   );
 
   useEffect(() => {
@@ -49,14 +49,13 @@ export const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/google-login",
+        `${BACKEND_URL}/api/auth/google-login`,
         { credential },
         { headers: { "Content-Type": "application/json" } }
       );
 
       const { token, user } = res.data;
 
-      // Guardamos solo lo necesario en localStorage
       localStorage.setItem("authToken", token);
       localStorage.setItem("userEmail", user.email);
 
@@ -79,11 +78,7 @@ export const Login = () => {
           <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
           <div className="btnauth">
             <div className="google-btn-wrapper">
-              <GoogleLogin
-                onSuccess={onSuccess}
-                onError={onFailure}
-                useOneTap
-              />
+              <GoogleLogin onSuccess={onSuccess} onError={onFailure} useOneTap />
             </div>
           </div>
         </div>
