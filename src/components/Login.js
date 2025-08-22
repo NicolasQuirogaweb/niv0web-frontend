@@ -10,6 +10,7 @@ export const Login = () => {
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate();
 
+  // Función para verificar token almacenado
   const verifyToken = useCallback(
     async (token) => {
       try {
@@ -28,6 +29,7 @@ export const Login = () => {
     [navigate, BACKEND_URL]
   );
 
+  // Revisar si ya hay token al cargar la página
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -35,14 +37,17 @@ export const Login = () => {
     }
   }, [verifyToken]);
 
+  // Limpiar localStorage
   const clearLocalStorage = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userEmail");
   };
 
+  // Login exitoso
   const onSuccess = async (response) => {
     try {
       const { credential } = response;
+
       const res = await axios.post(
         `${BACKEND_URL}/api/auth/google-login`,
         { credential },
@@ -56,13 +61,14 @@ export const Login = () => {
       navigate("/homelogued");
     } catch (error) {
       console.error(
-        "Error en la autenticación de Google (posible bloqueo por adblock):",
+        "Error en la autenticación de Google (puede ser adblock):",
         error
       );
       alert("Hubo un problema con el inicio de sesión. Intenta de nuevo.");
     }
   };
 
+  // Login fallido
   const onFailure = (error) => {
     console.error("Error en Google Login:", error);
     alert("Hubo un problema con el inicio de sesión. Intenta nuevamente.");
@@ -75,6 +81,7 @@ export const Login = () => {
           <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
           <div className="btnauth">
             <div className="google-btn-wrapper">
+              {/* Solo botón clásico, sin One Tap */}
               <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
             </div>
           </div>
