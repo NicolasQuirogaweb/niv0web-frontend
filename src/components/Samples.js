@@ -52,7 +52,7 @@ export const Samples = () => {
 
       <div className="samples-list">
         {samplePack.samples.map((sample, index) => {
-          const ext = (sample.audioUrl || "").split("?")[0].split(".").pop();
+          const ext = (sample.audioFile || "").split("?")[0].split(".").pop();
           const audioType = ext === "wav" ? "audio/wav" : "audio/mpeg";
 
           return (
@@ -69,7 +69,7 @@ export const Samples = () => {
                 controls
                 onPlay={() => handlePlay(index)}
               >
-                <source src={sample.audioUrl} type={audioType} />
+                <source src={sample.audioFile} type={audioType} />
                 Tu navegador no soporta la reproducción de audio.
               </audio>
             </div>
