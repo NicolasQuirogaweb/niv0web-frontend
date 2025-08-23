@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-//LINDA NENE
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -14,7 +13,9 @@ const Playlist = () => {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/resources/beats/playlist/${playlistId}`);
+        const response = await fetch(
+          `${BACKEND_URL}/api/resources/beats/playlist/${playlistId}`
+        );
         if (!response.ok) throw new Error("Error al obtener la playlist");
         const data = await response.json();
         console.log("Beats Data:", data);
@@ -32,7 +33,6 @@ const Playlist = () => {
         audio.pause();
       }
     });
-
     setCurrentPlayingIndex(index);
   };
 
@@ -49,7 +49,13 @@ const Playlist = () => {
   return (
     <div className="playlist-container">
       {playlist.backgroundVideo && (
-        <video src={playlist.backgroundVideo} autoPlay loop muted className="background-video" />
+        <video
+          src={`${process.env.PUBLIC_URL}/${playlist.backgroundVideo}`}
+          autoPlay
+          loop
+          muted
+          className="background-video"
+        />
       )}
       <div className="playlist-content">
         <div className="Playlist-niv0beats">
@@ -57,13 +63,27 @@ const Playlist = () => {
             <a href="/homelogued">niv0 beats</a>
           </h3>
         </div>
-        {playlist.imageUrl && <img src={playlist.imageUrl} alt={playlist.title} className="playlist-image" />}
+
+        {playlist.imageUrl && (
+          <img
+            src={`${process.env.PUBLIC_URL}/${playlist.imageUrl}`}
+            alt={playlist.title}
+            className="playlist-image"
+          />
+        )}
+
         <h2>{playlist.title}</h2>
         <p>{playlist.description}</p>
+
         <div className="beats-list">
           {playlist.beats && playlist.beats.length > 0 ? (
             playlist.beats.map((beat, index) => (
-              <div key={beat._id} className={`beat-item ${currentPlayingIndex === index ? "playing" : ""}`}>
+              <div
+                key={beat._id}
+                className={`beat-item ${
+                  currentPlayingIndex === index ? "playing" : ""
+                }`}
+              >
                 <h3 className="beat-title">{beat.title}</h3>
                 <audio
                   controls
@@ -71,7 +91,10 @@ const Playlist = () => {
                   onPlay={() => handlePlay(index)}
                   onEnded={() => handleEnded(index)}
                 >
-                  <source src={beat.audioFile} type="audio/mp3" />
+                  <source
+                    src={`${process.env.PUBLIC_URL}/${beat.audioFile}`}
+                    type="audio/mp3"
+                  />
                 </audio>
               </div>
             ))
@@ -79,20 +102,17 @@ const Playlist = () => {
             <p>No se encontraron beats para esta playlist.</p>
           )}
         </div>
+
         <div className="back-button-container">
           <a href="/beats">
             <button className="back-to-catalogue-btn">Back to catalogue</button>
           </a>
         </div>
+
         <p>Free for non profit use only, contact me and buy a license.</p>
-       
       </div>
     </div>
   );
 };
 
 export default Playlist;
-
-
-
-
