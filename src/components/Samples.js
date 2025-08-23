@@ -16,13 +16,13 @@ export const Samples = () => {
     const fetchSamples = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/resources/samples/samplepack/${samplepackId}`
+          `${BACKEND_URL}/api/resources/samples/playlist/${samplepackId}`
         );
         if (!response.ok) throw new Error("Error al obtener los samples");
         const data = await response.json();
         setSamplePack(data);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        setError(err.message);
       }
     };
     fetchSamples();
@@ -39,62 +39,60 @@ export const Samples = () => {
   if (!samplePack) return <p>Cargando...</p>;
 
   return (
-   <section className="samples-section samplepacks-section">
-  {samplePack.imageUrl && (
-    <img
-      src={samplePack.imageUrl}
-      alt={samplePack.title}
-      className="sample-image"
-    />
-  )}
-  <h2>{samplePack.title}</h2>
-  <p>{samplePack.description}</p>
+    <section className="samples-section samplepacks-section">
+      {samplePack.imageUrl && (
+        <img
+          src={samplePack.imageUrl}
+          alt={samplePack.title}
+          className="sample-image"
+        />
+      )}
+      <h2>{samplePack.title}</h2>
+      <p>{samplePack.description}</p>
 
-  <div className="samples-list">
-    {samplePack.samples.map((sample, index) => {
-      const audioType = sample.audioFile.endsWith(".wav")
-        ? "audio/wav"
-        : "audio/mp3";
+      <div className="samples-list">
+        {samplePack.samples.map((sample, index) => {
+          const ext = (sample.audioUrl || "").split("?")[0].split(".").pop();
+          const audioType = ext === "wav" ? "audio/wav" : "audio/mpeg";
 
-      return (
-        <div
-          key={sample._id}
-          className={`sample-item ${
-            currentPlayingIndex === index ? "playing" : ""
-          }`}
-          onClick={() => handlePlay(index)}
-        >
-          <h3>{sample.title}</h3>
-          <audio
-            ref={(el) => (audioRefs.current[index] = el)}
-            controls
-            onPlay={() => handlePlay(index)}
-          >
-            <source src={sample.audioFile} type={audioType} />
-            Tu navegador no soporta la reproducción de audio.
-          </audio>
-        </div>
-      );
-    })}
-  </div>
+          return (
+            <div
+              key={sample._id}
+              className={`sample-item ${
+                currentPlayingIndex === index ? "playing" : ""
+              }`}
+              onClick={() => handlePlay(index)}
+            >
+              <h3>{sample.title}</h3>
+              <audio
+                ref={(el) => (audioRefs.current[index] = el)}
+                controls
+                onPlay={() => handlePlay(index)}
+              >
+                <source src={sample.audioUrl} type={audioType} />
+                Tu navegador no soporta la reproducción de audio.
+              </audio>
+            </div>
+          );
+        })}
+      </div>
 
-  <div className="back-to-catalogue">
-    <a href="/samplepacks">
-      <button className="back-to-catalogue-btn">Back to packs</button>
-    </a>
-  </div>
+      <div className="back-to-catalogue">
+        <Link to="/samplepacks">
+          <button className="back-to-catalogue-btn">Back to packs</button>
+        </Link>
+      </div>
 
-  <div className="contenedor-parrafo-final">
-    <p className="parrafo-final-samples">Make crazy music</p>
-    <p className="parrafo-final-samples">CONTACT ME</p>
-    <Link to="https://www.instagram.com/__niv0__/" target="_blank">
-      <FontAwesomeIcon
-        icon={faInstagram}
-        className="instagram-icon-samples"
-      />
-    </Link>
-  </div>
-</section>
-
+      <div className="contenedor-parrafo-final">
+        <p className="parrafo-final-samples">Make crazy music</p>
+        <p className="parrafo-final-samples">CONTACT ME</p>
+        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+          <FontAwesomeIcon
+            icon={faInstagram}
+            className="instagram-icon-samples"
+          />
+        </Link>
+      </div>
+    </section>
   );
 };
