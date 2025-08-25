@@ -12,6 +12,7 @@ export const Login = () => {
 
   // Estado para mostrar errores amigables al usuario
   const [loginError, setLoginError] = useState("");
+  const [loading, setLoading] = useState(false); // ⬅️ Nuevo estado para el mensaje/loader
 
   // Función para limpiar localStorage
   const clearLocalStorage = () => {
@@ -23,6 +24,7 @@ export const Login = () => {
   const verifyToken = useCallback(
     async (token) => {
       try {
+        setLoading(true); // ⬅️ mostramos el mensaje
         const res = await axios.get(`${BACKEND_URL}/api/auth/verify-token`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -32,6 +34,8 @@ export const Login = () => {
       } catch (error) {
         console.error("Token inválido o expirado:", error);
         clearLocalStorage();
+      } finally {
+        setLoading(false); // ⬅️ ocultamos el mensaje
       }
     },
     [navigate, BACKEND_URL]
@@ -46,6 +50,7 @@ export const Login = () => {
   // Login exitoso
   const onSuccess = async (response) => {
     try {
+      setLoading(true); // ⬅️ mostramos mensaje
       const { credential } = response;
 
       const res = await axios.post(
@@ -64,6 +69,8 @@ export const Login = () => {
         "No pudimos iniciar sesión. Si estás usando bloqueadores o extensiones de seguridad, desactívalos e intenta de nuevo."
       );
       clearLocalStorage();
+    } finally {
+      setLoading(false); // ⬅️ ocultamos mensaje si hubo error
     }
   };
 
@@ -80,12 +87,19 @@ export const Login = () => {
       <section className="login-section">
         <div className="login-container">
           <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
-          <div className="btnauth">
-            <div className="google-btn-wrapper">
-              {/* Solo botón clásico, sin One Tap */}
-              <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
+
+          {loading ? (
+            <p style={{ marginTop: "2rem", fontWeight: "bold" }}>
+              Ingresando, por favor espera...
+            </p>
+          ) : (
+            <div className="btnauth">
+              <div className="google-btn-wrapper">
+                <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
+              </div>
             </div>
-          </div>
+          )}
+
           {loginError && (
             <p style={{ color: "red", marginTop: "1rem" }}>{loginError}</p>
           )}
