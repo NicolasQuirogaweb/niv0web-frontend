@@ -90,7 +90,7 @@ export const Login = () => {
 
           {loading ? (
             <p style={{ marginTop: "2rem", fontWeight: "bold" }}>
-              Ingresando, por favor espera...
+              Entering, please wait...
             </p>
           ) : (
             <div className="btnauth">
