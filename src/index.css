@@ -397,14 +397,18 @@ code {
 
 /* Wrapper del botón */
 .google-btn-wrapper {
-  display: inline-block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  width: 100%; /* que ocupe todo el ancho del contenedor */
+  transition: transform 0.3s ease;
 }
 
-.google-btn-wrapper:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+.google-btn-wrapper button {
+  width: 100%; /* el botón se estira a todo el ancho */
+  height: 50px; /* opcional: le das una altura más consistente */
+  border-radius: 6px; /* opcional: suaviza bordes */
+  font-size: 1rem; /* agranda un poco la tipografía */
 }
+
 
 /* Animación suave al cargar */
 @keyframes fadeIn {
