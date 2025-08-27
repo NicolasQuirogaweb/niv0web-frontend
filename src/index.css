@@ -362,8 +362,6 @@ code {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url("./images/Loops/fljueguito.webp") no-repeat center center;
-  background-size: cover;
   padding: 20px;
 }
 
@@ -413,6 +411,7 @@ code {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 /*SECCION DE BEATS*/
 
