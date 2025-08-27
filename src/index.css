@@ -1280,12 +1280,14 @@ audio {
     margin-top: 15px;
   }
 
-  .google-btn-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+ .google-btn-wrapper {
+    max-width: 90%; /* ocupa casi todo el ancho en mobile */
   }
 
+  .google-btn-wrapper button {
+    height: 42px;
+    font-size: 0.9rem;
+  }
 
 
 
