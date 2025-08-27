@@ -356,50 +356,63 @@ code {
 
 /* Estilos para el contenedor del contenido */
 
-.login-section div {
+/* Contenedor general */
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background: url("./images/Loops/fljueguito.webp") no-repeat center center;
   background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
+/* Caja del login */
 .login-container {
   max-width: 400px;
-  height: auto;
-  padding: 20px;
-  background: url("./images/Loops/fljueguito.webp") no-repeat center center;
-  background-size: cover;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 30px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.55); /* Fondo oscuro semi-transparente */
+  backdrop-filter: blur(12px); /* efecto glass */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: #fff;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
+/* Título */
+.login-container h1 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Botón de autenticación */
 .btnauth {
   margin-top: 20px;
-  margin-left: 2px;
   display: flex;
   justify-content: center;
 }
 
+/* Wrapper del botón */
 .google-btn-wrapper {
   display: inline-block;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .google-btn-wrapper:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
 }
 
-.login-section .btnauth,
-.login-section .profile {
-  background: none;
+/* Animación suave al cargar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.login-section h1 {
-  font-size: 2rem;
-  color: white;
-  margin-bottom: 20px;
-}
-
 
 /*SECCION DE BEATS*/
 
