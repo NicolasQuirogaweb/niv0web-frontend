@@ -371,8 +371,10 @@ code {
   width: 100%;
   padding: 30px;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.55); /* Fondo oscuro semi-transparente */
-  backdrop-filter: blur(12px); /* efecto glass */
+  background: rgba(0, 0, 0, 0.55);
+  /* Fondo oscuro semi-transparente */
+  backdrop-filter: blur(12px);
+  /* efecto glass */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   text-align: center;
   color: #fff;
@@ -385,7 +387,7 @@ code {
   margin-bottom: 25px;
   font-weight: 600;
   color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Botón de autenticación */
@@ -398,22 +400,34 @@ code {
 /* Wrapper del botón */
 .google-btn-wrapper {
   display: block;
-  width: 100%; /* que ocupe todo el ancho del contenedor */
+  width: 100%;
+  /* que ocupe todo el ancho del contenedor */
   transition: transform 0.3s ease;
 }
 
 .google-btn-wrapper button {
-  width: 100%; /* el botón se estira a todo el ancho */
-  height: 50px; /* opcional: le das una altura más consistente */
-  border-radius: 6px; /* opcional: suaviza bordes */
-  font-size: 1rem; /* agranda un poco la tipografía */
+  width: 100%;
+  /* el botón se estira a todo el ancho */
+  height: 50px;
+  /* opcional: le das una altura más consistente */
+  border-radius: 6px;
+  /* opcional: suaviza bordes */
+  font-size: 1rem;
+  /* agranda un poco la tipografía */
 }
 
 
 /* Animación suave al cargar */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -1258,37 +1272,59 @@ audio {
   /* Seguimos con la parte del login para celulares*/
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
 
+  /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
   .login-section {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    /* centra vertical */
+    align-items: center;
+    /* centra horizontal */
+    min-height: 100vh;
+    /* ocupa toda la pantalla */
+    background-size: cover;
+    background-position: center;
     background-attachment: scroll;
-    height: auto;
-    /* Quita altura fija para que se adapte al contenido */
+    overflow: hidden;
+    /* elimina scroll extra */
+    padding: 20px;
+    /* margen interno para que no pegue en bordes */
   }
 
   .login-container {
-    width: 80%;
-    background-size: cover;
+    width: 100%;
+    max-width: 400px;
+    /* límite en desktop pequeño */
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
+    padding: 20px;
+    text-align: center;
   }
 
   .login-section h1 {
     font-size: 1.5rem;
+    margin-bottom: 20px;
   }
 
   .btnauth {
     margin-top: 15px;
+    width: 100%;
+    /* ocupa todo el ancho */
   }
 
- .google-btn-wrapper {
-    max-width: 90%; /* ocupa casi todo el ancho en mobile */
+  /* Botón de Google bien adaptado */
+  .google-btn-wrapper {
+    width: 100%;
   }
 
   .google-btn-wrapper button {
-    height: 42px;
-    font-size: 0.9rem;
+    width: 100%;
+    /* ahora ocupa todo el ancho */
+    height: 45px;
+    font-size: 0.95rem;
+    border-radius: 6px;
   }
-
 
 
   /*Seguimos con la parte del home-logued para celulares*/
@@ -1780,7 +1816,7 @@ los audios del catalogo de beats.*/
     border-radius: 10px;
     width: 50%;
     height: auto;
-    
+
   }
 
   .external-tracks-info {
