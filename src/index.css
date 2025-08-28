@@ -356,32 +356,39 @@ code {
 
 /* Estilos para el contenedor del contenido */
 
-/* Contenedor general */
+/* 🎯 SECCIÓN LOGIN */
 .login-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100dvh; /* ✅ en mobile evita scroll blanco */
   padding: 20px;
+  text-align: center;
+  font-family: "Arial", sans-serif;
+
+  /* Fondo con imagen + overlay */
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
+    url(./images/loginsignup/luca.webp) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
-/* Caja del login */
+/* 🎯 CAJA LOGIN CON EFECTO GLASS */
 .login-container {
-  max-width: 400px;
   width: 100%;
-  padding: 30px;
+  max-width: 400px;
+  padding: 30px 20px;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.55);
-  /* Fondo oscuro semi-transparente */
+  background: rgba(0, 0, 0, 0.55); /* ✅ Glass oscuro */
   backdrop-filter: blur(12px);
-  /* efecto glass */
+  -webkit-backdrop-filter: blur(12px); /* soporte Safari */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  text-align: center;
   color: #fff;
+  text-align: center;
   animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Título */
+/* 🎯 TÍTULO */
 .login-container h1 {
   font-size: 2rem;
   margin-bottom: 25px;
@@ -390,31 +397,42 @@ code {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Botón de autenticación */
+/* 🎯 BOTÓN GOOGLE */
 .btnauth {
   margin-top: 20px;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
-/* Wrapper del botón */
 .google-btn-wrapper {
-  display: block;
   width: 100%;
-  /* que ocupe todo el ancho del contenedor */
-  transition: transform 0.3s ease;
+  display: flex;
+  justify-content: center;
 }
 
+.google-btn-wrapper iframe,
+.google-btn-wrapper div,
 .google-btn-wrapper button {
-  width: 100%;
-  /* el botón se estira a todo el ancho */
-  height: 50px;
-  /* opcional: le das una altura más consistente */
+  width: 100% !important; /* ✅ fuerza ancho completo */
+  height: 50px !important;
   border-radius: 6px;
-  /* opcional: suaviza bordes */
   font-size: 1rem;
-  /* agranda un poco la tipografía */
 }
+
+
+/* 🎯 ANIMACIÓN */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 
 /* Animación suave al cargar */
@@ -1273,59 +1291,21 @@ audio {
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
-  .login-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* centra vertical */
-    align-items: center;
-    /* centra horizontal */
-    min-height: 100vh;
-    /* ocupa toda la pantalla */
-    background-size: cover;
-    background-position: center;
-    background-attachment: scroll;
-    overflow: hidden;
-    /* elimina scroll extra */
-    padding: 20px;
-    /* margen interno para que no pegue en bordes */
-  }
-
   .login-container {
-    width: 100%;
-    max-width: 400px;
-    /* límite en desktop pequeño */
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    max-width: 90%;
     padding: 20px;
-    text-align: center;
   }
 
-  .login-section h1 {
+  .login-container h1 {
     font-size: 1.5rem;
-    margin-bottom: 20px;
   }
 
-  .btnauth {
-    margin-top: 15px;
-    width: 100%;
-    /* ocupa todo el ancho */
-  }
-
-  /* Botón de Google bien adaptado */
-  .google-btn-wrapper {
-    width: 100%;
-  }
-
+  .google-btn-wrapper iframe,
+  .google-btn-wrapper div,
   .google-btn-wrapper button {
-    width: 100%;
-    /* ahora ocupa todo el ancho */
-    height: 45px;
+    height: 45px !important;
     font-size: 0.95rem;
-    border-radius: 6px;
   }
-
 
   /*Seguimos con la parte del home-logued para celulares*/
 
