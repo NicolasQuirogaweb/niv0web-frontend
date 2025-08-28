@@ -105,7 +105,7 @@ export const Login = () => {
                   text="continue_with"
                   shape="pill"
                   logo_alignment="center"
-                  width="380" // 👈 Google lo respeta; min 200, max 400
+                  width="400" // 👈 Google lo respeta; min 200, max 400
                 />
               </div>
             </div>
