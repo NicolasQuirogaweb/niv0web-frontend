@@ -418,13 +418,13 @@ code {
 }
 
 iframe {
-  width: 100%;       /* ocupa todo el ancho del contenedor */
-  min-width: 320px;  /* nunca más chico que un móvil */
-  max-width: 100%;   /* nunca más grande que el contenedor */
-  height: 500px;     /* altura por defecto en desktop */
-  border: none;
-  display: block;
-  margin: 0 auto;
+  width: 100% !important;       /* ocupa todo el ancho del contenedor */
+  min-width: 320px !important;  /* nunca más chico que un móvil */
+  max-width: 100% !important;   /* nunca más grande que el contenedor */
+  height: 500px !important;     /* altura por defecto en desktop */
+  border: none !important;
+  display: block !important;
+  margin: 0 auto !important;
 }
 
 
