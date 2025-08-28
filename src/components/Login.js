@@ -14,6 +14,18 @@ export const Login = () => {
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false); // ⬅️ Nuevo estado para el mensaje/loader
 
+  // ✅ Estado responsive para ancho del botón
+  const [btnWidth, setBtnWidth] = useState(400);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setBtnWidth(window.innerWidth < 600 ? 200 : 400);
+    };
+    updateWidth(); // primera vez
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   // Función para limpiar localStorage
   const clearLocalStorage = () => {
     localStorage.removeItem("authToken");
@@ -93,8 +105,13 @@ export const Login = () => {
               Entering, please wait...
             </p>
           ) : (
-            <div className="btnauth"
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            <div
+              className="btnauth"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
               <div className="google-btn-wrapper">
                 <GoogleLogin
@@ -105,7 +122,7 @@ export const Login = () => {
                   text="continue_with"
                   shape="pill"
                   logo_alignment="center"
-                  width="400" // 👈 Google lo respeta; min 200, max 400
+                  width={btnWidth} // 👈 responsive width
                 />
               </div>
             </div>
