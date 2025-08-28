@@ -93,7 +93,9 @@ export const Login = () => {
               Entering, please wait...
             </p>
           ) : (
-            <div className="btnauth">
+            <div className="btnauth"
+            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
               <div className="google-btn-wrapper">
                 <GoogleLogin
                   onSuccess={onSuccess}
