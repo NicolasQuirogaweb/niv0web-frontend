@@ -1309,13 +1309,7 @@ audio {
     /* mantiene el botón centrado */
   }
 
-  .google-btn-wrapper iframe,
-  .google-btn-wrapper div,
-  .google-btn-wrapper button {
-    width: 100% !important;
-    /* ocupa todo el ancho */
-    height: 45px !important;
-  }
+  
 }
 
 /*Seguimos con la parte del home-logued para celulares*/
