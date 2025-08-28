@@ -361,8 +361,10 @@ code {
 .login-section {
   min-height: 100vh;
   display: flex;
-  justify-content: center;   /* centra horizontal */
-  align-items: center;       /* centra vertical */
+  justify-content: center;
+  /* centra horizontal */
+  align-items: center;
+  /* centra vertical */
   padding: 20px;
   background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
     url(./images/loginsignup/luca.webp) no-repeat center center;
@@ -379,9 +381,11 @@ code {
   max-width: 400px;
   padding: 30px 20px;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.55); /* ✅ Glass oscuro */
+  background: rgba(0, 0, 0, 0.55);
+  /* ✅ Glass oscuro */
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Safari */
+  -webkit-backdrop-filter: blur(12px);
+  /* Safari */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   color: #fff;
   text-align: center;
@@ -408,7 +412,8 @@ code {
 .google-btn-wrapper {
   width: 100%;
   display: flex;
-  justify-content: center;  /* ✅ mantiene el botón centrado */
+  justify-content: center;
+  /* ✅ mantiene el botón centrado */
 }
 
 
@@ -419,6 +424,7 @@ code {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1273,11 +1279,41 @@ audio {
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
   .login-container {
+    width: 100%;
+    max-width: 200px;
+    padding: 15px 10px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.55);
+    /* ✅ Glass oscuro */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Safari */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  .login-container {
     padding: 20px 15px;
   }
 
   .login-container h1 {
     font-size: 1.5rem;
+  }
+
+  .btnauth {
+    margin-left: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .google-btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* ✅ mantiene el botón centrado */
   }
 
   /*Seguimos con la parte del home-logued para celulares*/
