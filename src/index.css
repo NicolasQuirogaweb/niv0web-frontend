@@ -1295,7 +1295,7 @@ audio {
     max-width: 200px !important;
   }
 
-}
+
 
 
 /*Seguimos con la parte del home-logued para celulares*/
@@ -1823,4 +1823,5 @@ audio {
 
 .prod-mix-master-item p {
   font-size: 10px;
+}
 }
