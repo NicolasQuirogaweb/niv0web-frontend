@@ -385,6 +385,8 @@ code {
   color: #fff;
   text-align: center;
   animation: fadeIn 0.8s ease-in-out;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-container h1 {
