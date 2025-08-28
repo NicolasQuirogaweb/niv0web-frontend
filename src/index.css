@@ -1281,7 +1281,6 @@ audio {
   .login-container {
     width: 100%;
     max-width: 200px;
-    padding: 15px 10px;
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.55);
     /* ✅ Glass oscuro */
@@ -1303,7 +1302,6 @@ audio {
   }
 
   .btnauth {
-    margin-left: 60px;
     width: 100%;
     display: flex;
     justify-content: center;
