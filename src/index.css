@@ -357,20 +357,20 @@ code {
 /* Estilos para el contenedor del contenido */
 
 /* 🎯 SECCIÓN LOGIN */
+/* 🎯 SECCIÓN LOGIN */
 .login-section {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100dvh; /* ✅ en mobile evita scroll blanco */
+  justify-content: center;   /* centra horizontal */
+  align-items: center;       /* centra vertical */
   padding: 20px;
-  text-align: center;
-  font-family: "Arial", sans-serif;
-
-  /* Fondo con imagen + overlay */
   background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
     url(./images/loginsignup/luca.webp) no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
+  overflow: hidden;
+  font-family: "Arial", sans-serif;
+  text-align: center;
 }
 
 /* 🎯 CAJA LOGIN CON EFECTO GLASS */
@@ -381,7 +381,7 @@ code {
   border-radius: 16px;
   background: rgba(0, 0, 0, 0.55); /* ✅ Glass oscuro */
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* soporte Safari */
+  -webkit-backdrop-filter: blur(12px); /* Safari */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   color: #fff;
   text-align: center;
@@ -408,18 +408,17 @@ code {
 .google-btn-wrapper {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: center;  /* ✅ mantiene el botón centrado */
 }
 
 .google-btn-wrapper iframe,
 .google-btn-wrapper div,
 .google-btn-wrapper button {
-  width: 100% !important; /* ✅ fuerza ancho completo */
+  width: 100% !important;   /* ✅ ocupa todo el ancho */
   height: 50px !important;
   border-radius: 6px;
   font-size: 1rem;
 }
-
 
 /* 🎯 ANIMACIÓN */
 @keyframes fadeIn {
@@ -435,18 +434,7 @@ code {
 
 
 
-/* Animación suave al cargar */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 
 /*SECCION DE BEATS*/
@@ -1292,19 +1280,11 @@ audio {
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
   .login-container {
-    max-width: 90%;
-    padding: 20px;
+    padding: 20px 15px;
   }
 
   .login-container h1 {
     font-size: 1.5rem;
-  }
-
-  .google-btn-wrapper iframe,
-  .google-btn-wrapper div,
-  .google-btn-wrapper button {
-    height: 45px !important;
-    font-size: 0.95rem;
   }
 
   /*Seguimos con la parte del home-logued para celulares*/
