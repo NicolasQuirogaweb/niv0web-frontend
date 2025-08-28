@@ -1247,21 +1247,14 @@ audio {
   /* Seguimos con la parte del login para celulares*/
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
- .login-section {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: auto;   /* 👈 se ajusta al contenido */
-  height: 100%;   
-  width: 100%;   
-  padding: 15px;
-  overflow: hidden;
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-              url(./images/loginsignup/luca.webp) no-repeat center center;
-  background-size: cover;
-  background-attachment: fixed;
-  text-align: center;
-}
+  .login-section {
+    background-attachment: scroll; /* ❌ fixed rompe en móviles */
+    background-size: contain;      /* ✅ mantiene toda la imagen visible */
+    background-position: top center; /* ajusta la posición */
+    min-height: 100vh;             /* ocupa toda la pantalla visible */
+    height: auto;                  /* se ajusta al contenido */
+    width: 100%;
+  }
  
   .login-container {
     width: 90%;
