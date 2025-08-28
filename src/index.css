@@ -401,6 +401,16 @@ code {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+iframe {
+  width: 100% !important;       /* ocupa todo el ancho del contenedor */
+  min-width: 320px !important;  /* nunca más chico que un móvil */
+  max-width: 100% !important;   /* nunca más grande que el contenedor */
+  height: 500px !important;     /* altura por defecto en desktop */
+  border: none !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
 /* 🎯 BOTÓN GOOGLE */
 .btnauth {
   margin-top: 20px;
@@ -415,16 +425,6 @@ code {
   display: flex;
   justify-content: center;
   /* ✅ mantiene el botón centrado */
-}
-
-iframe {
-  width: 100% !important;       /* ocupa todo el ancho del contenedor */
-  min-width: 320px !important;  /* nunca más chico que un móvil */
-  max-width: 100% !important;   /* nunca más grande que el contenedor */
-  height: 500px !important;     /* altura por defecto en desktop */
-  border: none !important;
-  display: block !important;
-  margin: 0 auto !important;
 }
 
 
