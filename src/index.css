@@ -1264,12 +1264,12 @@ audio {
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
  .login-section {
-  background-attachment: scroll;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: auto;   /* 👈 se ajusta al contenido */
-  height: 100%;       /* 👈 elimina el forzado */
+  height: 100%;   
+  width: 100%;   
   padding: 15px;
   overflow: hidden;
 }
