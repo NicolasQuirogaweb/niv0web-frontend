@@ -410,14 +410,7 @@ code {
   justify-content: center;  /* ✅ mantiene el botón centrado */
 }
 
-.google-btn-wrapper iframe,
-.google-btn-wrapper div,
-.google-btn-wrapper button {
-  width: 100% !important;   /* ✅ ocupa todo el ancho */
-  height: 50px !important;
-  border-radius: 6px;
-  font-size: 1rem;
-}
+
 
 /* 🎯 ANIMACIÓN */
 @keyframes fadeIn {
