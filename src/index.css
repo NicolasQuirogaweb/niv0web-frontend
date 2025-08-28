@@ -336,22 +336,6 @@ code {
       95);
 }
 
-/*SECCION LOGIN*/
-.login-section {
-  min-height: 100vh;
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(./images/loginsignup/luca.webp) no-repeat center center fixed;
-  background-size: cover;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: blue;
-  font-family: "Arial", sans-serif;
-  text-align: center;
-}
-
 /* Estilos generales para la sección de login */
 
 /* Estilos para el contenedor del contenido */
