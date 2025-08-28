@@ -95,7 +95,16 @@ export const Login = () => {
           ) : (
             <div className="btnauth">
               <div className="google-btn-wrapper">
-                <GoogleLogin onSuccess={onSuccess} onError={onFailure} />
+                <GoogleLogin
+                  onSuccess={onSuccess}
+                  onError={onFailure}
+                  theme="outline"
+                  size="large"
+                  text="continue_with"
+                  shape="pill"
+                  logo_alignment="center"
+                  width="360" // 👈 Google lo respeta; min 200, max 400
+                />
               </div>
             </div>
           )}
