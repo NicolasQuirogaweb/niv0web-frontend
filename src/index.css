@@ -1287,11 +1287,12 @@ audio {
 
   .btnauth,
   .google-btn-wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
   }
-
+ .google-btn-wrapper div {
+    max-width: 200px !important;
+  }
 
 }
 
