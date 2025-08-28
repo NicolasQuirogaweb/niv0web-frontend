@@ -1278,22 +1278,22 @@ audio {
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
-  .login-container {
-    width: 100%;
-    max-width: 80%;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.55);
-    /* ✅ Glass oscuro */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    /* Safari */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    color: #fff;
-    text-align: center;
-    animation: fadeIn 0.8s ease-in-out;
+  .login-section {
+    flex-direction: column;
+    justify-content: center;
+    /* centra vertical */
+    align-items: center;
+    /* centra horizontal */
+    min-height: 100vh;
+    /* siempre ocupa toda la pantalla */
+    padding: 15px;
+    overflow: hidden;
   }
 
   .login-container {
+    width: 90%;
+    /* ocupa casi todo el ancho */
+    max-width: 400px;
     padding: 20px 15px;
   }
 
@@ -1301,543 +1301,547 @@ audio {
     font-size: 1.5rem;
   }
 
-  .btnauth {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
+  .btnauth,
   .google-btn-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
-    /* ✅ mantiene el botón centrado */
+    /* mantiene el botón centrado */
   }
 
-  /*Seguimos con la parte del home-logued para celulares*/
-
-  .home-section-logued {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* centra verticalmente */
-    align-items: center;
-    /* centra horizontalmente */
-    min-height: 100vh;
+  .google-btn-wrapper iframe,
+  .google-btn-wrapper div,
+  .google-btn-wrapper button {
+    width: 100% !important;
+    /* ocupa todo el ancho */
+    height: 45px !important;
   }
+}
+
+/*Seguimos con la parte del home-logued para celulares*/
+
+.home-section-logued {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* centra verticalmente */
+  align-items: center;
+  /* centra horizontalmente */
+  min-height: 100vh;
+}
 
 
-  .home-section-logued h4,
-  .home-section-logued h5 {
-    display: block;
-    margin: 10px auto;
-  }
+.home-section-logued h4,
+.home-section-logued h5 {
+  display: block;
+  margin: 10px auto;
+}
 
-  .home-section-logued h3 {
-    display: block;
-    margin: 10px 105px;
-    font-size: 10px;
-  }
+.home-section-logued h3 {
+  display: block;
+  margin: 10px 105px;
+  font-size: 10px;
+}
 
-  .home-section-logued h3 a,
-  .home-section-logued h5 a {
-    font-size: 20px;
+.home-section-logued h3 a,
+.home-section-logued h5 a {
+  font-size: 20px;
 
-  }
+}
 
-  .home-section-logued h4 a {
-    font-size: 12px;
-  }
-
-
-  /* Reemplazamos márgenes extremos por centrado */
-  .home-section-logued .beats-home a,
-  .home-section-logued .samplepacks-home a,
-  .home-section-logued .loops-home a,
-  .home-section-logued .prodmixmaster-home a {
-    margin: 5px auto;
-    display: inline-block;
-    font-size: 22px;
-  }
-
-  /* Párrafo de abajo */
-  .home-section-logued p {
-    font-size: 16px;
-    margin-top: 5px;
-  }
-
-  .icon-insta-logued .instagram-icon {
-    font-size: 30px;
-    color: #f59999;
-  }
-
-  /*vamos con la seccion de beats para celulares*/
-
-  .beats-section {
-    min-height: 100vh;
-    height: auto;
-    overflow-y: auto;
-    /* Permite el scroll vertical si es necesario */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .beats-info {
-    margin-top: 15px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .beats-section h3,
-  .beats-section h4 {
-    margin: 5px 0;
-    font-size: 18px;
-  }
-
-  .beats-section h5 {
-    margin: 1px 0;
-    font-size: 18px;
-  }
+.home-section-logued h4 a {
+  font-size: 12px;
+}
 
 
-  .beats-section h3 a {
-    font-size: 18px;
-  }
+/* Reemplazamos márgenes extremos por centrado */
+.home-section-logued .beats-home a,
+.home-section-logued .samplepacks-home a,
+.home-section-logued .loops-home a,
+.home-section-logued .prodmixmaster-home a {
+  margin: 5px auto;
+  display: inline-block;
+  font-size: 22px;
+}
 
-  .beats-section h4 a {
-    font-size: 12px;
-  }
+/* Párrafo de abajo */
+.home-section-logued p {
+  font-size: 16px;
+  margin-top: 5px;
+}
 
-  .beats-section h5 a {
-    font-size: 14px;
-  }
+.icon-insta-logued .instagram-icon {
+  font-size: 30px;
+  color: #f59999;
+}
 
+/*vamos con la seccion de beats para celulares*/
 
-  .beats-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+.beats-section {
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  /* Permite el scroll vertical si es necesario */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .card-playlist {
-    width: 200px;
-    height: 120px;
-    /* Asegúrate de darles una altura fija */
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.beats-info {
+  margin-top: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
-    cursor: pointer;
-  }
+.beats-section h3,
+.beats-section h4 {
+  margin: 5px 0;
+  font-size: 18px;
+}
 
-  .beats-description {
-    margin-top: 50px;
-    height: 100%;
-    width: 200px;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 20px;
-    padding: 20px;
-    color: white;
-  }
-
-  .beats-description h2 {
-    font-size: 20px;
-  }
-
-  .beats-description p {
-    font-size: 16px;
-  }
-
-  .beats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
-
-  /* Este también ayuda si los botones se salen */
-  .back-to-catalogue {
-    margin-top: 20px;
-  }
-
-  .back-to-catalogue-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: #007bff;
-    color: black;
-    border: none;
-    cursor: pointer;
-  }
+.beats-section h5 {
+  margin: 1px 0;
+  font-size: 18px;
+}
 
 
-  /*Seguimos con el css responsive de las playlists de beats, es decir
+.beats-section h3 a {
+  font-size: 18px;
+}
+
+.beats-section h4 a {
+  font-size: 12px;
+}
+
+.beats-section h5 a {
+  font-size: 14px;
+}
+
+
+.beats-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-playlist {
+  width: 200px;
+  height: 120px;
+  /* Asegúrate de darles una altura fija */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  cursor: pointer;
+}
+
+.beats-description {
+  margin-top: 50px;
+  height: 100%;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+}
+
+.beats-description h2 {
+  font-size: 20px;
+}
+
+.beats-description p {
+  font-size: 16px;
+}
+
+.beats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Este también ayuda si los botones se salen */
+.back-to-catalogue {
+  margin-top: 20px;
+}
+
+.back-to-catalogue-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+
+/*Seguimos con el css responsive de las playlists de beats, es decir
 los audios del catalogo de beats.*/
 
-  .playlist-page h2,
-  .playlist-page h3 {
-    margin-left: 20px;
-    font-size: 18px;
-    text-align: center;
-  }
-
-  .playlist-page h2 a,
-  .playlist-page h3 a {
-    font-size: 18px;
-  }
-
-
-  .playlist-page h5 {
-    font-size: 28px;
-    text-align: center;
-  }
-
-  .playlist-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .playlist-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .playlist-info {
-    max-width: 90%;
-  }
-
-  .playlist-title {
-    font-size: 28px;
-  }
-
-  .playlist-description {
-    font-size: 16px;
-  }
-
-  .back-button {
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-
-  .beat-item {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    width: 80%;
-    height: 20%;
-  }
-
-  .beat-item.playing {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .beat-card {
-    flex-direction: column;
-    width: 90%;
-    margin: 10px auto;
-    height: auto;
-    max-height: none;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .beat-card-image {
-    width: 90px;
-    height: 90px;
-    margin-left: 0;
-    margin-top: 0;
-  }
-
-  .beat-details {
-    padding: 5px;
-    align-items: center;
-    text-align: center;
-  }
-
-  .beat-title {
-    font-size: 14px;
-  }
-
-  .beat-artist {
-    font-size: 10px;
-    margin-left: 0;
-    margin-top: 5px;
-  }
-
-  .btn-download {
-    font-size: 12px;
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  audio {
-    width: 100%;
-    height: 25px;
-  }
-
-  .playlist-content p {
-    font-size: 16px;
-  }
-
-  /*Ahora la seccion de samplepacks*/
-
-  .samplepacks-section {
-    background-size: cover;
-    background-position: center;
-  }
-
-  .samplepacks-info {
-    margin-top: 15px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .samplepacks-section h3,
-  .samplepacks-section h4 {
-    margin: 5px 0;
-    font-size: 18px;
-  }
-
-  .samplepacks-section h5 {
-    margin: 1px 0;
-    font-size: 18px;
-  }
-
-  .samplepacks-section h3 a {
-    font-size: 18px;
-
-  }
-
-  .samplepacks-section h4 a {
-    font-size: 12px;
-  }
-
-  .samplepacks-section h5 a {
-    font-size: 14px;
-  }
-
-  .beats-description {
-    width: 80%;
-    padding: 15px;
-    border-radius: 15px;
-  }
-
-  .beats-description h2 {
-    font-size: 20px;
-  }
-
-  .beats-description p {
-    font-size: 16px;
-  }
-
-  .card-playlist {
-    width: 200px;
-    height: 120px;
-  }
-
-  .card-playlist-info .card-playlist-title {
-    font-size: 13px;
-  }
-
-  .beats-list {
-    margin-top: 5px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .beats-list-samplepacks {
-    margin-top: 30px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .beat-item {
-    width: 90%;
-    height: 60px;
-  }
-
-  .back-button-container {
-    margin-top: 15px;
-  }
-
-  .icon-insta {
-    margin-top: 15px;
-  }
-
-  .beats-content {
-    padding: 1;
-  }
-
-  /*Seccion de Samples en responsive*/
-
-  .samples-section {
-    width: 100%;
-    color: #fff;
-    text-align: center;
-
-  }
-
-  .sample-image {
-    width: 120px;
-    height: 120px;
-  }
-
-  .samples-list {
-    grid-template-columns: 1fr;
-    /* Una sola columna para móviles */
-    gap: 15px;
-  }
-
-  .sample-item {
-    width: 80%;
-    height: 80%;
-    justify-content: center;
-  }
-
-  .sample-item h3 {
-    font-size: 16px;
-  }
-
-
-  audio {
-    height: 30px;
-    margin-top: 10px;
-  }
-
-  .back-to-catalogue {
-    margin-top: 20px;
-  }
-
-  .back-to-catalogue-btn {
-    width: 50%;
-    font-size: 1rem;
-  }
-
-  .instagram-icon-samples {
-    color: #bbf0be;
-    font-size: 40px;
-    padding-bottom: 50px;
-  }
-
-  /*Seguimos con la seccion de loops responsive celulares*/
-  .loops-section {
-    background-position: center;
-    background-size: cover;
-  }
-
-  .loops-imagen {
-    width: 150px;
-    height: 150px;
-    margin-top: 30px;
-  }
-
-  .loops-list {
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-  }
-
-
-
-
-  audio {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .loop-item {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    width: 50%;
-    height: auto;
-  }
-
-  .loop-item.playing {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .loop-item h3 {
-    font-size: 10px;
-  }
-
-  .loop-item p {
-    font-size: 10px;
-  }
-
-  .instagram-icon-loops {
-    color: #bbf0be;
-    font-size: 40px;
-    padding-bottom: 50px;
-  }
-
-  /*Seccion de prodmixmaster*/
-  .prod-mix-master-section {
-    background-position: center;
-    background-size: cover;
-  }
-
-  .prodmixmaster-imagen {
-    width: 150px;
-    height: 150px;
-    margin-top: 30px;
-  }
-
-  .prod-mix-master-list {
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-  }
-
-  .prod-mix-master-item {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    width: 50%;
-    height: auto;
-
-  }
-
-  .external-tracks-info {
-    width: 80%;
-    margin: 30px auto 0 auto;
-  }
-
-  .external-track-table {
-    width: 100%;
-  }
-
-  .external-track-row {
-    flex-direction: column;
-    width: 80%;
-    margin-left: 10px;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .prod-mix-master-item h3 {
-    font-size: 10px;
-  }
-
-  .track-links {
-    gap: 15px;
-    justify-content: flex-start;
-  }
-
-  .track-links button {
-    font-size: 15px;
-    margin-right: 0;
-  }
-
-  .prod-mix-master-item p {
-    font-size: 10px;
-  }
+.playlist-page h2,
+.playlist-page h3 {
+  margin-left: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.playlist-page h2 a,
+.playlist-page h3 a {
+  font-size: 18px;
+}
+
+
+.playlist-page h5 {
+  font-size: 28px;
+  text-align: center;
+}
+
+.playlist-header {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.playlist-image {
+  width: 150px;
+  height: 150px;
+}
+
+.playlist-info {
+  max-width: 90%;
+}
+
+.playlist-title {
+  font-size: 28px;
+}
+
+.playlist-description {
+  font-size: 16px;
+}
+
+.back-button {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+
+.beat-item {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  width: 80%;
+  height: 20%;
+}
+
+.beat-item.playing {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.beat-card {
+  flex-direction: column;
+  width: 90%;
+  margin: 10px auto;
+  height: auto;
+  max-height: none;
+  align-items: center;
+  padding: 10px;
+}
+
+.beat-card-image {
+  width: 90px;
+  height: 90px;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.beat-details {
+  padding: 5px;
+  align-items: center;
+  text-align: center;
+}
+
+.beat-title {
+  font-size: 14px;
+}
+
+.beat-artist {
+  font-size: 10px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+.btn-download {
+  font-size: 12px;
+  margin-left: 0;
+  justify-content: center;
+}
+
+audio {
+  width: 100%;
+  height: 25px;
+}
+
+.playlist-content p {
+  font-size: 16px;
+}
+
+/*Ahora la seccion de samplepacks*/
+
+.samplepacks-section {
+  background-size: cover;
+  background-position: center;
+}
+
+.samplepacks-info {
+  margin-top: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.samplepacks-section h3,
+.samplepacks-section h4 {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.samplepacks-section h5 {
+  margin: 1px 0;
+  font-size: 18px;
+}
+
+.samplepacks-section h3 a {
+  font-size: 18px;
+
+}
+
+.samplepacks-section h4 a {
+  font-size: 12px;
+}
+
+.samplepacks-section h5 a {
+  font-size: 14px;
+}
+
+.beats-description {
+  width: 80%;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.beats-description h2 {
+  font-size: 20px;
+}
+
+.beats-description p {
+  font-size: 16px;
+}
+
+.card-playlist {
+  width: 200px;
+  height: 120px;
+}
+
+.card-playlist-info .card-playlist-title {
+  font-size: 13px;
+}
+
+.beats-list {
+  margin-top: 5px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.beats-list-samplepacks {
+  margin-top: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.beat-item {
+  width: 90%;
+  height: 60px;
+}
+
+.back-button-container {
+  margin-top: 15px;
+}
+
+.icon-insta {
+  margin-top: 15px;
+}
+
+.beats-content {
+  padding: 1;
+}
+
+/*Seccion de Samples en responsive*/
+
+.samples-section {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+
+}
+
+.sample-image {
+  width: 120px;
+  height: 120px;
+}
+
+.samples-list {
+  grid-template-columns: 1fr;
+  /* Una sola columna para móviles */
+  gap: 15px;
+}
+
+.sample-item {
+  width: 80%;
+  height: 80%;
+  justify-content: center;
+}
+
+.sample-item h3 {
+  font-size: 16px;
+}
+
+
+audio {
+  height: 30px;
+  margin-top: 10px;
+}
+
+.back-to-catalogue {
+  margin-top: 20px;
+}
+
+.back-to-catalogue-btn {
+  width: 50%;
+  font-size: 1rem;
+}
+
+.instagram-icon-samples {
+  color: #bbf0be;
+  font-size: 40px;
+  padding-bottom: 50px;
+}
+
+/*Seguimos con la seccion de loops responsive celulares*/
+.loops-section {
+  background-position: center;
+  background-size: cover;
+}
+
+.loops-imagen {
+  width: 150px;
+  height: 150px;
+  margin-top: 30px;
+}
+
+.loops-list {
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+
+
+
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.loop-item {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  width: 50%;
+  height: auto;
+}
+
+.loop-item.playing {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.loop-item h3 {
+  font-size: 10px;
+}
+
+.loop-item p {
+  font-size: 10px;
+}
+
+.instagram-icon-loops {
+  color: #bbf0be;
+  font-size: 40px;
+  padding-bottom: 50px;
+}
+
+/*Seccion de prodmixmaster*/
+.prod-mix-master-section {
+  background-position: center;
+  background-size: cover;
+}
+
+.prodmixmaster-imagen {
+  width: 150px;
+  height: 150px;
+  margin-top: 30px;
+}
+
+.prod-mix-master-list {
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.prod-mix-master-item {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  width: 50%;
+  height: auto;
+
+}
+
+.external-tracks-info {
+  width: 80%;
+  margin: 30px auto 0 auto;
+}
+
+.external-track-table {
+  width: 100%;
+}
+
+.external-track-row {
+  flex-direction: column;
+  width: 80%;
+  margin-left: 10px;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.prod-mix-master-item h3 {
+  font-size: 10px;
+}
+
+.track-links {
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.track-links button {
+  font-size: 15px;
+  margin-right: 0;
+}
+
+.prod-mix-master-item p {
+  font-size: 10px;
+}
 }
