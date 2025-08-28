@@ -403,10 +403,11 @@ code {
 
 /* 🎯 BOTÓN GOOGLE */
 .btnauth {
-  margin-left: 110px;
+  margin-top: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center; /* ✅ centra también vertical por si cambia altura */
 }
 
 .google-btn-wrapper {
@@ -416,6 +417,15 @@ code {
   /* ✅ mantiene el botón centrado */
 }
 
+iframe {
+  width: 100%;       /* ocupa todo el ancho del contenedor */
+  min-width: 320px;  /* nunca más chico que un móvil */
+  max-width: 100%;   /* nunca más grande que el contenedor */
+  height: 500px;     /* altura por defecto en desktop */
+  border: none;
+  display: block;
+  margin: 0 auto;
+}
 
 
 /* 🎯 ANIMACIÓN */
@@ -1275,24 +1285,19 @@ audio {
   }
 
   /* Seguimos con la parte del login para celulares*/
-  /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
-  .login-section {
+    .login-section {
     flex-direction: column;
     justify-content: center;
-    /* centra vertical */
     align-items: center;
-    /* centra horizontal */
     min-height: 100vh;
-    /* siempre ocupa toda la pantalla */
     padding: 15px;
     overflow: hidden;
   }
 
   .login-container {
     width: 90%;
-    /* ocupa casi todo el ancho */
     max-width: 400px;
     padding: 20px 15px;
   }
@@ -1306,11 +1311,15 @@ audio {
     width: 100%;
     display: flex;
     justify-content: center;
-    /* mantiene el botón centrado */
   }
 
-  
+  /* Forzamos que el iframe del Google button nunca se achique raro */
+  .google-btn-wrapper iframe {
+    width: 100% !important;
+    height: 50px !important;
+  }
 }
+
 
 /*Seguimos con la parte del home-logued para celulares*/
 
