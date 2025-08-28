@@ -1280,7 +1280,7 @@ audio {
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
   .login-container {
     width: 100%;
-    max-width: 200px;
+    max-width: 80%;
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.55);
     /* ✅ Glass oscuro */
