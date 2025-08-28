@@ -1263,15 +1263,16 @@ audio {
   /* Seguimos con la parte del login para celulares*/
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
-    .login-section {
-    background-attachment: scroll;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 15px;
-    overflow: hidden;
-  }
+ .login-section {
+  background-attachment: scroll;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;   /* 👈 se ajusta al contenido */
+  height: auto;       /* 👈 elimina el forzado */
+  padding: 15px;
+  overflow: hidden;
+}
  
   .login-container {
     width: 90%;
