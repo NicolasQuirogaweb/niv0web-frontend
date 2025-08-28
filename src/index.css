@@ -1269,7 +1269,7 @@ audio {
   justify-content: center;
   align-items: center;
   min-height: auto;   /* 👈 se ajusta al contenido */
-  height: auto;       /* 👈 elimina el forzado */
+  height: 100%;       /* 👈 elimina el forzado */
   padding: 15px;
   overflow: hidden;
 }
