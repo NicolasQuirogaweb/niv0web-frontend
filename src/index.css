@@ -1264,7 +1264,7 @@ audio {
 
   /* 🎯 ESTILOS RESPONSIVOS PARA LOGIN EN CELULARES */
     .login-section {
-         background-attachment: scroll;
+    background-attachment: scroll;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -1275,8 +1275,10 @@ audio {
  
   .login-container {
     width: 90%;
-    max-width: 400px;
+    max-width: 200px;
     padding: 20px 15px;
+    justify-content: center;
+    align-items: center;
   }
 
   .login-container h1 {
@@ -1290,11 +1292,7 @@ audio {
     justify-content: center;
   }
 
-  /* Forzamos que el iframe del Google button nunca se achique raro */
-  .google-btn-wrapper iframe {
-    width: 100% !important;
-    height: 50px !important;
-  }
+
 }
 
 
