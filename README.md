@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+Fullstack Web Platform for Music Producers and Artists 🎵
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Niv0 Web is a modular and scalable web application designed for music producers and artists to browse, organize, and play beats and sample packs. The platform provides an intuitive interface for managing audio catalogs, playlists, and dynamic content, with a mobile-first approach for optimal experience on all devices.
 
-## Available Scripts
+Features
 
-In the project directory, you can run:
+Audio Catalogs & Playlists: Browse beats and sample packs organized in catalogs.
 
-### `npm start`
+Dynamic Audio Playback: Play multiple tracks with global state management to avoid overlapping audio.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Reusable Components: Cards, playlists, audio players, and UI elements built for scalability.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Dynamic Routes: Access content based on the selected catalog or playlist.
 
-### `npm test`
+Backend Management: Simple and clear backend structure with separated models per collection.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Scalable Architecture: Designed to easily add new sections like videos, products, or albums.
 
-### `npm run build`
+Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Frontend:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+React
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+JavaScript & CSS
 
-### `npm run eject`
+Mobile-first design
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Backend:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Node.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Express.js
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+MongoDB (Compass)
 
-## Learn More
+Other Tools:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Git
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Figma (UI design)
 
-### Code Splitting
+Local deployment environment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Project Structure
+/client        -> React frontend code
+/server        -> Node.js & Express backend
+/models        -> MongoDB data models (Playlists, Beats, Samples)
+/routes        -> Backend routes organized by collection
+/public        -> Static assets (images, audio files, etc.)
 
-### Analyzing the Bundle Size
+Responsibilities & Contributions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Complete frontend development with a mobile-first approach.
 
-### Making a Progressive Web App
+Implementation of reusable UI components (cards, audio players, playlists).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Backend development with clear route organization and modular models.
 
-### Advanced Configuration
+Audio playback management using global state.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Integration of dynamic routes to display content based on playlists.
 
-### Deployment
+Scalable design for future additions: video catalogs, products, albums, etc.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Getting Started
 
-### `npm run build` fails to minify
+Clone the repository:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+git clone https://github.com/yourusername/niv0-web.git
+
+
+Install backend dependencies:
+
+cd server
+npm install
+
+
+Install frontend dependencies:
+
+cd client
+npm install
+
+
+Run the backend:
+
+cd server
+npm start
+
+
+Run the frontend:
+
+cd client
+npm start
+
+
+Open your browser at http://localhost:3000
+
+Future Improvements
+
+Add video catalogs for visual content.
+
+Integrate payment gateway for premium content.
+
+Enhance user authentication and roles for producers and listeners.
+
+License
+
+MIT License © Nicolás Martín Quiroga
