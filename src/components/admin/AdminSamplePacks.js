@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { adminService } from "../../services/api";
 
 export const AdminSamplePacks = () => {
   const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  const fetchPacks = () => {
+  const fetchPacks = useCallback(() => {
     setLoading(true);
     adminService.samplepacks.list()
       .then((res) => setPacks(res.data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, []);
 
-  useEffect(() => { fetchPacks(); }, []);
+  useEffect(() => { fetchPacks(); }, [fetchPacks]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("¿Eliminar este sample pack y todos sus samples?")) return;

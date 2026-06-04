@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { adminService } from "../../services/api";
 
 export const AdminPlaylists = ({ type = "beats" }) => {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  const fetchPlaylists = () => {
+  const fetchPlaylists = useCallback(() => {
     setLoading(true);
     adminService.playlists.list()
       .then((res) => setPlaylists(res.data.filter((p) => p.type === type)))
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, [type]);
 
-  useEffect(() => { fetchPlaylists(); }, [type]);
+  useEffect(() => { fetchPlaylists(); }, [fetchPlaylists]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("¿Eliminar este catálogo y todos sus items?")) return;

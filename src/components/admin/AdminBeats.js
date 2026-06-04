@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { adminService } from "../../services/api";
 import { AdminUploader } from "./AdminUploader";
@@ -12,7 +12,7 @@ export const AdminBeats = () => {
   const [editBeat, setEditBeat] = useState(null);
   const [form, setForm] = useState({ title: "", artist: "", description: "", audioFile: "" });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [playlistsRes, beatsRes] = await Promise.all([
         adminService.playlists.list(),
@@ -25,9 +25,9 @@ export const AdminBeats = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
-  useEffect(() => { fetchData(); }, [id]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const resetForm = () => {
     setForm({ title: "", artist: "", description: "", audioFile: "" });
