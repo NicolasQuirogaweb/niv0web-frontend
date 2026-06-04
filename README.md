@@ -1,4 +1,4 @@
-Fullstack Web Platform for Music Producers and Artists 🎵
+Fullstack Web Platform for Music Producers and Artists 
 
 Niv0 Web is a modular and scalable web application designed for music producers and artists to browse, organize, and play beats and sample packs. The platform provides an intuitive interface for managing audio catalogs, playlists, and dynamic content, with a mobile-first approach for optimal experience on all devices.
 
