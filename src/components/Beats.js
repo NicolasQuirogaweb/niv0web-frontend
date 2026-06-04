@@ -1,54 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CardPlaylist from "../components/CardPlaylist";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { beatsService } from "../services/api";
+import { CardPlaylist } from "./CardPlaylist";
+import { useAuth } from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const Beats = () => {
-  const [userEmail, setUserEmail] = useState(null);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    if (email) {
-      setUserEmail(email);
-    } else {
-      navigate("/");
+    if (!isAuthenticated) {
+      navigate("/", { replace: true });
+      return;
     }
-    const fetchPlaylists = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/api/resources/playlists`);
-        if (!response.ok) throw new Error("Error al obtener las playlists");
-        const data = await response.json();
-        console.log("Datos de las playlists:", data);
-        setPlaylists(data);
-      } catch (error) {
-        console.error("Error al obtener las playlists:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPlaylists();
-  }, [navigate]);
+    beatsService
+      .getAll()
+      .then((res) => setPlaylists(res.data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [isAuthenticated, navigate]);
 
   return (
     <section className="beats-section">
       <div className="beats-content">
         <div className="beats-info">
           <h3>
-            <a href="/homelogued">niv0 beats</a>
+            <Link to="/homelogued">niv0 beats</Link>
           </h3>
-          <h4>
-            <a href="/">{userEmail ? userEmail : "Cargando..."}</a>
-          </h4>
           <h5>
-            <a href="/home">Log out</a>
+            <Link to="/home">Log out</Link>
           </h5>
         </div>
 
@@ -76,19 +60,19 @@ export const Beats = () => {
         </div>
       </div>
       <div className="back-to-catalogue">
-        <a href="/homelogued">
+        <Link to="/homelogued">
           <button className="back-to-catalogue-btn">Back to home</button>
-        </a>
+        </Link>
       </div>
       <div className="contenedor-parrafo-final">
         <p className="parrafo-final-samples">Make crazy music</p>
         <p className="parrafo-final-samples">CONTACT ME</p>
-        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon
             icon={faInstagram}
             className="instagram-icon-loops"
           />
-        </Link>
+        </a>
       </div>
     </section>
   );

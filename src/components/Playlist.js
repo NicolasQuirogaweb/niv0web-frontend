@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams, Link } from "react-router-dom";
+import { beatsService } from "../services/api";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
-const Playlist = () => {
+export const Playlist = () => {
   const { playlistId } = useParams();
   const [playlist, setPlaylist] = useState(null);
   const [error, setError] = useState(null);
@@ -11,36 +10,22 @@ const Playlist = () => {
   const audioRefs = useRef([]);
 
   useEffect(() => {
-    const fetchPlaylist = async () => {
-      try {
-        const response = await fetch(
-          `${BACKEND_URL}/api/resources/beats/playlist/${playlistId}`
-        );
-        if (!response.ok) throw new Error("Error al obtener la playlist");
-        const data = await response.json();
-        console.log("Beats Data:", data);
-        setPlaylist(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-    fetchPlaylist();
+    beatsService
+      .getById(playlistId)
+      .then((res) => setPlaylist(res.data))
+      .catch((err) => setError(err.message));
   }, [playlistId]);
 
   const handlePlay = (index) => {
     audioRefs.current.forEach((audio, i) => {
-      if (audio && i !== index) {
-        audio.pause();
-      }
+      if (audio && i !== index) audio.pause();
     });
     setCurrentPlayingIndex(index);
   };
 
   const handleEnded = (index) => {
     const nextAudio = audioRefs.current[index + 1];
-    if (nextAudio) {
-      nextAudio.play();
-    }
+    if (nextAudio) nextAudio.play();
   };
 
   if (error) return <p>Error: {error}</p>;
@@ -50,7 +35,7 @@ const Playlist = () => {
     <div className="playlist-container">
       {playlist.backgroundVideo && (
         <video
-          src={playlist.backgroundVideo} // <- usamos exactamente la key del backend
+          src={playlist.backgroundVideo}
           autoPlay
           loop
           muted
@@ -60,13 +45,13 @@ const Playlist = () => {
       <div className="playlist-content">
         <div className="Playlist-niv0beats">
           <h3>
-            <a href="/homelogued">niv0 beats</a>
+            <Link to="/homelogued">niv0 beats</Link>
           </h3>
         </div>
 
         {playlist.imageUrl && (
           <img
-            src={playlist.imageUrl} // <- key tal cual del backend
+            src={playlist.imageUrl}
             alt={playlist.title}
             className="playlist-image"
           />
@@ -91,10 +76,7 @@ const Playlist = () => {
                   onPlay={() => handlePlay(index)}
                   onEnded={() => handleEnded(index)}
                 >
-                  <source
-                    src={beat.audioFile} // <- key tal cual del backend
-                    type="audio/mp3"
-                  />
+                  <source src={beat.audioFile} type="audio/mp3" />
                 </audio>
               </div>
             ))
@@ -104,9 +86,9 @@ const Playlist = () => {
         </div>
 
         <div className="back-button-container">
-          <a href="/beats">
+          <Link to="/beats">
             <button className="back-to-catalogue-btn">Back to catalogue</button>
-          </a>
+          </Link>
         </div>
 
         <p>Free for non profit use only, contact me and buy a license.</p>
@@ -114,5 +96,3 @@ const Playlist = () => {
     </div>
   );
 };
-
-export default Playlist;

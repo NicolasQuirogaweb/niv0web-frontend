@@ -32,9 +32,9 @@ export const Home = () => {
         </h6>
       </div>
       <div className="icon-insta">
-        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faInstagram} className="instagram-icon" />
-        </Link>
+        </a>
       </div>
       <p>SIGN UP / LOGIN TO HAVE ACCESS</p>
     </section>

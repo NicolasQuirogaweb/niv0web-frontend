@@ -1,12 +1,10 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const CardPlaylist = ({ playlist,resourceType }) => {
-  // Construir la ruta dinámica según el tipo de recurso
+export const CardPlaylist = ({ playlist, resourceType }) => {
   const getLink = () =>
     resourceType === "samples"
-  ? `/samples/samplepack/${playlist._id}`
-  : `/${resourceType}/playlist/${playlist._id}`;  
+      ? `/samples/samplepack/${playlist._id}`
+      : `/${resourceType}/playlist/${playlist._id}`;
 
   return (
     <div className="card-playlist">
@@ -27,5 +25,3 @@ const CardPlaylist = ({ playlist,resourceType }) => {
     </div>
   );
 };
-
-export default CardPlaylist;

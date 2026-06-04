@@ -61,7 +61,6 @@ code {
 /* LOGIN */
 .home-section h4 {
   display: inline;
-  /* Mantiene algo del comportamiento inline pero permite márgenes */
   margin-left: 120px;
 }
 
@@ -69,22 +68,24 @@ code {
   text-decoration: none;
   color: #f59999;
   font-size: 20px;
-  /* Tamaño de la fuente normal */
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-  /* Transición para suavizar el efecto */
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
 }
 
 .home-section h4 a:hover {
   font-size: 32px;
-  /* Aumento del tamaño de la fuente */
   letter-spacing: 1px;
-  /* Añadir un poquito de espacio entre letras */
+  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  background-size: 100% 2px;
 }
 
 /* SIGNUP */
 .home-section h5 {
   display: inline;
-  /* Mantiene algo del comportamiento inline pero permite márgenes */
   margin-left: 120px;
   color: #f59999;
 }
@@ -93,73 +94,76 @@ code {
   text-decoration: none;
   color: #f59999;
   font-size: 20px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
 }
 
 .home-section h5 a:hover {
   font-size: 32px;
-  /* Aumento del tamaño de la fuente */
   letter-spacing: 1px;
-  /* Añadir un poquito de espacio entre letras */
+  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  background-size: 100% 2px;
 }
 
 /*Resto de contenido  "beats, samplepacks, loops, prod mix n master*/
 .home-section h6 {
   color: white;
-  /* Color de texto, puedes cambiarlo */
   font-weight: bold;
-  /* Peso de la fuente */
   text-transform: uppercase;
-  /* Texto en mayúsculas */
   text-decoration: none;
 }
 
 /*BEATS*/
+.home-section .beats-home a,
+.home-section .samplepacks-home a,
+.home-section .loops-home a,
+.home-section .prodmixmaster-home a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 3px;
+  padding-bottom: 4px;
+}
+
 .home-section .beats-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
   margin-right: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.1s ease;
 }
 
-/*SAMPLEPACKS*/
 .home-section .samplepacks-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
   margin-left: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
-/*LOOPS*/
 .home-section .loops-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
   margin-right: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
-/*PROD MIX MASTER*/
+.home-section .prodmixmaster-home a {
+  margin-left: 600px;
+}
+
+.home-section .beats-home a:hover,
+.home-section .samplepacks-home a:hover,
+.home-section .loops-home a:hover,
+.home-section .prodmixmaster-home a:hover {
+  font-size: 36px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(245, 153, 153, 0.5);
+  background-size: 100% 3px;
+}
+
 .prodmixmaster-imagen {
   margin-top: 50px;
   width: 200px;
   height: 200px;
   border-radius: 10px;
-}
-
-.home-section .prodmixmaster-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
-  margin-left: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-}
-
-.home-section h6 a:hover {
-  font-size: 36px;
-  letter-spacing: 1px;
 }
 
 
@@ -224,49 +228,36 @@ code {
   text-decoration: none;
   color: #bbf0be;
   font-size: 16px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
-.home-section-logued h5 button {
-  all: unset;
-  display: inline-block;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: inherit;
-  color: #bbf0be;
-  text-align: center;
-  text-decoration: none;
-  background-color: inherit;
-  padding: inherit;
-  border-radius: inherit;
-  cursor: pointer;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-}
-
-.home-section-logued h5 button:hover {
-  font-size: 32px;
-  letter-spacing: 1px;
-}
-
-/* signup */
 .home-section-logued h5 {
   display: inline;
   margin-left: 110px;
 }
 
-.home-section-logued h5 a {
-  text-decoration: none;
+.home-section-logued h5 button {
+  all: unset;
+  display: inline;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: inherit;
   color: #bbf0be;
-  font-size: 24px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#bbf0be, #bbf0be);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
 }
 
-.home-section-logued h5 a:hover {
+.home-section-logued h5 button:hover {
   font-size: 32px;
   letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(187, 240, 190, 0.5);
+  background-size: 100% 2px;
 }
 
-/*Resto de contenido  "beats, samplepacks, loops, prod mix n master*/
 .home-section-logued h6 {
   color: white;
   font-weight: bold;
@@ -274,45 +265,45 @@ code {
   text-decoration: none;
 }
 
-/*BEATS*/
-.home-section-logued .beats-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
-  margin-right: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-}
-
-/*SAMPLEPACKS*/
-.home-section-logued .samplepacks-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
-  margin-left: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-}
-
-/*LOOPS*/
-.home-section-logued .loops-home a {
-  color: inherit;
-  text-decoration: none;
-  font-size: 32px;
-  margin-right: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
-}
-
-/*PROD MIX MASTER*/
+.home-section-logued .beats-home a,
+.home-section-logued .samplepacks-home a,
+.home-section-logued .loops-home a,
 .home-section-logued .prodmixmaster-home a {
   color: inherit;
   text-decoration: none;
   font-size: 32px;
-  margin-left: 600px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#bbf0be, #bbf0be);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 3px;
+  padding-bottom: 4px;
 }
 
-.home-section-logued h6 a:hover {
+.home-section-logued .beats-home a {
+  margin-right: 600px;
+}
+
+.home-section-logued .samplepacks-home a {
+  margin-left: 600px;
+}
+
+.home-section-logued .loops-home a {
+  margin-right: 600px;
+}
+
+.home-section-logued .prodmixmaster-home a {
+  margin-left: 600px;
+}
+
+.home-section-logued .beats-home a:hover,
+.home-section-logued .samplepacks-home a:hover,
+.home-section-logued .loops-home a:hover,
+.home-section-logued .prodmixmaster-home a:hover {
   font-size: 36px;
   letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(187, 240, 190, 0.5);
+  background-size: 100% 3px;
 }
 
 /*PARRAFOS FINALES HOME-LOGUED*/
@@ -722,20 +713,27 @@ audio::-webkit-media-controls-volume-slider {
 }
 
 .back-to-catalogue-btn {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  padding: 12px 32px;
+  background: transparent;
+  color: #ff6ec7;
+  border: 2px solid #ff6ec7;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  width: 150px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: auto;
+  margin: 50px auto;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(255, 110, 199, 0.4), 0 0 20px rgba(255, 110, 199, 0.15);
+  transition: all 0.3s ease;
 }
 
 .back-to-catalogue-btn:hover {
-  background-color: #0056b3;
+  background: #ff6ec7;
+  color: #0d0d0d;
+  box-shadow: 0 0 16px rgba(255, 110, 199, 0.8), 0 0 40px rgba(255, 110, 199, 0.3);
+  transform: scale(1.05);
 }
 
 .parrafo-final-samples {
@@ -1217,7 +1215,6 @@ audio {
     font-size: 24px;
   }
 
-  /* Reemplazamos márgenes extremos por centrado */
   .home-section .beats-home a,
   .home-section .samplepacks-home a,
   .home-section .loops-home a,
@@ -1316,9 +1313,8 @@ audio {
 }
 
 .home-section-logued h3 a,
-.home-section-logued h5 a {
-  font-size: 20px;
-
+.home-section-logued h5 button {
+  font-size: 16px;
 }
 
 .home-section-logued h4 a {
@@ -1441,13 +1437,9 @@ audio {
 }
 
 .back-to-catalogue-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  background-color: #007bff;
-  color: black;
-  border: none;
-  cursor: pointer;
+  padding: 10px 24px;
+  font-size: 14px;
+  width: auto;
 }
 
 
@@ -1694,8 +1686,8 @@ audio {
 }
 
 .back-to-catalogue-btn {
-  width: 50%;
-  font-size: 1rem;
+  font-size: 0.85rem;
+  padding: 8px 18px;
 }
 
 .instagram-icon-samples {
@@ -1754,6 +1746,7 @@ audio {
   font-size: 40px;
   padding-bottom: 50px;
 }
+}
 
 /*Seccion de prodmixmaster*/
 .prod-mix-master-section {
@@ -1790,29 +1783,77 @@ audio {
   width: 100%;
 }
 
-.external-track-row {
+.spotify-playlist-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.spotify-playlist-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #1db954;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  border: 2px solid #1db954;
+  transition: all 0.2s;
+  width: auto;
+}
+
+.spotify-playlist-link:hover {
+  background: #1db954;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.spotify-playlist-link:hover .spotify-icon {
+  color: #fff;
+}
+
+.spotify-icon {
+  font-size: 2rem;
+  color: #1db954;
+}
+
+.error-boundary {
+  display: flex;
   flex-direction: column;
-  width: 80%;
-  margin-left: 10px;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  background: #282c34;
+  color: white;
+  padding: 2rem;
 }
 
-.prod-mix-master-item h3 {
-  font-size: 10px;
+.error-boundary h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-.track-links {
-  gap: 15px;
-  justify-content: flex-start;
+.error-boundary p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #f59999;
 }
 
-.track-links button {
-  font-size: 15px;
-  margin-right: 0;
+.error-boundary button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background: #f59999;
+  color: #282c34;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: auto;
 }
 
-.prod-mix-master-item p {
-  font-size: 10px;
-}
+.error-boundary button:hover {
+  background: #ffb3b3;
 }

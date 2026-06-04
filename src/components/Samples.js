@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { samplePacksService } from "../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const Samples = () => {
   const { samplepackId } = useParams();
@@ -13,19 +12,10 @@ export const Samples = () => {
   const audioRefs = useRef([]);
 
   useEffect(() => {
-    const fetchSamples = async () => {
-      try {
-        const response = await fetch(
-          `${BACKEND_URL}/api/resources/samples/playlist/${samplepackId}`
-        );
-        if (!response.ok) throw new Error("Error al obtener los samples");
-        const data = await response.json();
-        setSamplePack(data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-    fetchSamples();
+    samplePacksService
+      .getSamples(samplepackId)
+      .then((res) => setSamplePack(res.data))
+      .catch((err) => setError(err.message));
   }, [samplepackId]);
 
   const handlePlay = (index) => {
@@ -86,12 +76,12 @@ export const Samples = () => {
       <div className="contenedor-parrafo-final">
         <p className="parrafo-final-samples">Make crazy music</p>
         <p className="parrafo-final-samples">CONTACT ME</p>
-        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon
             icon={faInstagram}
             className="instagram-icon-samples"
           />
-        </Link>
+        </a>
       </div>
     </section>
   );

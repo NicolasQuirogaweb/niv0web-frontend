@@ -1,45 +1,16 @@
-import React, { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 export const HomeLogued = () => {
-  const [userEmail, setUserEmail] = useState(null);
+  const { userEmail, isAdmin, clearAuth } = useAuth();
   const navigate = useNavigate();
 
-  // Traer la URL del backend desde variable de entorno
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
-  const handleLogout = useCallback(() => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userEmail");
-    navigate("/");
-  }, [navigate]);
-
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    const token = localStorage.getItem("authToken");
-
-    if (email && token) {
-      axios
-        .get(`${BACKEND_URL}/api/auth/verify-token`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setUserEmail(response.data.email);
-        })
-        .catch((error) => {
-          console.error("Error al verificar el token:", error);
-          handleLogout();
-        });
-    } else {
-      console.warn("No se encontró token o email. Redirigiendo al login.");
-      handleLogout();
-    }
-  }, [handleLogout, BACKEND_URL]);
+  const handleLogout = () => {
+    clearAuth();
+    navigate("/", { replace: true });
+  };
 
   return (
     <section className="home-section-logued">
@@ -65,11 +36,18 @@ export const HomeLogued = () => {
         <h6 className="prodmixmaster-home">
           <Link to="/prodmixmaster">PROD MIX MASTER</Link>
         </h6>
+        {isAdmin && (
+          <h6 className="admin-home" style={{ marginTop: 16 }}>
+            <Link to="/admin" style={{ color: "#4caf50", border: "1px solid #4caf50", padding: "4px 12px", borderRadius: 4, fontSize: 12 }}>
+              PANEL ADMIN
+            </Link>
+          </h6>
+        )}
       </div>
       <div className="icon-insta-logued">
-        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faInstagram} className="instagram-icon" />
-        </Link>
+        </a>
       </div>
       <p>Contact me</p>
       <p>THANK YOU FOR SIGNING IN. ENJOY!</p>

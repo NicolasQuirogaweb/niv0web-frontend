@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { loopsService } from "../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const Loops = () => {
   const [loops, setLoops] = useState([]);
@@ -12,17 +11,10 @@ export const Loops = () => {
   const audioRefs = useRef([]);
 
   useEffect(() => {
-    const fetchLoops = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/api/resources/loops`);
-        if (!response.ok) throw new Error("Error al obtener los loops");
-        const data = await response.json();
-        setLoops(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-    fetchLoops();
+    loopsService
+      .getAll()
+      .then((res) => setLoops(res.data))
+      .catch((err) => setError(err.message));
   }, []);
 
   const handlePlay = (index) => {
@@ -40,9 +32,7 @@ export const Loops = () => {
       currentAudio.pause();
       setCurrentPlayingIndex(null);
     } else {
-      currentAudio
-        .play()
-        .catch((error) => console.error("Error al reproducir:", error));
+      currentAudio.play().catch(() => {});
       setCurrentPlayingIndex(index);
     }
   };
@@ -86,19 +76,19 @@ export const Loops = () => {
         ))}
       </div>
       <div className="back-to-catalogue">
-        <a href="/homelogued">
+        <Link to="/homelogued">
           <button className="back-to-catalogue-btn">Back to home</button>
-        </a>
+        </Link>
       </div>
       <div className="contenedor-parrafo-final">
         <p className="parrafo-final-samples">Make crazy music</p>
         <p className="parrafo-final-samples">CONTACT ME</p>
-        <Link to="https://www.instagram.com/__niv0__/" target="_blank">
+        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon
             icon={faInstagram}
             className="instagram-icon-loops"
           />
-        </Link>
+        </a>
       </div>
     </section>
   );
