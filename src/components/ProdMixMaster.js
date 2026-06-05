@@ -34,8 +34,6 @@ export const ProdMixMaster = () => {
         </Link>
       </div>
       <div className="contenedor-parrafo-final">
-        <p className="parrafo-final-samples">Make crazy music</p>
-        <p className="parrafo-final-samples">CONTACT ME</p>
         <a
           href="https://www.instagram.com/__niv0__/"
           target="_blank"

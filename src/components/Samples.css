@@ -84,8 +84,8 @@ audio::-webkit-media-controls-volume-slider {
 .back-to-catalogue-btn {
   padding: 12px 32px;
   background: transparent;
-  color: #ff6ec7;
-  border: 2px solid #ff6ec7;
+  color: #bbf0be;
+  border: 2px solid #bbf0be;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
@@ -94,14 +94,14 @@ audio::-webkit-media-controls-volume-slider {
   width: auto;
   margin: 50px auto;
   text-transform: uppercase;
-  box-shadow: 0 0 8px rgba(255, 110, 199, 0.4), 0 0 20px rgba(255, 110, 199, 0.15);
+  box-shadow: 0 0 8px rgba(187, 240, 190, 0.4), 0 0 20px rgba(187, 240, 190, 0.15);
   transition: all 0.3s ease;
 }
 
 .back-to-catalogue-btn:hover {
-  background: #ff6ec7;
+  background: #bbf0be;
   color: #0d0d0d;
-  box-shadow: 0 0 16px rgba(255, 110, 199, 0.8), 0 0 40px rgba(255, 110, 199, 0.3);
+  box-shadow: 0 0 16px rgba(187, 240, 190, 0.8), 0 0 40px rgba(187, 240, 190, 0.3);
   transform: scale(1.05);
 }
 

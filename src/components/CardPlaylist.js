@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./CardPlaylist.css";
 
 export const CardPlaylist = ({ playlist, resourceType }) => {
   const getLink = () =>
