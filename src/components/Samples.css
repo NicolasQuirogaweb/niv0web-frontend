@@ -142,7 +142,7 @@ audio::-webkit-media-controls-volume-slider {
   }
 
   audio {
-    height: 30px;
+    min-height: 40px;
     margin-top: 10px;
   }
 
