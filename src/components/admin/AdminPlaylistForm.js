@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { adminService } from "../../services/api";
 import { AdminUploader } from "./AdminUploader";
+import styles from "./admin.module.css";
 
 export const AdminPlaylistForm = ({ type = "beats" }) => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title || !form.description || !form.imageUrl) {
-      alert("Completa todos los campos obligatorios");
+      alert("Please fill all required fields");
       return;
     }
     setSaving(true);
@@ -52,67 +53,49 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
       }
       navigate(redirectBase);
     } catch {
-      alert("Error al guardar");
+      alert("Error saving");
     } finally {
       setSaving(false);
     }
   };
 
-  const title = isSamplePack ? "Sample Pack" : `Catálogo (${type === "loops" ? "Loops" : "Beats"})`;
+  const title = isSamplePack ? "Sample Pack" : `Catalog (${type === "loops" ? "Loops" : "Beats"})`;
 
   return (
-    <div style={{ maxWidth: 600 }}>
-      <h2 style={{ color: "#fff", marginBottom: 24, fontSize: 22 }}>
-        {isEdit ? `Editar ${title}` : `Nuevo ${title}`}
+    <div className={styles.formContainer}>
+      <h2 className={styles.pageTitleMb}>
+        {isEdit ? `Edit ${title}` : `New ${title}`}
       </h2>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <form onSubmit={handleSubmit} className={styles.formStack}>
         <div>
-          <label style={{ color: "#aaa", fontSize: 13, marginBottom: 4, display: "block" }}>Título *</label>
-          <input name="title" value={form.title} onChange={handleChange} style={inputStyle} placeholder="Ej: Trap Essentials Vol.1" />
+          <label className={styles.label}>Title *</label>
+          <input name="title" value={form.title} onChange={handleChange} className={styles.input} placeholder="e.g. Trap Essentials Vol.1" />
         </div>
         <div>
-          <label style={{ color: "#aaa", fontSize: 13, marginBottom: 4, display: "block" }}>Descripción *</label>
-          <textarea name="description" value={form.description} onChange={handleChange} style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} placeholder="Descripción del catálogo" />
+          <label className={styles.label}>Description *</label>
+          <textarea name="description" value={form.description} onChange={handleChange} className={styles.textareaLg} placeholder="Catalog description" />
         </div>
         <div>
-          <label style={{ color: "#aaa", fontSize: 13, marginBottom: 4, display: "block" }}>Imagen de portada *</label>
+          <label className={styles.label}>Cover Image *</label>
           <AdminUploader folder="images" accept="image/*" onUpload={(url) => setForm({ ...form, imageUrl: url })} />
-          {form.imageUrl && <p style={{ color: "#4caf50", fontSize: 12, margin: "4px 0 0" }}>✓ Imagen subida</p>}
+          {form.imageUrl && <p className={styles.uploadSuccess}>✓ Image uploaded</p>}
         </div>
         {!isSamplePack && (
           <div>
-            <label style={{ color: "#aaa", fontSize: 13, marginBottom: 4, display: "block" }}>Video de fondo *</label>
+            <label className={styles.label}>Background Video *</label>
             <AdminUploader folder="videos" accept="video/*" onUpload={(url) => setForm({ ...form, backgroundVideo: url })} />
-            {form.backgroundVideo && <p style={{ color: "#4caf50", fontSize: 12, margin: "4px 0 0" }}>✓ Video subido</p>}
+            {form.backgroundVideo && <p className={styles.uploadSuccess}>✓ Video uploaded</p>}
           </div>
         )}
-        <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
-          <button type="submit" disabled={saving} style={{
-            ...btnPrimary, opacity: saving ? 0.6 : 1,
-          }}>
-            {saving ? "Guardando..." : isEdit ? "Actualizar" : "Crear catálogo"}
+        <div className={styles.formActions} style={{ marginTop: 8 }}>
+          <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
+            {saving ? "Saving..." : isEdit ? "Update" : "Create Catalog"}
           </button>
-          <button type="button" onClick={() => navigate(redirectBase)} style={btnSecondary}>
-            Cancelar
+          <button type="button" onClick={() => navigate(redirectBase)} className={styles.btnSecondary}>
+            Cancel
           </button>
         </div>
       </form>
     </div>
   );
-};
-
-const inputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 6, border: "1px solid #333",
-  background: "#1a1a1a", color: "#e0e0e0", fontSize: 14, boxSizing: "border-box",
-  fontFamily: "monospace",
-};
-
-const btnPrimary = {
-  background: "#333", color: "#fff", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #555", cursor: "pointer", fontSize: 14, fontFamily: "monospace",
-};
-
-const btnSecondary = {
-  background: "transparent", color: "#888", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #333", cursor: "pointer", fontSize: 14, fontFamily: "monospace",
 };

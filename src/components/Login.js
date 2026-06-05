@@ -5,6 +5,7 @@ import { GOOGLE_CLIENT_ID } from "../config";
 import { authService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import { useResponsiveWidth } from "../hooks/useResponsiveWidth";
+import "./Login.css";
 
 export const Login = () => {
   const navigate = useNavigate();

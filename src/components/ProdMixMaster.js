@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { FaSpotify } from "react-icons/fa";
+import "./ProdMixMaster.css";
 
 const SPOTIFY_PLAYLIST_URL =
   "https://open.spotify.com/playlist/5bMePdSTs9zljOIbSWsteY?si=600562fc39b540ac&pt=962bc1fe8ae84dd64108af07bfd9cdbf";

@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { adminService } from "../../services/api";
+import { Icons } from "./icons";
+import styles from "./admin.module.css";
 
 export const AdminSamplePacks = () => {
   const [packs, setPacks] = useState([]);
@@ -10,19 +12,19 @@ export const AdminSamplePacks = () => {
     setLoading(true);
     adminService.samplepacks.list()
       .then((res) => setPacks(res.data))
-      .catch(() => {})
+      .catch((err) => console.error("Error loading samplepacks:", err.response?.data || err.message))
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { fetchPacks(); }, [fetchPacks]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este sample pack y todos sus samples?")) return;
+    if (!window.confirm("Delete this sample pack and all its samples?")) return;
     try {
       await adminService.samplepacks.delete(id);
       fetchPacks();
     } catch {
-      alert("Error al eliminar");
+      alert("Error deleting");
     }
   };
 
@@ -31,39 +33,38 @@ export const AdminSamplePacks = () => {
       await adminService.samplepacks.duplicate(id);
       fetchPacks();
     } catch {
-      alert("Error al duplicar");
+      alert("Error duplicating");
     }
   };
 
-  if (loading) return <p style={{ color: "#888" }}>Cargando...</p>;
+  if (loading) return <p className={styles.loadingText}>Loading...</p>;
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h2 style={{ color: "#fff", margin: 0, fontSize: 22 }}>Sample Packs</h2>
-        <Link to="/admin/samplepacks/new" style={btnPrimary}>+ Nuevo sample pack</Link>
+      <div className={styles.headerRow}>
+        <h2 className={styles.pageTitle}>Sample Packs</h2>
+        <Link to="/admin/samplepacks/new" className={styles.btnNew}>
+          <Icons.Add size={16} /> New Sample Pack
+        </Link>
       </div>
       {packs.length === 0 ? (
-        <p style={{ color: "#555" }}>No hay sample packs.</p>
+        <p className={styles.emptyText}>No sample packs.</p>
       ) : (
-        <div style={{ display: "grid", gap: 12 }}>
+        <div className={styles.grid}>
           {packs.map((sp) => (
-            <div key={sp._id} style={{
-              background: "#1a1a1a", borderRadius: 8, padding: 16, border: "1px solid #222",
-              display: "flex", alignItems: "center", gap: 16,
-            }}>
-              <img src={sp.imageUrl} alt={sp.title} style={{ width: 60, height: 60, borderRadius: 6, objectFit: "cover", background: "#333" }}
+            <div key={sp._id} className={styles.itemCardLg}>
+              <img src={sp.imageUrl} alt={sp.title} className={styles.thumb}
                 onError={(e) => { e.target.style.display = "none" }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: "#fff", margin: 0, fontWeight: "bold" }}>{sp.title}</p>
-                <p style={{ color: "#888", margin: "4px 0 0", fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{sp.description}</p>
-                <p style={{ color: "#555", margin: "4px 0 0", fontSize: 12 }}>{sp.itemsCount ?? 0} samples</p>
+              <div className={styles.itemContent}>
+                <p className={styles.itemTitle}>{sp.title}</p>
+                <p className={styles.itemDesc}>{sp.description}</p>
+                <p className={styles.itemMeta}>{sp.itemsCount ?? 0} samples</p>
               </div>
-              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-                <Link to={`/admin/samplepacks/${sp._id}/samples`} style={btnSmall}>Ver samples</Link>
-                <Link to={`/admin/samplepacks/${sp._id}/edit`} style={btnSmall}>Editar</Link>
-                <button onClick={() => handleDuplicate(sp._id)} style={btnSmall}>Duplicar</button>
-                <button onClick={() => handleDelete(sp._id)} style={{ ...btnSmall, color: "#f44336" }}>Eliminar</button>
+              <div className={styles.itemActions}>
+                <Link to={`/admin/samplepacks/${sp._id}/samples`} className={styles.btnSmall}><Icons.MusicNote size={13} /> View</Link>
+                <Link to={`/admin/samplepacks/${sp._id}/edit`} className={styles.btnSmall}><Icons.Edit size={13} /> Edit</Link>
+                <button onClick={() => handleDuplicate(sp._id)} className={styles.btnSmall}><Icons.Copy size={13} /> Copy</button>
+                <button onClick={() => handleDelete(sp._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> Delete</button>
               </div>
             </div>
           ))}
@@ -71,14 +72,4 @@ export const AdminSamplePacks = () => {
       )}
     </div>
   );
-};
-
-const btnPrimary = {
-  background: "#333", color: "#fff", padding: "10px 20px", borderRadius: 6,
-  textDecoration: "none", fontSize: 14, border: "1px solid #555",
-};
-
-const btnSmall = {
-  background: "#222", color: "#ccc", padding: "6px 12px", borderRadius: 4,
-  textDecoration: "none", fontSize: 12, border: "1px solid #333", cursor: "pointer",
 };

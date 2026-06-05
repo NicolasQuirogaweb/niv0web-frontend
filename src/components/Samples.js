@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { samplePacksService } from "../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import "./Samples.css";
 
 export const Samples = () => {
   const { samplepackId } = useParams();

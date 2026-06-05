@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { adminService } from "../../services/api";
+import styles from "./admin.module.css";
 
 export const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -9,60 +10,53 @@ export const AdminDashboard = () => {
   useEffect(() => {
     adminService.dashboard()
       .then((res) => setStats(res.data))
-      .catch(() => {})
+      .catch((err) => console.error("Dashboard error:", err.response?.data || err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p style={{ color: "#888" }}>Cargando estadísticas...</p>;
+  if (loading) return <p className={styles.loadingText}>Loading stats...</p>;
 
   const cards = [
-    { label: "Catálogos (Beats)", value: stats?.playlists, path: "/admin/playlists", color: "#4caf50" },
-    { label: "Catálogos (Loops)", value: stats?.playlists, path: "/admin/loops", color: "#2196f3" },
-    { label: "Beats", value: stats?.beats, path: "/admin/playlists", color: "#8bc34a" },
-    { label: "Loops", value: stats?.loops, path: "/admin/loops", color: "#03a9f4" },
-    { label: "Sample Packs", value: stats?.samplepacks, path: "/admin/samplepacks", color: "#ff9800" },
-    { label: "Samples", value: stats?.samples, path: "/admin/samplepacks", color: "#ff5722" },
-    { label: "Prod Mix Masters", value: stats?.prodmix, path: "/admin/prodmix", color: "#9c27b0" },
-    { label: "Usuarios", value: stats?.users, path: "/admin/users", color: "#607d8b" },
+    { label: "Catalogs (Beats)", value: stats?.playlists, path: "/admin/playlists", color: "#7c6ff0" },
+    { label: "Catalogs (Loops)", value: stats?.playlists, path: "/admin/loops", color: "#5dade2" },
+    { label: "Beats", value: stats?.beats, path: "/admin/playlists", color: "#58d68d" },
+    { label: "Loops", value: stats?.loops, path: "/admin/loops", color: "#48c9b0" },
+    { label: "Sample Packs", value: stats?.samplepacks, path: "/admin/samplepacks", color: "#f5b041" },
+    { label: "Samples", value: stats?.samples, path: "/admin/samplepacks", color: "#ec7063" },
+    { label: "Prod Mix Masters", value: stats?.prodmix, path: "/admin/prodmix", color: "#af7ac5" },
+    { label: "Users", value: stats?.users, path: "/admin/users", color: "#85929e" },
   ];
 
   return (
     <div>
-      <h2 style={{ color: "#fff", marginBottom: 24, fontSize: 22 }}>Dashboard</h2>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
-        {cards.map((card) => (
+      <div className={styles.headerRow}>
+        <h2 className={styles.pageTitle}>Dashboard</h2>
+      </div>
+      <div className={styles.dashboardGrid}>
+        {cards.map((cardItem) => (
           <Link
-            key={card.label}
-            to={card.path}
-            style={{
-              background: "#1a1a1a", borderRadius: 8, padding: 20, textDecoration: "none",
-              border: "1px solid #222", transition: "border-color 0.2s",
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = card.color}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = "#222"}
+            key={cardItem.label}
+            to={cardItem.path}
+            className={styles.cardHoverable}
+            style={{ borderLeft: `3px solid ${cardItem.color}` }}
           >
-            <p style={{ color: "#888", margin: 0, fontSize: 12, textTransform: "uppercase", letterSpacing: 1 }}>
-              {card.label}
+            <p className={styles.cardLabel} style={{ color: cardItem.color }}>
+              {cardItem.label}
             </p>
-            <p style={{ color: "#fff", margin: "8px 0 0", fontSize: 32, fontWeight: "bold" }}>
-              {card.value ?? 0}
+            <p className={styles.cardValue}>
+              {cardItem.value ?? 0}
             </p>
           </Link>
         ))}
       </div>
-      <div style={{ marginTop: 32, padding: 20, background: "#1a1a1a", borderRadius: 8, border: "1px solid #222" }}>
-        <h3 style={{ color: "#fff", margin: "0 0 12px", fontSize: 16 }}>Accesos rápidos</h3>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link to="/admin/playlists/new" style={btnStyle}>+ Nuevo catálogo (Beats)</Link>
-          <Link to="/admin/loops/new" style={btnStyle}>+ Nuevo catálogo (Loops)</Link>
-          <Link to="/admin/samplepacks" style={btnStyle}>+ Nuevo Sample Pack</Link>
+      <div className={`${styles.card} ${styles.mt32}`} style={{ padding: 14 }}>
+        <h3 className={styles.quickActionsTitle}>Quick Actions</h3>
+        <div className={styles.quickActionsRow}>
+          <Link to="/admin/playlists/new" className={styles.btnQuickAction}>+ New Catalog (Beats)</Link>
+          <Link to="/admin/loops/new" className={styles.btnQuickAction}>+ New Catalog (Loops)</Link>
+          <Link to="/admin/samplepacks/new" className={styles.btnQuickAction}>+ New Sample Pack</Link>
         </div>
       </div>
     </div>
   );
-};
-
-const btnStyle = {
-  background: "#222", color: "#e0e0e0", padding: "8px 16px", borderRadius: 6,
-  textDecoration: "none", fontSize: 13, border: "1px solid #333",
 };

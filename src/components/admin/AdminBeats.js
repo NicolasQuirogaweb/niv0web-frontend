@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { adminService } from "../../services/api";
 import { AdminUploader } from "./AdminUploader";
+import { Icons } from "./icons";
+import styles from "./admin.module.css";
 
 export const AdminBeats = () => {
   const { id } = useParams();
@@ -11,6 +13,10 @@ export const AdminBeats = () => {
   const [showForm, setShowForm] = useState(false);
   const [editBeat, setEditBeat] = useState(null);
   const [form, setForm] = useState({ title: "", artist: "", description: "", audioFile: "" });
+  const [batchMode, setBatchMode] = useState(false);
+  const [batchFiles, setBatchFiles] = useState([]);
+  const [batchUploading, setBatchUploading] = useState(false);
+  const [batchProgress, setBatchProgress] = useState("");
 
   const fetchData = useCallback(async () => {
     try {
@@ -43,8 +49,8 @@ export const AdminBeats = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title || !form.artist || !form.description || !form.audioFile) {
-      alert("Todos los campos son obligatorios");
+    if (!form.title || !form.audioFile) {
+      alert("Title and audio file are required");
       return;
     }
     try {
@@ -56,93 +62,191 @@ export const AdminBeats = () => {
       resetForm();
       fetchData();
     } catch {
-      alert("Error al guardar");
+      alert("Error saving");
     }
   };
 
   const handleDelete = async (beatId) => {
-    if (!window.confirm("¿Eliminar este beat?")) return;
+    if (!window.confirm("Delete this beat?")) return;
     try {
       await adminService.beats.delete(beatId);
       fetchData();
     } catch {
-      alert("Error al eliminar");
+      alert("Error deleting");
     }
   };
 
-  if (loading) return <p style={{ color: "#888" }}>Cargando...</p>;
+  const handleBatchFiles = (e) => {
+    setBatchFiles(Array.from(e.target.files));
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setBatchFiles(Array.from(e.dataTransfer.files));
+  };
+
+  const handleDragOver = (e) => e.preventDefault();
+
+  const removeBatchFile = (index) => {
+    setBatchFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleBatchUpload = async () => {
+    if (batchFiles.length === 0) return;
+    setBatchUploading(true);
+    setBatchProgress("Uploading files to B2...");
+    try {
+      const uploadRes = await adminService.upload.batch(batchFiles, "beats");
+      const urls = uploadRes.data.urls;
+
+      setBatchProgress("Creating beats...");
+      const beats = urls.map((item) => ({
+        title: item.originalName.replace(/\.[^/.]+$/, ""),
+        artist: "",
+        description: "",
+        audioFile: item.url,
+      }));
+
+      await adminService.beats.batch(id, beats);
+      setBatchMode(false);
+      setBatchFiles([]);
+      fetchData();
+    } catch (err) {
+      console.error("Batch upload error:", err);
+      const msg = err.response?.data?.message || err.response?.data?.detail || err.message || "Unknown error";
+      alert("Error in batch upload: " + msg);
+    } finally {
+      setBatchUploading(false);
+      setBatchProgress("");
+    }
+  };
+
+  const cancelBatch = () => {
+    setBatchMode(false);
+    setBatchFiles([]);
+    setBatchProgress("");
+  };
+
+  if (loading) return <p className={styles.loadingText}>Loading...</p>;
 
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <Link to="/admin/playlists" style={{ color: "#888", fontSize: 13, textDecoration: "none" }}>← Volver a catálogos</Link>
-        <h2 style={{ color: "#fff", margin: "8px 0 0", fontSize: 22 }}>{playlist?.title || "Beats"}</h2>
+        <Link to="/admin/playlists" className={styles.backLink}>
+          <Icons.Back size={14} /> Back to Catalogs
+        </Link>
+        <h2 className={styles.subTitle}>{playlist?.title || "Beats"}</h2>
       </div>
 
-      <button onClick={() => { resetForm(); setShowForm(true); }} style={btnPrimary}>
-        + Nuevo beat
-      </button>
+      <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+        <button onClick={() => { resetForm(); setShowForm(true); }} className={styles.btnPrimary}>
+          <Icons.Add size={16} /> New Beat
+        </button>
+        {!batchMode && (
+          <button onClick={() => { setShowForm(false); setBatchMode(true); }} className={styles.btnSecondary}>
+            <Icons.Upload size={16} /> Batch Upload
+          </button>
+        )}
+      </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} style={{ background: "#1a1a1a", padding: 20, borderRadius: 8, marginTop: 16, border: "1px solid #222" }}>
-          <h3 style={{ color: "#fff", margin: "0 0 16px" }}>{editBeat ? "Editar beat" : "Nuevo beat"}</h3>
-          <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
-            <input name="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Título" style={inputStyle} />
-            <input name="artist" value={form.artist} onChange={(e) => setForm({ ...form, artist: e.target.value })} placeholder="Artista" style={inputStyle} />
+        <form onSubmit={handleSubmit} className={styles.formBox}>
+          <h3 className={styles.formTitle}>{editBeat ? "Edit Beat" : "New Beat"}</h3>
+          <div className={styles.gridForm}>
+            <input name="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Title" className={styles.input} />
+            <input name="artist" value={form.artist} onChange={(e) => setForm({ ...form, artist: e.target.value })} placeholder="Artist" className={styles.input} />
           </div>
-          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Descripción" style={{ ...inputStyle, marginTop: 12, minHeight: 60, resize: "vertical" }} />
-          <div style={{ marginTop: 12 }}>
-            <label style={{ color: "#aaa", fontSize: 13, display: "block", marginBottom: 4 }}>Archivo de audio *</label>
+          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Description" className={styles.textarea} />
+          <div className={styles.mt16}>
+            <label className={styles.labelPlain}>Audio File *</label>
             {form.audioFile ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <p style={{ color: "#4caf50", fontSize: 12 }}>✓ Audio subido</p>
-                <button type="button" onClick={() => setForm({ ...form, audioFile: "" })} style={{ background: "none", border: "none", color: "#f44336", cursor: "pointer", fontSize: 12 }}>Cambiar</button>
+              <div className={styles.audioRow}>
+                <p className={styles.uploadSuccessInline}>✓ Audio uploaded</p>
+                <button type="button" onClick={() => setForm({ ...form, audioFile: "" })} className={styles.changeBtn}>Change</button>
               </div>
             ) : (
               <AdminUploader folder="beats" accept="audio/*" onUpload={(url) => setForm({ ...form, audioFile: url })} />
             )}
           </div>
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-            <button type="submit" style={btnPrimary}>{editBeat ? "Actualizar" : "Guardar"}</button>
-            <button type="button" onClick={resetForm} style={btnSecondary}>Cancelar</button>
+          <div className={styles.formActions}>
+            <button type="submit" className={styles.btnPrimary}>{editBeat ? "Update" : "Save"}</button>
+            <button type="button" onClick={resetForm} className={styles.btnSecondary}>Cancel</button>
           </div>
         </form>
       )}
 
-      <div style={{ marginTop: 16, display: "grid", gap: 8 }}>
-        {beats.length === 0 && <p style={{ color: "#555" }}>No hay beats en este catálogo.</p>}
-        {beats.map((beat) => (
-          <div key={beat._id} style={{ background: "#1a1a1a", borderRadius: 6, padding: 12, border: "1px solid #222", display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ color: "#fff", margin: 0, fontWeight: "bold" }}>{beat.title}</p>
-              <p style={{ color: "#888", margin: "2px 0 0", fontSize: 13 }}>{beat.artist}</p>
-              <p style={{ color: "#555", margin: "2px 0 0", fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{beat.description}</p>
+      {batchMode && (
+        <div className={styles.batchBox}>
+          <h3 className={styles.formTitle} style={{ marginBottom: 12 }}>
+            <Icons.Upload size={16} style={{ verticalAlign: "middle", marginRight: 6 }} />
+            Batch Upload Beats
+          </h3>
+          <p className={styles.batchHint}>Filenames will be used as beat titles (e.g. my-beat.wav → "my-beat")</p>
+
+          <div
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onClick={() => document.getElementById("batch-input")?.click()}
+            className={styles.batchDrop}
+          >
+            <input
+              id="batch-input"
+              type="file"
+              multiple
+              accept="audio/*"
+              style={{ display: "none" }}
+              onChange={handleBatchFiles}
+            />
+            {batchFiles.length === 0 && !batchUploading ? (
+              <div>
+                <p className={styles.dragHint}>Drop audio files here or click to select</p>
+                <p className={styles.supportedHint}>You can select multiple files at once</p>
+              </div>
+            ) : batchUploading ? (
+              <p className={styles.uploadProgress}>{batchProgress}</p>
+            ) : null}
+          </div>
+
+          {batchFiles.length > 0 && !batchUploading && (
+            <div className={styles.batchList}>
+              {batchFiles.map((file, i) => (
+                <div key={i} className={styles.batchFileRow}>
+                  <Icons.MusicNote size={14} style={{ flexShrink: 0 }} />
+                  <span className={styles.batchFileName}>{file.name}</span>
+                  <span className={styles.batchFileTitle}>→ {file.name.replace(/\.[^/.]+$/, "")}</span>
+                  <button onClick={() => removeBatchFile(i)} className={styles.batchRemoveBtn}>
+                    <Icons.Delete size={13} />
+                  </button>
+                </div>
+              ))}
             </div>
-            <button onClick={() => handleEdit(beat)} style={btnSmall}>Editar</button>
-            <button onClick={() => handleDelete(beat._id)} style={{ ...btnSmall, color: "#f44336" }}>Eliminar</button>
+          )}
+
+          {batchFiles.length > 0 && !batchUploading && (
+            <div className={styles.formActions} style={{ marginTop: 16 }}>
+              <button onClick={handleBatchUpload} className={styles.btnPrimary}>
+                <Icons.Upload size={16} /> Upload {batchFiles.length} beat{batchFiles.length > 1 ? "s" : ""}
+              </button>
+              <button onClick={cancelBatch} className={styles.btnSecondary}>Cancel</button>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className={styles.gridItems + " " + styles.mt16}>
+        {beats.length === 0 && <p className={styles.emptyText}>No beats in this catalog.</p>}
+        {beats.map((beat) => (
+          <div key={beat._id} className={styles.itemCard}>
+            <div className={styles.itemContent}>
+              <p className={styles.itemTitle}>{beat.title}</p>
+              <p className={styles.itemArtist}>{beat.artist}</p>
+              <p className={styles.itemDesc}>{beat.description}</p>
+            </div>
+            <button onClick={() => handleEdit(beat)} className={styles.btnSmall}><Icons.Edit size={13} /> Edit</button>
+            <button onClick={() => handleDelete(beat._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> Delete</button>
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-const inputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 6, border: "1px solid #333",
-  background: "#0d0d0d", color: "#e0e0e0", fontSize: 14, boxSizing: "border-box", fontFamily: "monospace",
-};
-
-const btnPrimary = {
-  background: "#333", color: "#fff", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #555", cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-};
-
-const btnSecondary = {
-  background: "transparent", color: "#888", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #333", cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-};
-
-const btnSmall = {
-  background: "#222", color: "#ccc", padding: "6px 12px", borderRadius: 4,
-  border: "1px solid #333", cursor: "pointer", fontSize: 12, fontFamily: "monospace",
 };

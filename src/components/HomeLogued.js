@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import "./HomeLogued.css";
 
 export const HomeLogued = () => {
   const { userEmail, isAdmin, clearAuth } = useAuth();
@@ -15,23 +16,22 @@ export const HomeLogued = () => {
   return (
     <section className="home-section-logued">
       <div>
-        <h3>
-          <Link to="/homelogued">niv0 beats</Link>
-        </h3>
-        <h4>
-          <Link to="/homelogued">{userEmail || "Cargando..."}</Link>
-        </h4>
-        <h5>
-          <button onClick={handleLogout}>Log out</button>
-        </h5>
+        <div className="home-header-row">
+          <h3>
+            <Link to="/homelogued">niv0 beats</Link>
+          </h3>
+          <h4>
+            <Link to="/homelogued">{userEmail || "Cargando..."}</Link>
+          </h4>
+          <h5>
+            <button onClick={handleLogout}>Log out</button>
+          </h5>
+        </div>
         <h6 className="beats-home">
           <Link to="/beats">BEATS</Link>
         </h6>
         <h6 className="samplepacks-home">
           <Link to="/samplepacks">SAMPLe PACKS</Link>
-        </h6>
-        <h6 className="loops-home">
-          <Link to="/loops">LOOPS</Link>
         </h6>
         <h6 className="prodmixmaster-home">
           <Link to="/prodmixmaster">PROD MIX MASTER</Link>

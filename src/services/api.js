@@ -3,7 +3,6 @@ import { BACKEND_URL } from "../config";
 
 const api = axios.create({
   baseURL: BACKEND_URL,
-  headers: { "Content-Type": "application/json" },
 });
 
 api.interceptors.request.use((config) => {
@@ -104,7 +103,7 @@ export const adminService = {
       formData.append("file", file);
       formData.append("folder", folder);
       return api.post("/api/admin/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": null },
       });
     },
     batch: (files, folder = "uploads") => {
@@ -112,7 +111,7 @@ export const adminService = {
       files.forEach((f) => formData.append("files", f));
       formData.append("folder", folder);
       return api.post("/api/admin/upload/batch", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": null },
       });
     },
   },

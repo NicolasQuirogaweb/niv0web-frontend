@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { adminService } from "../../services/api";
+import { Icons } from "./icons";
+import styles from "./admin.module.css";
 
 export const AdminPlaylists = ({ type = "beats" }) => {
   const [playlists, setPlaylists] = useState([]);
@@ -10,19 +12,19 @@ export const AdminPlaylists = ({ type = "beats" }) => {
     setLoading(true);
     adminService.playlists.list()
       .then((res) => setPlaylists(res.data.filter((p) => p.type === type)))
-      .catch(() => {})
+      .catch((err) => console.error("Error loading playlists:", err.response?.data || err.message))
       .finally(() => setLoading(false));
   }, [type]);
 
   useEffect(() => { fetchPlaylists(); }, [fetchPlaylists]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este catálogo y todos sus items?")) return;
+    if (!window.confirm("Delete this catalog and all its items?")) return;
     try {
       await adminService.playlists.delete(id);
       fetchPlaylists();
     } catch {
-      alert("Error al eliminar");
+      alert("Error deleting");
     }
   };
 
@@ -31,58 +33,57 @@ export const AdminPlaylists = ({ type = "beats" }) => {
       await adminService.playlists.duplicate(id);
       fetchPlaylists();
     } catch {
-      alert("Error al duplicar");
+      alert("Error duplicating");
     }
   };
 
   const label = type === "beats" ? "Beats" : "Loops";
   const newPath = type === "beats" ? "/admin/playlists/new" : "/admin/loops/new";
 
-  if (loading) return <p style={{ color: "#888" }}>Cargando catálogos...</p>;
+  if (loading) return <p className={styles.loadingText}>Loading catalogs...</p>;
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h2 style={{ color: "#fff", margin: 0, fontSize: 22 }}>Catálogos ({label})</h2>
-        <Link to={newPath} style={btnPrimary}>+ Nuevo catálogo</Link>
+      <div className={styles.headerRow}>
+        <h2 className={styles.pageTitle}>Catalogs ({label})</h2>
+        <Link to={newPath} className={styles.btnNew}>
+          <Icons.Add size={16} /> New Catalog
+        </Link>
       </div>
       {playlists.length === 0 ? (
-        <p style={{ color: "#555" }}>No hay catálogos de {label.toLowerCase()} todavía.</p>
+        <p className={styles.emptyText}>No {label.toLowerCase()} catalogs yet.</p>
       ) : (
-        <div style={{ display: "grid", gap: 12 }}>
+        <div className={styles.grid}>
           {playlists.map((pl) => (
-            <div key={pl._id} style={{
-              background: "#1a1a1a", borderRadius: 8, padding: 16, border: "1px solid #222",
-              display: "flex", alignItems: "center", gap: 16,
-            }}>
+            <div key={pl._id} className={styles.itemCardLg}>
               <img
                 src={pl.imageUrl}
                 alt={pl.title}
-                style={{ width: 60, height: 60, borderRadius: 6, objectFit: "cover", background: "#333" }}
+                className={styles.thumb}
                 onError={(e) => { e.target.style.display = "none" }}
               />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: "#fff", margin: 0, fontWeight: "bold" }}>{pl.title}</p>
-                <p style={{ color: "#888", margin: "4px 0 0", fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <div className={styles.itemContent}>
+                <p className={styles.itemTitle}>{pl.title}</p>
+                <p className={styles.itemDesc}>
                   {pl.description}
                 </p>
-                <p style={{ color: "#555", margin: "4px 0 0", fontSize: 12 }}>
+                <p className={styles.itemMeta}>
                   {pl.itemsCount ?? 0} items
                 </p>
               </div>
-              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+              <div className={styles.itemActions}>
                 {type === "beats" ? (
-                  <Link to={`/admin/playlists/${pl._id}/beats`} style={btnSmall}>Ver beats</Link>
+                  <Link to={`/admin/playlists/${pl._id}/beats`} className={styles.btnSmall}><Icons.MusicNote size={13} /> View</Link>
                 ) : (
-                  <Link to={`/admin/loops/${pl._id}/loops`} style={btnSmall}>Ver loops</Link>
+                  <Link to={`/admin/loops/${pl._id}/loops`} className={styles.btnSmall}><Icons.Loop size={13} /> View</Link>
                 )}
                 {type === "beats" ? (
-                  <Link to={`/admin/playlists/${pl._id}/edit`} style={btnSmall}>Editar</Link>
+                  <Link to={`/admin/playlists/${pl._id}/edit`} className={styles.btnSmall}><Icons.Edit size={13} /> Edit</Link>
                 ) : (
-                  <Link to={`/admin/loops/${pl._id}/edit`} style={btnSmall}>Editar</Link>
+                  <Link to={`/admin/loops/${pl._id}/edit`} className={styles.btnSmall}><Icons.Edit size={13} /> Edit</Link>
                 )}
-                <button onClick={() => handleDuplicate(pl._id)} style={btnSmall}>Duplicar</button>
-                <button onClick={() => handleDelete(pl._id)} style={{ ...btnSmall, color: "#f44336" }}>Eliminar</button>
+                <button onClick={() => handleDuplicate(pl._id)} className={styles.btnSmall}><Icons.Copy size={13} /> Copy</button>
+                <button onClick={() => handleDelete(pl._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> Delete</button>
               </div>
             </div>
           ))}
@@ -90,14 +91,4 @@ export const AdminPlaylists = ({ type = "beats" }) => {
       )}
     </div>
   );
-};
-
-const btnPrimary = {
-  background: "#333", color: "#fff", padding: "10px 20px", borderRadius: 6,
-  textDecoration: "none", fontSize: 14, border: "1px solid #555",
-};
-
-const btnSmall = {
-  background: "#222", color: "#ccc", padding: "6px 12px", borderRadius: 4,
-  textDecoration: "none", fontSize: 12, border: "1px solid #333", cursor: "pointer",
 };

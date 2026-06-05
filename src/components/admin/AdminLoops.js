@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { adminService } from "../../services/api";
 import { AdminUploader } from "./AdminUploader";
+import { Icons } from "./icons";
+import styles from "./admin.module.css";
 
 export const AdminLoops = () => {
   const { id } = useParams();
@@ -43,8 +45,8 @@ export const AdminLoops = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title || !form.description || !form.audioFile) {
-      alert("Todos los campos son obligatorios");
+    if (!form.title || !form.audioFile) {
+      alert("Title and audio file are required");
       return;
     }
     try {
@@ -56,89 +58,71 @@ export const AdminLoops = () => {
       resetForm();
       fetchData();
     } catch {
-      alert("Error al guardar");
+      alert("Error saving");
     }
   };
 
   const handleDelete = async (loopId) => {
-    if (!window.confirm("¿Eliminar este loop?")) return;
+    if (!window.confirm("Delete this loop?")) return;
     try {
       await adminService.loops.delete(loopId);
       fetchData();
     } catch {
-      alert("Error al eliminar");
+      alert("Error deleting");
     }
   };
 
-  if (loading) return <p style={{ color: "#888" }}>Cargando...</p>;
+  if (loading) return <p className={styles.loadingText}>Loading...</p>;
 
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <Link to="/admin/loops" style={{ color: "#888", fontSize: 13, textDecoration: "none" }}>← Volver a catálogos de loops</Link>
-        <h2 style={{ color: "#fff", margin: "8px 0 0", fontSize: 22 }}>{playlist?.title || "Loops"}</h2>
+        <Link to="/admin/loops" className={styles.backLink}>
+          <Icons.Back size={14} /> Back to Loop Catalogs
+        </Link>
+        <h2 className={styles.subTitle}>{playlist?.title || "Loops"}</h2>
       </div>
 
-      <button onClick={() => { resetForm(); setShowForm(true); }} style={btnPrimary}>
-        + Nuevo loop
+      <button onClick={() => { resetForm(); setShowForm(true); }} className={styles.btnPrimary}>
+        <Icons.Add size={16} /> New Loop
       </button>
 
       {showForm && (
-        <form onSubmit={handleSubmit} style={{ background: "#1a1a1a", padding: 20, borderRadius: 8, marginTop: 16, border: "1px solid #222" }}>
-          <h3 style={{ color: "#fff", margin: "0 0 16px" }}>{editLoop ? "Editar loop" : "Nuevo loop"}</h3>
-          <input name="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Título" style={inputStyle} />
-          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Descripción" style={{ ...inputStyle, marginTop: 12, minHeight: 60, resize: "vertical" }} />
-          <div style={{ marginTop: 12 }}>
-            <label style={{ color: "#aaa", fontSize: 13, display: "block", marginBottom: 4 }}>Archivo de audio *</label>
+        <form onSubmit={handleSubmit} className={styles.formBox}>
+          <h3 className={styles.formTitle}>{editLoop ? "Edit Loop" : "New Loop"}</h3>
+          <input name="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Title" className={styles.input} />
+          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Description" className={styles.textarea} />
+          <div className={styles.mt16}>
+            <label className={styles.labelPlain}>Audio File *</label>
             {form.audioFile ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <p style={{ color: "#4caf50", fontSize: 12 }}>✓ Audio subido</p>
-                <button type="button" onClick={() => setForm({ ...form, audioFile: "" })} style={{ background: "none", border: "none", color: "#f44336", cursor: "pointer", fontSize: 12 }}>Cambiar</button>
+              <div className={styles.audioRow}>
+                <p className={styles.uploadSuccessInline}>✓ Audio uploaded</p>
+                <button type="button" onClick={() => setForm({ ...form, audioFile: "" })} className={styles.changeBtn}>Change</button>
               </div>
             ) : (
               <AdminUploader folder="loops" accept="audio/*" onUpload={(url) => setForm({ ...form, audioFile: url })} />
             )}
           </div>
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-            <button type="submit" style={btnPrimary}>{editLoop ? "Actualizar" : "Guardar"}</button>
-            <button type="button" onClick={resetForm} style={btnSecondary}>Cancelar</button>
+          <div className={styles.formActions}>
+            <button type="submit" className={styles.btnPrimary}>{editLoop ? "Update" : "Save"}</button>
+            <button type="button" onClick={resetForm} className={styles.btnSecondary}>Cancel</button>
           </div>
         </form>
       )}
 
-      <div style={{ marginTop: 16, display: "grid", gap: 8 }}>
-        {loops.length === 0 && <p style={{ color: "#555" }}>No hay loops en este catálogo.</p>}
+      <div className={styles.gridItems + " " + styles.mt16}>
+        {loops.length === 0 && <p className={styles.emptyText}>No loops in this catalog.</p>}
         {loops.map((loop) => (
-          <div key={loop._id} style={{ background: "#1a1a1a", borderRadius: 6, padding: 12, border: "1px solid #222", display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ color: "#fff", margin: 0, fontWeight: "bold" }}>{loop.title}</p>
-              <p style={{ color: "#555", margin: "2px 0 0", fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{loop.description}</p>
+          <div key={loop._id} className={styles.itemCard}>
+            <div className={styles.itemContent}>
+              <p className={styles.itemTitle}>{loop.title}</p>
+              <p className={styles.itemDesc}>{loop.description}</p>
             </div>
-            <button onClick={() => handleEdit(loop)} style={btnSmall}>Editar</button>
-            <button onClick={() => handleDelete(loop._id)} style={{ ...btnSmall, color: "#f44336" }}>Eliminar</button>
+            <button onClick={() => handleEdit(loop)} className={styles.btnSmall}><Icons.Edit size={13} /> Edit</button>
+            <button onClick={() => handleDelete(loop._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> Delete</button>
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-const inputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 6, border: "1px solid #333",
-  background: "#0d0d0d", color: "#e0e0e0", fontSize: 14, boxSizing: "border-box", fontFamily: "monospace",
-};
-
-const btnPrimary = {
-  background: "#333", color: "#fff", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #555", cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-};
-
-const btnSecondary = {
-  background: "transparent", color: "#888", padding: "10px 20px", borderRadius: 6,
-  border: "1px solid #333", cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-};
-
-const btnSmall = {
-  background: "#222", color: "#ccc", padding: "6px 12px", borderRadius: 4,
-  border: "1px solid #333", cursor: "pointer", fontSize: 12, fontFamily: "monospace",
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { beatsService } from "../services/api";
+import "./Playlist.css";
 
 export const Playlist = () => {
   const { playlistId } = useParams();

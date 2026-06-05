@@ -1,0 +1,209 @@
+.home-section {
+  min-height: 100vh;
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
+    url(../images/nologued/niv0nolog.webp) no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-section > div:first-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-section .home-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 40px 0;
+}
+
+.home-section .home-header-row h3 {
+  color: #f59999;
+  margin: 0;
+}
+
+.home-section .home-header-row h3 a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 50px;
+  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.home-section .home-header-row h3 a:hover {
+  font-size: 55px;
+  letter-spacing: 1px;
+}
+
+.home-section .home-header-row h4 {
+  margin: 0;
+}
+
+.home-section .home-header-row h4 a {
+  text-decoration: none;
+  color: #f59999;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
+}
+
+.home-section .home-header-row h4 a:hover {
+  font-size: 32px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  background-size: 100% 2px;
+}
+
+.home-section .home-header-row h5 {
+  margin: 0;
+  color: #f59999;
+}
+
+.home-section .home-header-row h5 a {
+  text-decoration: none;
+  color: #f59999;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
+}
+
+.home-section .home-header-row h5 a:hover {
+  font-size: 32px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  background-size: 100% 2px;
+}
+
+.home-section h6 {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.home-section .beats-home a,
+.home-section .samplepacks-home a,
+.home-section .loops-home a,
+.home-section .prodmixmaster-home a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(#f59999, #f59999);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 3px;
+  padding-bottom: 4px;
+}
+
+.home-section .beats-home a {
+  margin-right: 600px;
+}
+
+.home-section .samplepacks-home a {
+  margin-left: 600px;
+}
+
+.home-section .loops-home a {
+  margin-right: 600px;
+}
+
+.home-section .prodmixmaster-home {
+  margin-top: 180px;
+}
+
+.home-section .prodmixmaster-home a {
+  margin-left: 200px;
+}
+
+.home-section .beats-home a:hover,
+.home-section .samplepacks-home a:hover,
+.home-section .loops-home a:hover,
+.home-section .prodmixmaster-home a:hover {
+  font-size: 36px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(245, 153, 153, 0.5);
+  background-size: 100% 3px;
+}
+
+.icon-insta .instagram-icon {
+  font-size: 28px;
+  margin-top: 10px;
+  color: #f59999;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-insta .instagram-icon:hover {
+  transform: scale(1.2);
+  color: rgb(250, 64, 95);
+}
+
+.home-section p {
+  font-size: 14px;
+  margin: 5px 0 20px;
+}
+
+@media (max-width: 768px) {
+  .home-section {
+    text-align: center;
+  }
+
+  .home-section .home-header-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 20px 0;
+  }
+
+  .home-section .home-header-row h3 {
+    margin: 0;
+  }
+
+  .home-section .home-header-row h4 a,
+  .home-section .home-header-row h5 a {
+    font-size: 18px;
+  }
+
+  .home-section .home-header-row h3 a {
+    font-size: 24px;
+  }
+
+  .home-section .beats-home a,
+  .home-section .samplepacks-home a,
+  .home-section .loops-home a,
+  .home-section .prodmixmaster-home a {
+    margin: 10px auto;
+    display: inline-block;
+    font-size: 24px;
+  }
+
+  .home-section .prodmixmaster-home {
+    margin-top: 10px;
+  }
+
+  .icon-insta {
+    display: flex;
+    justify-content: center;
+  }
+
+  .icon-insta .instagram-icon {
+    font-size: 30px;
+  }
+
+  .home-section p {
+    font-size: 16px;
+    padding: 0 10px;
+  }
+}

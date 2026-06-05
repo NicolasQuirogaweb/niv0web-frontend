@@ -1,0 +1,229 @@
+.beats-section {
+  min-height: 100vh;
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
+    url(https://f005.backblazeb2.com/file/niv0-audios/images/fotohomeloguedfr.webp) no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  font-family: "Inter", sans-serif;
+}
+
+.beats-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 40px 0;
+}
+
+.beats-section h3 {
+  font-size: 50px;
+}
+
+.beats-section h4 {
+  font-size: 16px;
+}
+
+.beats-section h5 {
+  font-size: 14px;
+}
+
+.beats-section h3 a,
+.beats-section h4 a,
+.beats-section h5 a {
+  text-decoration: none;
+  color: #bbf0be;
+  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.beats-section h3 a:hover {
+  font-size: 60px;
+  letter-spacing: 1px;
+}
+
+.beats-section h5 a:hover {
+  font-size: 32px;
+  letter-spacing: 1px;
+}
+
+.beats-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.beats-list {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.beat-item {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+  width: 50%;
+  height: 50px;
+}
+
+.beat-item.playing {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.beat-item:hover {
+  transform: scale(1.05);
+}
+
+.back-button-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.beats-description {
+  margin-top: 50px;
+  height: 100%;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+}
+
+.beats-description h2 {
+  font-size: 24px;
+}
+
+.beats-description p {
+  font-size: 20px;
+}
+
+.back-to-catalogue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-to-catalogue-btn {
+  padding: 12px 32px;
+  background: transparent;
+  color: #ff6ec7;
+  border: 2px solid #ff6ec7;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: auto;
+  margin: 50px auto;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(255, 110, 199, 0.4), 0 0 20px rgba(255, 110, 199, 0.15);
+  transition: all 0.3s ease;
+}
+
+.back-to-catalogue-btn:hover {
+  background: #ff6ec7;
+  color: #0d0d0d;
+  box-shadow: 0 0 16px rgba(255, 110, 199, 0.8), 0 0 40px rgba(255, 110, 199, 0.3);
+  transform: scale(1.05);
+}
+
+.parrafo-final-samples {
+  font-size: 20px;
+  color: white;
+  padding-bottom: 20px;
+}
+
+.instagram-icon-loops {
+  color: #bbf0be;
+}
+
+@media (max-width: 768px) {
+  .beats-section {
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .beats-info {
+    margin-top: 15px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .beats-section h3,
+  .beats-section h4 {
+    margin: 5px 0;
+    font-size: 18px;
+  }
+
+  .beats-section h5 {
+    margin: 1px 0;
+    font-size: 18px;
+  }
+
+  .beats-section h3 a {
+    font-size: 18px;
+  }
+
+  .beats-section h4 a {
+    font-size: 12px;
+  }
+
+  .beats-section h5 a {
+    font-size: 14px;
+  }
+
+  .beats-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .beats-description {
+    margin-top: 50px;
+    height: 100%;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+  }
+
+  .beats-description h2 {
+    font-size: 20px;
+  }
+
+  .beats-description p {
+    font-size: 16px;
+  }
+
+  .beats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .back-to-catalogue {
+    margin-top: 20px;
+  }
+
+  .back-to-catalogue-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    width: auto;
+  }
+}

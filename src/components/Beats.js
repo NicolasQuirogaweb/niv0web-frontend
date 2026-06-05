@@ -5,6 +5,7 @@ import { CardPlaylist } from "./CardPlaylist";
 import { useAuth } from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import "./Beats.css";
 
 export const Beats = () => {
   const { isAuthenticated } = useAuth();
