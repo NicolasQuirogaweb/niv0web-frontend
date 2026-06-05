@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { beatsService } from "../services/api";
 import "./Playlist.css";
+import "./AudioCard.css";
 
 export const Playlist = () => {
   const { playlistId } = useParams();
@@ -61,16 +62,16 @@ export const Playlist = () => {
         <h2>{playlist.title}</h2>
         <p>{playlist.description}</p>
 
-        <div className="beats-list">
+        <div className="audio-card-grid">
           {playlist.beats && playlist.beats.length > 0 ? (
             playlist.beats.map((beat, index) => (
               <div
                 key={beat._id}
-                className={`beat-item ${
+                className={`audio-card ${
                   currentPlayingIndex === index ? "playing" : ""
                 }`}
               >
-                <h3 className="beat-title">{beat.title}</h3>
+                <h3 className="audio-card-title">{beat.title}</h3>
                 <audio
                   controls
                   ref={(el) => (audioRefs.current[index] = el)}
