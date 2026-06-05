@@ -155,10 +155,6 @@
     align-items: center;
   }
 
-  .home-section-logued > div:first-child {
-    flex: none;
-  }
-
   .home-section-logued .home-header-row {
     flex-direction: column;
     align-items: center;
