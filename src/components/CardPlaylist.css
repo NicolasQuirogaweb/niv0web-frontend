@@ -6,6 +6,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.3s;
+  flex-shrink: 0;
 }
 
 .card-playlist:hover {
@@ -22,26 +23,32 @@
 
 .card-playlist-info {
   position: absolute;
-  bottom: -3px;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 0;
 }
 
 .card-playlist-info .card-playlist-title {
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
   color: white;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.3px;
 }
 
 @media (max-width: 768px) {
   .card-playlist {
-    width: 200px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
   }
 
   .card-playlist-info .card-playlist-title {
-    font-size: 13px;
+    font-size: 12px;
   }
 }
