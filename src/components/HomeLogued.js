@@ -50,7 +50,6 @@ export const HomeLogued = () => {
         </a>
       </div>
       <p>Contact me</p>
-      <p>THANK YOU FOR SIGNING IN. ENJOY!</p>
     </section>
   );
 };

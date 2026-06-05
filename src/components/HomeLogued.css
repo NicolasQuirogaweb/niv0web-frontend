@@ -133,15 +133,15 @@
 }
 
 .icon-insta-logued .instagram-icon {
-  font-size: 28px;
+  font-size: 20px;
   margin-top: 3px;
-  color: #f59999;
+  color: #bbf0be;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .icon-insta-logued .instagram-icon:hover {
   transform: scale(1.2);
-  color: rgb(250, 64, 95);
+  color: #bbf0be;
 }
 
 @media (max-width: 768px) {
@@ -197,7 +197,7 @@
   }
 
   .icon-insta-logued .instagram-icon {
-    font-size: 26px;
-    color: #f59999;
+    font-size: 18px;
+    color: #bbf0be;
   }
 }
