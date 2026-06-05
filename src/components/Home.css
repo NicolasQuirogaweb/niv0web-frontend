@@ -162,15 +162,11 @@
     text-align: center;
   }
 
-  .home-section > div:first-child {
-    justify-content: center;
-  }
-
   .home-section .home-header-row {
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 10px 20px 0;
+    gap: 2px;
+    padding: 0 20px;
   }
 
   .home-section .home-header-row h3 {
@@ -190,13 +186,13 @@
   .home-section .samplepacks-home a,
   .home-section .loops-home a,
   .home-section .prodmixmaster-home a {
-    margin: 5px auto;
+    margin: 3px auto;
     display: inline-block;
     font-size: 20px;
   }
 
   .home-section .prodmixmaster-home {
-    margin-top: 5px;
+    margin-top: 2px;
   }
 
   .icon-insta {

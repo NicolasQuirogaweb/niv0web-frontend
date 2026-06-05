@@ -154,15 +154,11 @@
     align-items: center;
   }
 
-  .home-section-logued > div:first-child {
-    justify-content: center;
-  }
-
   .home-section-logued .home-header-row {
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 10px 20px 0;
+    gap: 2px;
+    padding: 0 20px;
   }
 
   .home-section-logued .home-header-row h3 {
@@ -182,13 +178,13 @@
   .home-section-logued .samplepacks-home a,
   .home-section-logued .loops-home a,
   .home-section-logued .prodmixmaster-home a {
-    margin: 4px auto;
+    margin: 3px auto;
     display: inline-block;
     font-size: 20px;
   }
 
   .home-section-logued .prodmixmaster-home {
-    margin-top: 5px;
+    margin-top: 2px;
   }
 
   .home-section-logued p {
