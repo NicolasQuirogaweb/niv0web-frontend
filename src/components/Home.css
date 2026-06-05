@@ -158,8 +158,13 @@
 @media (max-width: 768px) {
   .home-section {
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     text-align: center;
+  }
+
+  .home-section > div:first-child {
+    flex: none;
   }
 
   .home-section .home-header-row {

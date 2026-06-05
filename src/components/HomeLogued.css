@@ -147,11 +147,16 @@
 @media (max-width: 768px) {
   .home-section-logued {
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .home-section-logued > div:first-child {
+    flex: none;
   }
 
   .home-section-logued .home-header-row {
