@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { loopsService } from "../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import "./AudioCard.css";
 
 export const Loops = () => {
   const [loops, setLoops] = useState([]);
@@ -49,15 +48,16 @@ export const Loops = () => {
         className="loops-imagen"
       />
       <h2>LOOPS</h2>
-      <div className="audio-card-grid">
+      <div className="loops-list">
         {loops.map((loop, index) => (
           <div
             key={loop._id}
-            className={`audio-card ${
+            className={`loop-item ${
               currentPlayingIndex === index ? "playing" : ""
             }`}
           >
-            <h3 className="audio-card-title">{loop.title}</h3>
+            <h3>{loop.title}</h3>
+            <p>{loop.description}</p>
             <audio
               ref={(el) => (audioRefs.current[index] = el)}
               onPlay={() => handlePlay(index)}

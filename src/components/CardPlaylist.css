@@ -22,11 +22,10 @@
 
 .card-playlist-info {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: -3px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 
 .card-playlist-info .card-playlist-title {

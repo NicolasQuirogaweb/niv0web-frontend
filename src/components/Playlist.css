@@ -231,6 +231,29 @@
   box-shadow: 0 0 20px rgba(29, 185, 84, 0.6);
 }
 
+.playlist-container .beat-item {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+  width: 50%;
+  height: 50px;
+}
+
+.playlist-container .beat-item.playing {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.playlist-container .beat-item:hover {
+  transform: scale(1.05);
+}
+
+.playlist-container audio {
+  width: 100%;
+  height: 20px;
+  margin-top: 10px;
+}
+
 .back-to-catalogue-btn {
   padding: 12px 32px;
   background: transparent;
@@ -303,6 +326,17 @@
     margin-bottom: 10px;
   }
 
+  .beat-item {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    width: 80%;
+    height: 20%;
+  }
+
+  .beat-item.playing {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
   .beat-card {
     flex-direction: column;
     width: 90%;
@@ -340,6 +374,11 @@
     font-size: 12px;
     margin-left: 0;
     justify-content: center;
+  }
+
+  audio {
+    width: 100%;
+    height: 25px;
   }
 
   .playlist-content p {

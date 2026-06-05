@@ -4,7 +4,6 @@ import { samplePacksService } from "../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import "./Samples.css";
-import "./AudioCard.css";
 
 export const Samples = () => {
   const { samplepackId } = useParams();
@@ -42,7 +41,7 @@ export const Samples = () => {
       <h2>{samplePack.title}</h2>
       <p>{samplePack.description}</p>
 
-      <div className="audio-card-grid">
+      <div className="samples-list">
         {samplePack.samples.map((sample, index) => {
           const ext = (sample.audioFile || "").split("?")[0].split(".").pop();
           const audioType = ext === "wav" ? "audio/wav" : "audio/mpeg";
@@ -50,12 +49,12 @@ export const Samples = () => {
           return (
             <div
               key={sample._id}
-              className={`audio-card ${
+              className={`sample-item ${
                 currentPlayingIndex === index ? "playing" : ""
               }`}
               onClick={() => handlePlay(index)}
             >
-              <h3 className="audio-card-title">{sample.title}</h3>
+              <h3>{sample.title}</h3>
               <audio
                 ref={(el) => (audioRefs.current[index] = el)}
                 controls
