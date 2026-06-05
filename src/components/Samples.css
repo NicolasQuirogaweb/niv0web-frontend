@@ -54,7 +54,7 @@
 
 audio {
   width: 100%;
-  height: auto;
+  min-height: 40px;
   margin-top: 10px;
   background-color: #333;
   border-radius: 5px;
