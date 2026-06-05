@@ -129,12 +129,12 @@
 
 .home-section-logued p {
   font-size: 14px;
-  margin: 3px 0 15px;
+  margin: 2px 0 10px;
 }
 
 .icon-insta-logued .instagram-icon {
   font-size: 28px;
-  margin-top: 5px;
+  margin-top: 3px;
   color: #f59999;
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -146,19 +146,23 @@
 
 @media (max-width: 768px) {
   .home-section-logued {
+    height: 100vh;
+    overflow: hidden;
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
+  }
+
+  .home-section-logued > div:first-child {
+    justify-content: center;
   }
 
   .home-section-logued .home-header-row {
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 20px 20px 0;
+    gap: 5px;
+    padding: 10px 20px 0;
   }
 
   .home-section-logued .home-header-row h3 {
@@ -178,22 +182,22 @@
   .home-section-logued .samplepacks-home a,
   .home-section-logued .loops-home a,
   .home-section-logued .prodmixmaster-home a {
-    margin: 5px auto;
+    margin: 4px auto;
     display: inline-block;
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .home-section-logued .prodmixmaster-home {
-    margin-top: 10px;
-  }
-
-  .home-section-logued p {
-    font-size: 16px;
     margin-top: 5px;
   }
 
+  .home-section-logued p {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
   .icon-insta-logued .instagram-icon {
-    font-size: 30px;
+    font-size: 26px;
     color: #f59999;
   }
 }
