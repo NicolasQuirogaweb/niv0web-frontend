@@ -175,17 +175,24 @@
     font-size: 12px;
   }
 
+  .home-section-logued .beats-home,
+  .home-section-logued .samplepacks-home,
+  .home-section-logued .loops-home,
+  .home-section-logued .prodmixmaster-home {
+    margin: 0;
+  }
+
+  .home-section-logued .beats-home {
+    margin-top: 50px;
+  }
+
   .home-section-logued .beats-home a,
   .home-section-logued .samplepacks-home a,
   .home-section-logued .loops-home a,
   .home-section-logued .prodmixmaster-home a {
-    margin: 3px auto;
+    margin: 12px auto;
     display: inline-block;
     font-size: 20px;
-  }
-
-  .home-section-logued .prodmixmaster-home {
-    margin-top: 2px;
   }
 
   .home-section-logued p {

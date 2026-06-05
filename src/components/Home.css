@@ -183,17 +183,24 @@
     font-size: 22px;
   }
 
+  .home-section .beats-home,
+  .home-section .samplepacks-home,
+  .home-section .loops-home,
+  .home-section .prodmixmaster-home {
+    margin: 0;
+  }
+
+  .home-section .beats-home {
+    margin-top: 50px;
+  }
+
   .home-section .beats-home a,
   .home-section .samplepacks-home a,
   .home-section .loops-home a,
   .home-section .prodmixmaster-home a {
-    margin: 3px auto;
+    margin: 12px auto;
     display: inline-block;
     font-size: 20px;
-  }
-
-  .home-section .prodmixmaster-home {
-    margin-top: 2px;
   }
 
   .icon-insta {
