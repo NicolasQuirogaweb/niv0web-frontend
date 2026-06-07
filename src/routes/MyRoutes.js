@@ -1,8 +1,19 @@
 import { lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { PrivateRoute } from "./PrivateRoutes";
 import { AdminRoute } from "./AdminRoute";
+import { AdminLayout } from "../components/admin/AdminLayout";
+import { AdminDashboard } from "../components/admin/AdminDashboard";
+import { AdminPlaylists } from "../components/admin/AdminPlaylists";
+import { AdminPlaylistForm } from "../components/admin/AdminPlaylistForm";
+import { AdminBeats } from "../components/admin/AdminBeats";
+import { AdminLoops } from "../components/admin/AdminLoops";
+import { AdminSamplePacks } from "../components/admin/AdminSamplePacks";
+import { AdminSamples } from "../components/admin/AdminSamples";
+import { AdminProdMixMaster } from "../components/admin/AdminProdMixMaster";
+import { AdminUsers } from "../components/admin/AdminUsers";
 
 const Home = lazy(() =>
   import("../components/Home").then((m) => ({ default: m.Home }))
@@ -33,40 +44,14 @@ const ProdMixMaster = lazy(() =>
     default: m.ProdMixMaster,
   }))
 );
-const AdminLayout = lazy(() =>
-  import("../components/admin/AdminLayout").then((m) => ({ default: m.AdminLayout }))
-);
-const AdminDashboard = lazy(() =>
-  import("../components/admin/AdminDashboard").then((m) => ({ default: m.AdminDashboard }))
-);
-const AdminPlaylists = lazy(() =>
-  import("../components/admin/AdminPlaylists").then((m) => ({ default: m.AdminPlaylists }))
-);
-const AdminPlaylistForm = lazy(() =>
-  import("../components/admin/AdminPlaylistForm").then((m) => ({ default: m.AdminPlaylistForm }))
-);
-const AdminBeats = lazy(() =>
-  import("../components/admin/AdminBeats").then((m) => ({ default: m.AdminBeats }))
-);
-const AdminLoops = lazy(() =>
-  import("../components/admin/AdminLoops").then((m) => ({ default: m.AdminLoops }))
-);
-const AdminSamplePacks = lazy(() =>
-  import("../components/admin/AdminSamplePacks").then((m) => ({ default: m.AdminSamplePacks }))
-);
-const AdminSamples = lazy(() =>
-  import("../components/admin/AdminSamples").then((m) => ({ default: m.AdminSamples }))
-);
-const AdminProdMixMaster = lazy(() =>
-  import("../components/admin/AdminProdMixMaster").then((m) => ({ default: m.AdminProdMixMaster }))
-);
-const AdminUsers = lazy(() =>
-  import("../components/admin/AdminUsers").then((m) => ({ default: m.AdminUsers }))
-);
 
-const Loading = () => <p>Cargando...</p>;
+const Loading = () => {
+  const { t } = useTranslation();
+  return <p>{t("loading")}</p>;
+};
 
 export const MyRoutes = () => {
+  const { t } = useTranslation();
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -159,7 +144,7 @@ export const MyRoutes = () => {
               </Route>
               <Route
                 path="*"
-                element={<h1>Error 404 - Página no encontrada</h1>}
+                element={<h1 style={{ color: "#fff", textAlign: "center", marginTop: 80, fontFamily: "monospace" }}>{t("notFound.title")}</h1>}
               />
             </Routes>
           </Suspense>

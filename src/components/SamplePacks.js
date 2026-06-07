@@ -1,71 +1,66 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { samplePacksService } from "../services/api";
-import { CardPlaylist } from "./CardPlaylist";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+import { authService, samplePacksService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { CardPlaylist } from "./CardPlaylist";
+import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { SEO } from "./common/SEO";
 import "./SamplePacks.css";
 
 export const SamplePacks = () => {
-  const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const [samplepacks, setSamplepacks] = useState([]);
+  const { clearAuth } = useAuth();
+  const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const handleLogout = async () => {
+    await authService.logout().catch(() => {});
+    clearAuth();
+    navigate("/", { replace: true });
+  };
+
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/", { replace: true });
-      return;
-    }
-    samplePacksService
-      .getAll()
-      .then((res) => setSamplepacks(res.data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [isAuthenticated, navigate]);
+    const fetchPacks = async () => {
+      try {
+        const res = await samplePacksService.getAll();
+        setPacks(res.data);
+      } catch (error) {
+        console.error("Error fetching samplepacks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPacks();
+  }, []);
 
   return (
+    <>
+      <SEO title={t("samplePacks.seoTitle")} description={t("samplePacks.seoDesc")} />
     <section className="samplepacks-section">
-      <div className="samplepacks-content">
-        <div className="samplepacks-info">
-          <h3>
-            <Link to="/homelogued">niv0 beats</Link>
-          </h3>
-          <h5>
-            <Link to="/home">Log out</Link>
-          </h5>
+      <div className="samplepacks-info">
+        <h3><Link to="/homelogued">{t("nav.niv0Beats")}</Link></h3>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <LanguageSwitcher />
+          <button onClick={handleLogout} style={{ background: "none", border: "none", color: "#bbf0be", cursor: "pointer", fontSize: 14, fontFamily: "monospace" }}>{t("nav.logOut")}</button>
         </div>
-
+      </div>
+      {loading ? (
+        <p>{t("samplePacks.loading")}</p>
+      ) : packs.length === 0 ? (
+        <p>{t("samplePacks.none")}</p>
+      ) : (
         <div className="beats-list-samplepacks">
-          {loading ? (
-            <p>Cargando samplepacks...</p>
-          ) : samplepacks.length > 0 ? (
-            samplepacks.map((samplepack) => (
-              <CardPlaylist
-                key={samplepack._id}
-                playlist={samplepack}
-                resourceType="samples"
-              />
-            ))
-          ) : (
-            <p>No se encontraron sample packs.</p>
-          )}
+          {packs.map((pack) => (
+            <CardPlaylist key={pack._id} playlist={pack} resourceType="samples" />
+          ))}
         </div>
-      </div>
+      )}
       <div className="back-to-catalogue">
-        <Link to="/homelogued">
-          <button className="back-to-catalogue-btn">Back to home</button>
-        </Link>
-      </div>
-      <div className="contenedor-parrafo-final">
-        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon
-            icon={faInstagram}
-            className="instagram-icon-loops"
-          />
-        </a>
+        <Link to="/homelogued"><button className="back-to-catalogue-btn" aria-label={t("nav.backToHome")}>{t("nav.backToHome")}</button></Link>
       </div>
     </section>
+    </>
   );
 };

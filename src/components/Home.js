@@ -1,42 +1,39 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { SEO } from "./common/SEO";
+import { useAuth } from "../hooks/useAuth";
 import "./Home.css";
 
 export const Home = () => {
+  const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+
   return (
+    <>
+      <SEO description={t("home.seoDesc")} />
     <section className="home-section">
       <div>
         <div className="home-header-row">
-          <h3>
-            <Link to="/">niv0 beats</Link>
-          </h3>
-          <h4>
-            <Link to="/login">log in</Link>
-          </h4>
-          <h5>
-            <Link to="/login">sign up</Link>
-          </h5>
+          <h3><Link to="/home">{t("nav.niv0Beats")}</Link></h3>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <LanguageSwitcher />
+            {isAuthenticated ? (
+              <h4><Link to="/homelogued">{t("nav.logIn")}</Link></h4>
+            ) : (
+              <>
+                <h4><Link to="/login">{t("nav.logIn")}</Link></h4>
+                <h4><Link to="/login">{t("nav.signUp")}</Link></h4>
+              </>
+            )}
+          </div>
         </div>
-        <h6 className="beats-home">
-          <Link to="/login">BEATS</Link>
-        </h6>
-        <h6 className="samplepacks-home">
-          <Link to="/login">
-            SAMPLe
-            PACKS
-          </Link>
-        </h6>
-        <h6 className="prodmixmaster-home">
-          <Link to="/login">PROD MIX MASTER</Link>
-        </h6>
+        <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
+        <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
+        <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
+        <p>{t("home.cta")}</p>
       </div>
-      <div className="icon-insta">
-        <a href="https://www.instagram.com/__niv0__/" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faInstagram} className="instagram-icon" />
-        </a>
-      </div>
-      <p>SIGN UP / LOGIN TO HAVE ACCESS</p>
     </section>
+    </>
   );
 };

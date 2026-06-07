@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { GOOGLE_CLIENT_ID } from "../config";
 import { authService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
-import { useResponsiveWidth } from "../hooks/useResponsiveWidth";
+import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { SEO } from "./common/SEO";
 import "./Login.css";
 
+const isDev = typeof window !== "undefined" && window.location.hostname === "localhost";
+
 export const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { saveAuth } = useAuth();
-  const btnWidth = useResponsiveWidth(200, 400, 600);
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,10 +27,8 @@ export const Login = () => {
       saveAuth(token, user.email, user.role);
       navigate("/homelogued", { replace: true });
     } catch (error) {
-      console.error("Error en autenticación de Google:", error);
-      setLoginError(
-        "No pudimos iniciar sesión. Si estás usando bloqueadores o extensiones de seguridad, desactívalos e intenta de nuevo."
-      );
+      console.error("Error en autenticaci\u00f3n de Google:", error);
+      setLoginError(t("login.errorBlocked"));
       localStorage.removeItem("authToken");
       localStorage.removeItem("userEmail");
     } finally {
@@ -35,29 +37,25 @@ export const Login = () => {
   };
 
   const onFailure = () => {
-    setLoginError(
-      "Error al iniciar sesión con Google. Por favor, intenta nuevamente."
-    );
+    setLoginError(t("login.errorGoogle"));
   };
 
   return (
+    <>
+      <SEO title={t("login.seoTitle")} description={t("login.seoDesc")} />
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <section className="login-section">
         <div className="login-container">
-          <h1>BEATS, SAMPLE PACKS, MIDI KITS, LOOPS</h1>
-
+          <div style={{ position: "absolute", top: 16, right: 16 }}>
+            <LanguageSwitcher />
+          </div>
+          <h1>{t("login.title")}</h1>
           {loading ? (
             <p style={{ marginTop: "2rem", fontWeight: "bold" }}>
-              Entering, please wait...
+              {t("login.entering")}
             </p>
           ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <div className="google-btn-wrapper">
                 <GoogleLogin
                   onSuccess={onSuccess}
@@ -67,17 +65,20 @@ export const Login = () => {
                   text="continue_with"
                   shape="pill"
                   logo_alignment="center"
-                  width={btnWidth}
+                  width={200}
                 />
               </div>
             </div>
           )}
-
-          {loginError && (
-            <p style={{ color: "red", marginTop: "1rem" }}>{loginError}</p>
+          {loginError && <p style={{ color: "red", marginTop: "1rem" }}>{loginError}</p>}
+          {isDev && (
+            <p style={{ color: "#666", fontSize: 11, marginTop: 12, textAlign: "center", maxWidth: 280 }}>
+              {t("login.devHint")}
+            </p>
           )}
         </div>
       </section>
     </GoogleOAuthProvider>
+    </>
   );
 };

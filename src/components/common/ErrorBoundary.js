@@ -1,4 +1,5 @@
 import React from "react";
+import i18n from "i18next";
 import "./ErrorBoundary.css";
 
 export class ErrorBoundary extends React.Component {
@@ -19,15 +20,15 @@ export class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <section className="error-boundary">
-          <h2>Something went wrong</h2>
-          <p>{this.state.error?.message || "Unexpected error"}</p>
+          <h2>{i18n.t("errorBoundary.title")}</h2>
+          <p>{this.state.error?.message || i18n.t("errorBoundary.message")}</p>
           <button
             onClick={() => {
               this.setState({ hasError: false, error: null });
               window.location.href = "/";
             }}
           >
-            Go to Home
+            {i18n.t("errorBoundary.goHome")}
           </button>
         </section>
       );

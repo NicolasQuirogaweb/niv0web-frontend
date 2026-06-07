@@ -1,0 +1,289 @@
+{
+  "nav": {
+    "niv0Beats": "niv0 beats",
+    "logIn": "iniciar sesión",
+    "signUp": "Registrarse",
+    "logOut": "Cerrar sesión",
+    "adminPanel": "PANEL ADMIN",
+    "contactMe": "Contacto",
+    "backToHome": "Volver al inicio",
+    "backToCatalogs": "Volver a Catálogos",
+    "backToPacks": "Volver a Sample Packs",
+    "backToPacksShort": "Volver a los packs",
+    "backToLoopCatalogs": "Volver a Catálogos de Loops",
+    "backToCatalogue": "Volver al catálogo",
+    "instagram": "Instagram",
+    "toggleMenu": "Abrir menú"
+  },
+  "lang": {
+    "switchTo": "Cambiar a Español",
+    "switchFrom": "Switch to English"
+  },
+  "seo": {
+    "siteName": "niv0 prod",
+    "fallbackDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master"
+  },
+  "player": {
+    "play": "Reproducir",
+    "pause": "Pausa"
+  },
+  "home": {
+    "beats": "BEATS",
+    "samplePacks": "SAMPLE PACKS",
+    "prodMixMaster": "PROD MIX MASTER",
+    "cta": "REGISTRATE / INICIA SESIÓN PARA ACCEDER",
+    "seoTitle": "Inicio",
+    "seoDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master. Regístrate para acceder a beats exclusivos y sample packs.",
+    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master para usuarios registrados."
+  },
+  "login": {
+    "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
+    "entering": "Ingresando, por favor espera...",
+    "errorBlocked": "No pudimos iniciar sesión. Si estás usando bloqueadores o extensiones de seguridad, desactívalos e intenta de nuevo.",
+    "errorGoogle": "Error al iniciar sesión con Google. Por favor, intenta nuevamente.",
+    "devHint": "Es posible que Google Login no funcione en localhost. Agrega http://localhost:3000 a los orígenes permitidos en Google Cloud Console.",
+    "seoTitle": "Iniciar Sesión",
+    "seoDesc": "Inicia sesión o regístrate en Niv0 Beats para acceder a beats, samples, loops y prod mix masters exclusivos."
+  },
+  "beats": {
+    "loading": "Cargando playlists...",
+    "none": "No se encontraron playlists.",
+    "licenses": "LICENCIAS",
+    "exclusiveStems": "Exclusiva + stems $100usd $100mil AR",
+    "exclusiveWav": "Exclusiva wav $80usd $80mil AR",
+    "commonLease": "licencia comun wav $20usd $20mil AR",
+    "seoTitle": "Beats",
+    "seoDesc": "Explora beats exclusivos de Niv0. Escucha, alquila y descarga beats premium."
+  },
+  "playlist": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Cargando...",
+    "none": "No se encontraron beats para esta playlist.",
+    "freeLicense": "Gratis para uso sin fines de lucro únicamente, contáctame y compra una licencia.",
+    "download": "Descargar",
+    "seoDesc": "Escucha pistas de las playlists de Niv0 Beats."
+  },
+  "samplePacks": {
+    "loading": "Cargando sample packs...",
+    "none": "No se encontraron sample packs.",
+    "seoTitle": "Sample Packs",
+    "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más."
+  },
+  "samples": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Cargando...",
+    "none": "No se encontraron samples.",
+    "audioNotSupported": "Tu navegador no soporta la reproducción de audio.",
+    "seoDesc": "Explora y descarga samples de los sample packs de Niv0."
+  },
+  "loops": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Cargando...",
+    "title": "LOOPS",
+    "none": "No se encontraron loops.",
+    "audioNotSupported": "Tu navegador no soporta la reproducción de audio.",
+    "iconAlt": "Icono loops",
+    "seoTitle": "Loops",
+    "seoDesc": "Explora y descarga loops de Niv0. Loops de alta calidad para tu producción musical."
+  },
+  "prodMix": {
+    "title": "Prod mix n mastering",
+    "subtitle": "Escucha mi trabajo en Spotify",
+    "openSpotify": "Abrir Playlist de Spotify",
+    "iconAlt": "Icono loops",
+    "seoTitle": "Prod Mix Master",
+    "seoDesc": "Niv0 Prod Mix Master - Servicios profesionales de mezcla y masterización para tu música."
+  },
+  "loading": "Cargando...",
+  "errorBoundary": {
+    "title": "Algo salió mal",
+    "message": "Error inesperado",
+    "goHome": "Ir al inicio"
+  },
+  "notFound": {
+    "title": "Error 404 - Página no encontrada"
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Panel",
+      "catalogsBeats": "Catálogos (Beats)",
+      "catalogsLoops": "Catálogos (Loops)",
+      "samplePacks": "Sample Packs",
+      "prodMixMasters": "Prod Mix Masters",
+      "users": "Usuarios"
+    },
+    "layout": {
+      "niv0Admin": "niv0 admin",
+      "backToHome": "Volver al inicio",
+      "signOut": "Cerrar sesión"
+    },
+    "common": {
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "copy": "Copiar",
+      "save": "Guardar",
+      "update": "Actualizar",
+      "cancel": "Cancelar",
+      "saving": "Guardando...",
+      "new": "Nuevo",
+      "view": "Ver",
+      "change": "Cambiar",
+      "search": "Buscar...",
+      "noItems": "Sin elementos.",
+      "noResults": "Sin resultados que coincidan con tu búsqueda.",
+      "audioUploaded": "✓ Audio subido",
+      "imageUploaded": "✓ Imagen subida",
+      "videoUploaded": "✓ Video subido",
+      "audioFileRequired": "Archivo de Audio *",
+      "titleRequired": "Título *",
+      "descriptionRequired": "Descripción *",
+      "coverImageRequired": "Imagen de Portada *",
+      "backgroundVideoRequired": "Video de Fondo *",
+      "titlePlaceholder": "Título",
+      "artistPlaceholder": "Artista",
+      "descriptionPlaceholder": "Descripción",
+      "noDescription": "sin descripción",
+      "itemsCount": "{{count}} elementos",
+      "unknownError": "Error desconocido"
+    },
+    "validation": {
+      "titleRequired": "El título es obligatorio",
+      "descriptionRequired": "La descripción es obligatoria",
+      "imageRequired": "La imagen de portada es obligatoria",
+      "videoRequired": "El video de fondo es obligatorio",
+      "audioRequired": "El archivo de audio es obligatorio",
+      "max100": "Máximo 100 caracteres",
+      "max300": "Máximo 300 caracteres"
+    },
+    "toast": {
+      "created": "{{name}} creado",
+      "updated": "{{name}} actualizado",
+      "deleted": "{{name}} eliminado",
+      "duplicated": "{{name}} duplicado",
+      "errorLoading": "Error al cargar {{name}}",
+      "errorSaving": "Error al guardar",
+      "errorDeleting": "Error al eliminar",
+      "errorDuplicating": "Error al duplicar",
+      "errorUpdatingRole": "Error al actualizar rol",
+      "roleChanged": "{{email}} ahora es {{role}}",
+      "batchUploaded": "{{count}} elementos subidos",
+      "batchError": "Error de subida masiva: {{message}}"
+    },
+    "confirm": {
+      "deleteTitle": "¿Eliminar {{name}}?",
+      "deleteMessage": "¿Eliminar \"{{item}}\" permanentemente?",
+      "deleteCatalog": "Esto eliminará el catálogo y todos sus elementos permanentemente.",
+      "deletePack": "Esto eliminará el pack y todos sus samples permanentemente.",
+      "changeRole": "¿Cambiar rol?",
+      "changeRoleMessage": "¿Cambiar a {{email}} a {{role}}?",
+      "confirm": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "dashboard": {
+      "title": "Panel",
+      "quickActions": "Acciones rápidas",
+      "newCatalogBeats": "+ Nuevo Catálogo (Beats)",
+      "newCatalogLoops": "+ Nuevo Catálogo (Loops)",
+      "newSamplePack": "+ Nuevo Sample Pack",
+      "cardCatalogsBeats": "Catálogos (Beats)",
+      "cardCatalogsLoops": "Catálogos (Loops)",
+      "cardBeats": "Beats",
+      "cardLoops": "Loops",
+      "cardSamplePacks": "Sample Packs",
+      "cardSamples": "Samples",
+      "cardProdMix": "Prod Mix Masters",
+      "cardUsers": "Usuarios",
+      "seoTitle": "Panel Admin",
+      "seoDesc": "Panel de administración de Niv0 Beats - gestiona beats, sample packs, loops y usuarios."
+    },
+    "playlists": {
+      "title": "Catálogos ({{type}})",
+      "new": "Nuevo Catálogo",
+      "search": "Buscar catálogos...",
+      "none": "No hay catálogos de {{type}} aún.",
+      "catalog": "Catálogo ({{type}})",
+      "editTitle": "Editar Catálogo ({{type}})",
+      "newTitle": "Nuevo Catálogo ({{type}})",
+      "create": "Crear Catálogo",
+      "samplePack": "Sample Pack",
+      "catalogDescription": "Descripción del catálogo",
+      "titleExample": "ej. Trap Essentials Vol.1",
+      "catalogLabel": "Catálogo"
+    },
+    "beats": {
+      "title": "Beats",
+      "new": "Nuevo Beat",
+      "editTitle": "Editar Beat",
+      "none": "No hay beats en este catálogo.",
+      "batchTitle": "Subir Beats en Lote",
+      "batchHint": "Los nombres de archivo se usarán como títulos",
+      "uploadCount": "Subir {{count}} beat",
+      "uploadCount_plural": "Subir {{count}} beats",
+      "beatLabel": "Beat"
+    },
+    "loops": {
+      "title": "Loops",
+      "new": "Nuevo Loop",
+      "none": "No hay loops en este catálogo.",
+      "editTitle": "Editar Loop",
+      "newTitle": "Nuevo Loop",
+      "catalogLabel": "Catálogo de Loops",
+      "loopLabel": "Loop"
+    },
+    "samples": {
+      "title": "Samples",
+      "new": "Nuevo Sample",
+      "none": "No hay samples en este pack.",
+      "batchTitle": "Subir Samples en Lote",
+      "batchHint": "Los nombres de archivo se usarán como títulos",
+      "uploadCount": "Subir {{count}} sample",
+      "uploadCount_plural": "Subir {{count}} samples",
+      "editTitle": "Editar Sample",
+      "newTitle": "Nuevo Sample",
+      "sampleLabel": "Sample"
+    },
+    "samplePacks": {
+      "title": "Sample Packs",
+      "new": "Nuevo Sample Pack",
+      "search": "Buscar sample packs...",
+      "none": "No hay sample packs.",
+      "samplesCount": "{{count}} samples",
+      "packLabel": "Sample Pack"
+    },
+    "prodmix": {
+      "title": "Prod Mix Masters",
+      "new": "Nuevo Prod Mix Master",
+      "editTitle": "Editar",
+      "newTitle": "Nuevo Prod Mix Master",
+      "none": "Sin elementos.",
+      "itemLabel": "Elemento",
+      "prodmixLabel": "Prod Mix Masters"
+    },
+    "users": {
+      "title": "Usuarios",
+      "search": "Buscar usuarios por nombre o email...",
+      "none": "Sin usuarios.",
+      "noResults": "No hay usuarios que coincidan con tu búsqueda.",
+      "makeAdmin": "Hacer Admin",
+      "revokeAdmin": "Revocar Admin",
+      "roleChanged": "{{email}} ahora es {{role}}",
+      "usersLabel": "Usuarios"
+    },
+    "uploader": {
+      "uploading": "Subiendo...",
+      "completed": "Completado",
+      "error": "Error",
+      "errorUploading": "Error al subir archivo",
+      "dragHint": "Arrastra un archivo aquí o haz clic para seleccionar",
+      "supported": "Soportado: {{accept}}",
+      "previewAlt": "vista previa",
+      "batchDrop": "Arrastra archivos de audio aquí o haz clic para seleccionar",
+      "batchSupported": "Puedes seleccionar varios archivos a la vez",
+      "uploadingToB2": "Subiendo archivos a B2...",
+      "creatingItems": "Creando {{name}}..."
+    }
+  }
+}

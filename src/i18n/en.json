@@ -1,0 +1,289 @@
+{
+  "nav": {
+    "niv0Beats": "niv0 beats",
+    "logIn": "log in",
+    "signUp": "sign up",
+    "logOut": "Log out",
+    "adminPanel": "ADMIN PANEL",
+    "contactMe": "Contact me",
+    "backToHome": "Back to home",
+    "backToCatalogs": "Back to Catalogs",
+    "backToPacks": "Back to Sample Packs",
+    "backToPacksShort": "Back to packs",
+    "backToLoopCatalogs": "Back to Loop Catalogs",
+    "backToCatalogue": "Back to catalogue",
+    "instagram": "Instagram",
+    "toggleMenu": "Toggle menu"
+  },
+  "lang": {
+    "switchTo": "Switch to English",
+    "switchFrom": "Cambiar a Español"
+  },
+  "seo": {
+    "siteName": "niv0 prod",
+    "fallbackDesc": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master"
+  },
+  "player": {
+    "play": "Play",
+    "pause": "Pause"
+  },
+  "home": {
+    "beats": "BEATS",
+    "samplePacks": "SAMPLE PACKS",
+    "prodMixMaster": "PROD MIX MASTER",
+    "cta": "SIGN UP / LOGIN TO HAVE ACCESS",
+    "seoTitle": "Home",
+    "seoDesc": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master. Sign up to access exclusive beats and sample packs.",
+    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master for logged-in users."
+  },
+  "login": {
+    "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
+    "entering": "Entering, please wait...",
+    "errorBlocked": "Login failed. If you're using ad blockers or security extensions, disable them and try again.",
+    "errorGoogle": "Google login failed. Please try again.",
+    "devHint": "Google Login may not work on localhost. Add http://localhost:3000 to your Google Cloud Console allowed origins.",
+    "seoTitle": "Login",
+    "seoDesc": "Log in or sign up to Niv0 Beats to access exclusive beats, samples, loops, and prod mix masters."
+  },
+  "beats": {
+    "loading": "Loading playlists...",
+    "none": "No playlists found.",
+    "licenses": "LICENSES",
+    "exclusiveStems": "Exclusive + stems $100usd $100mil AR",
+    "exclusiveWav": "Exclusive wav $80usd $80mil AR",
+    "commonLease": "common lease wav $20usd $20mil AR",
+    "seoTitle": "Beats",
+    "seoDesc": "Browse exclusive beats from Niv0. Listen, lease, and download premium beats."
+  },
+  "playlist": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Loading...",
+    "none": "No beats found for this playlist.",
+    "freeLicense": "Free for non profit use only, contact me and buy a license.",
+    "download": "Download",
+    "seoDesc": "Listen to tracks from Niv0 Beats playlists."
+  },
+  "samplePacks": {
+    "loading": "Loading sample packs...",
+    "none": "No sample packs found.",
+    "seoTitle": "Sample Packs",
+    "seoDesc": "Download exclusive sample packs from Niv0. Includes drums, synths, bass, and more."
+  },
+  "samples": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Loading...",
+    "none": "No samples found.",
+    "audioNotSupported": "Your browser does not support audio playback.",
+    "seoDesc": "Browse and download samples from Niv0 sample packs."
+  },
+  "loops": {
+    "error": "Error: ",
+    "errorFallback": "Error",
+    "loading": "Loading...",
+    "title": "LOOPS",
+    "none": "No loops found.",
+    "audioNotSupported": "Your browser does not support audio playback.",
+    "iconAlt": "Loops icon",
+    "seoTitle": "Loops",
+    "seoDesc": "Browse and download loops from Niv0. High-quality loops for your music production."
+  },
+  "prodMix": {
+    "title": "Prod mix n mastering",
+    "subtitle": "Listen to my work on Spotify",
+    "openSpotify": "Open Spotify Playlist",
+    "iconAlt": "Loops icon",
+    "seoTitle": "Prod Mix Master",
+    "seoDesc": "Niv0 Prod Mix Master - Professional mixing and mastering services for your music."
+  },
+  "loading": "Loading...",
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "message": "Unexpected error",
+    "goHome": "Go to Home"
+  },
+  "notFound": {
+    "title": "Error 404 - Page Not Found"
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "catalogsBeats": "Catalogs (Beats)",
+      "catalogsLoops": "Catalogs (Loops)",
+      "samplePacks": "Sample Packs",
+      "prodMixMasters": "Prod Mix Masters",
+      "users": "Users"
+    },
+    "layout": {
+      "niv0Admin": "niv0 admin",
+      "backToHome": "Back to Home",
+      "signOut": "Sign out"
+    },
+    "common": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "copy": "Copy",
+      "save": "Save",
+      "update": "Update",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "new": "New",
+      "view": "View",
+      "change": "Change",
+      "search": "Search...",
+      "noItems": "No items.",
+      "noResults": "No results match your search.",
+      "audioUploaded": "✓ Audio uploaded",
+      "imageUploaded": "✓ Image uploaded",
+      "videoUploaded": "✓ Video uploaded",
+      "audioFileRequired": "Audio File *",
+      "titleRequired": "Title *",
+      "descriptionRequired": "Description *",
+      "coverImageRequired": "Cover Image *",
+      "backgroundVideoRequired": "Background Video *",
+      "titlePlaceholder": "Title",
+      "artistPlaceholder": "Artist",
+      "descriptionPlaceholder": "Description",
+      "noDescription": "no description",
+      "itemsCount": "{{count}} items",
+      "unknownError": "Unknown error"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "descriptionRequired": "Description is required",
+      "imageRequired": "Cover image is required",
+      "videoRequired": "Background video is required",
+      "audioRequired": "Audio file is required",
+      "max100": "Max 100 characters",
+      "max300": "Max 300 characters"
+    },
+    "toast": {
+      "created": "{{name}} created",
+      "updated": "{{name}} updated",
+      "deleted": "{{name}} deleted",
+      "duplicated": "{{name}} duplicated",
+      "errorLoading": "Error loading {{name}}",
+      "errorSaving": "Error saving",
+      "errorDeleting": "Error deleting",
+      "errorDuplicating": "Error duplicating",
+      "errorUpdatingRole": "Error updating role",
+      "roleChanged": "{{email}} is now {{role}}",
+      "batchUploaded": "{{count}} items uploaded",
+      "batchError": "Batch upload error: {{message}}"
+    },
+    "confirm": {
+      "deleteTitle": "Delete {{name}}?",
+      "deleteMessage": "Delete \"{{item}}\" permanently?",
+      "deleteCatalog": "This will delete the catalog and all its items permanently.",
+      "deletePack": "This will delete the pack and all its samples permanently.",
+      "changeRole": "Change role?",
+      "changeRoleMessage": "Change {{email}} to {{role}}?",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "quickActions": "Quick Actions",
+      "newCatalogBeats": "+ New Catalog (Beats)",
+      "newCatalogLoops": "+ New Catalog (Loops)",
+      "newSamplePack": "+ New Sample Pack",
+      "cardCatalogsBeats": "Catalogs (Beats)",
+      "cardCatalogsLoops": "Catalogs (Loops)",
+      "cardBeats": "Beats",
+      "cardLoops": "Loops",
+      "cardSamplePacks": "Sample Packs",
+      "cardSamples": "Samples",
+      "cardProdMix": "Prod Mix Masters",
+      "cardUsers": "Users",
+      "seoTitle": "Admin Dashboard",
+      "seoDesc": "Niv0 Beats admin panel - manage beats, sample packs, loops, and users."
+    },
+    "playlists": {
+      "title": "Catalogs ({{type}})",
+      "new": "New Catalog",
+      "search": "Search catalogs...",
+      "none": "No {{type}} catalogs yet.",
+      "catalog": "Catalog ({{type}})",
+      "editTitle": "Edit Catalog ({{type}})",
+      "newTitle": "New Catalog ({{type}})",
+      "create": "Create Catalog",
+      "samplePack": "Sample Pack",
+      "catalogDescription": "Catalog description",
+      "titleExample": "e.g. Trap Essentials Vol.1",
+      "catalogLabel": "Catalog"
+    },
+    "beats": {
+      "title": "Beats",
+      "new": "New Beat",
+      "editTitle": "Edit Beat",
+      "none": "No beats in this catalog.",
+      "batchTitle": "Batch Upload Beats",
+      "batchHint": "Filenames will be used as beat titles",
+      "uploadCount": "Upload {{count}} beat",
+      "uploadCount_plural": "Upload {{count}} beats",
+      "beatLabel": "Beat"
+    },
+    "loops": {
+      "title": "Loops",
+      "new": "New Loop",
+      "none": "No loops in this catalog.",
+      "editTitle": "Edit Loop",
+      "newTitle": "New Loop",
+      "catalogLabel": "Loop Catalog",
+      "loopLabel": "Loop"
+    },
+    "samples": {
+      "title": "Samples",
+      "new": "New Sample",
+      "none": "No samples in this pack.",
+      "batchTitle": "Batch Upload Samples",
+      "batchHint": "Filenames will be used as sample titles",
+      "uploadCount": "Upload {{count}} sample",
+      "uploadCount_plural": "Upload {{count}} samples",
+      "editTitle": "Edit Sample",
+      "newTitle": "New Sample",
+      "sampleLabel": "Sample"
+    },
+    "samplePacks": {
+      "title": "Sample Packs",
+      "new": "New Sample Pack",
+      "search": "Search sample packs...",
+      "none": "No sample packs.",
+      "samplesCount": "{{count}} samples",
+      "packLabel": "Sample Pack"
+    },
+    "prodmix": {
+      "title": "Prod Mix Masters",
+      "new": "New Prod Mix Master",
+      "editTitle": "Edit",
+      "newTitle": "New Prod Mix Master",
+      "none": "No items.",
+      "itemLabel": "Item",
+      "prodmixLabel": "Prod Mix Masters"
+    },
+    "users": {
+      "title": "Users",
+      "search": "Search users by name or email...",
+      "none": "No users.",
+      "noResults": "No users match your search.",
+      "makeAdmin": "Make Admin",
+      "revokeAdmin": "Revoke Admin",
+      "roleChanged": "{{email}} is now {{role}}",
+      "usersLabel": "Users"
+    },
+    "uploader": {
+      "uploading": "Uploading...",
+      "completed": "Completed",
+      "error": "Error",
+      "errorUploading": "Error uploading file",
+      "dragHint": "Drag a file here or click to select",
+      "supported": "Supported: {{accept}}",
+      "previewAlt": "preview",
+      "batchDrop": "Drop audio files here or click to select",
+      "batchSupported": "You can select multiple files at once",
+      "uploadingToB2": "Uploading files to B2...",
+      "creatingItems": "Creating {{name}}..."
+    }
+  }
+}

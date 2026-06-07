@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import "./CardPlaylist.css";
 
-export const CardPlaylist = ({ playlist, resourceType }) => {
+const CardPlaylist = memo(({ playlist, resourceType }) => {
   const getLink = () =>
     resourceType === "samples"
       ? `/samples/samplepack/${playlist._id}`
@@ -17,6 +18,7 @@ export const CardPlaylist = ({ playlist, resourceType }) => {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
+          loading="lazy"
         >
           <div className="card-playlist-info">
             <h3 className="card-playlist-title">{playlist.title}</h3>
@@ -25,4 +27,6 @@ export const CardPlaylist = ({ playlist, resourceType }) => {
       </Link>
     </div>
   );
-};
+});
+
+export { CardPlaylist };

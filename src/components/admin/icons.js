@@ -1,4 +1,4 @@
-import { MdDashboard, MdMusicNote, MdLoop, MdInventory2, MdTune, MdPeople, MdHome, MdLogout, MdAdd, MdEdit, MdContentCopy, MdDelete, MdArrowBack, MdCheckCircle, MdInfo, MdCloudUpload } from "react-icons/md";
+import { MdDashboard, MdMusicNote, MdLoop, MdInventory2, MdTune, MdPeople, MdHome, MdLogout, MdAdd, MdEdit, MdContentCopy, MdDelete, MdArrowBack, MdCheckCircle, MdInfo, MdCloudUpload, MdMenu, MdClose } from "react-icons/md";
 
 export const Icons = {
   Dashboard: MdDashboard,
@@ -17,4 +17,6 @@ export const Icons = {
   Check: MdCheckCircle,
   Info: MdInfo,
   Upload: MdCloudUpload,
+  Menu: MdMenu,
+  Close: MdClose,
 };

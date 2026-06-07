@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import styles from "./admin.module.css";
 
 export const AdminUploader = ({ folder = "uploads", onUpload, accept = "image/*,video/*,audio/*" }) => {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -13,18 +15,18 @@ export const AdminUploader = ({ folder = "uploads", onUpload, accept = "image/*,
     if (!file) return;
     setErrorMsg(null);
     setUploading(true);
-    setProgress("Uploading...");
+    setProgress(t("admin.uploader.uploading"));
     if (file.type.startsWith("image/")) {
       setPreview(URL.createObjectURL(file));
     }
     try {
       const res = await adminService.upload.file(file, folder);
-      setProgress("Completed");
+      setProgress(t("admin.uploader.completed"));
       if (onUpload) onUpload(res.data.url, file.name);
     } catch (err) {
       console.error("Error uploading file:", err);
-      setProgress("Error");
-      setErrorMsg(err.response?.data?.message || err.message || "Error uploading file");
+      setProgress(t("admin.uploader.error"));
+      setErrorMsg(err.response?.data?.message || err.message || t("admin.uploader.errorUploading"));
     } finally {
       setUploading(false);
       setTimeout(() => setProgress(null), 3000);
@@ -54,13 +56,13 @@ export const AdminUploader = ({ folder = "uploads", onUpload, accept = "image/*,
         onChange={(e) => handleFile(e.target.files[0])}
       />
       {preview ? (
-        <img src={preview} alt="preview" className={styles.previewImg} />
+        <img src={preview} alt={t("admin.uploader.previewAlt")} className={styles.previewImg} />
       ) : uploading ? (
         <p className={styles.uploadProgress}>{progress}</p>
       ) : (
         <div>
-          <p className={styles.dragHint}>Drag a file here or click to select</p>
-          <p className={styles.supportedHint}>Supported: {accept}</p>
+          <p className={styles.dragHint}>{t("admin.uploader.dragHint")}</p>
+          <p className={styles.supportedHint}>{t("admin.uploader.supported", { accept })}</p>
         </div>
       )}
       {errorMsg && (

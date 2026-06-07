@@ -3,6 +3,7 @@ import { BACKEND_URL } from "../config";
 
 const api = axios.create({
   baseURL: BACKEND_URL,
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -13,23 +14,72 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
+  });
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("userRole");
-      window.location.href = "/login";
+  (response) => {
+    if (response.data && typeof response.data === "object" && response.data.success === true) {
+      response.data = response.data.data;
     }
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/api/auth/refresh")
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const response = await api.post("/api/auth/refresh");
+        const newToken = response.data.token;
+        localStorage.setItem("authToken", newToken);
+        processQueue(null, newToken);
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userRole");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
     return Promise.reject(error);
   }
 );
 
 export const authService = {
-  googleLogin: (credential) =>
-    api.post("/api/auth/google-login", { credential }),
+  googleLogin: (credential) => api.post("/api/auth/google-login", { credential }),
   verifyToken: () => api.get("/api/auth/verify-token"),
+  refresh: () => api.post("/api/auth/refresh"),
+  logout: () => api.post("/api/auth/logout"),
 };
 
 export const beatsService = {
@@ -51,48 +101,48 @@ export const prodMixMasterService = {
 };
 
 export const adminService = {
-  dashboard: () => api.get("/api/admin/dashboard"),
+  dashboard: (signal) => api.get("/api/admin/dashboard", { signal }),
   users: {
-    list: () => api.get("/api/admin/users"),
+    list: (signal) => api.get("/api/admin/users", { signal }),
     updateRole: (id, role) => api.put(`/api/admin/users/${id}/role`, { role }),
   },
   playlists: {
-    list: () => api.get("/api/admin/playlists"),
+    list: (signal) => api.get("/api/admin/playlists", { signal }),
     create: (data) => api.post("/api/admin/playlists", data),
     update: (id, data) => api.put(`/api/admin/playlists/${id}`, data),
     delete: (id) => api.delete(`/api/admin/playlists/${id}`),
     duplicate: (id) => api.post(`/api/admin/playlists/${id}/duplicate`),
   },
   beats: {
-    list: (playlistId) => api.get(`/api/admin/playlists/${playlistId}/beats`),
+    list: (playlistId, signal) => api.get(`/api/admin/playlists/${playlistId}/beats`, { signal }),
     create: (playlistId, data) => api.post(`/api/admin/playlists/${playlistId}/beats`, data),
     batch: (playlistId, beats) => api.post(`/api/admin/playlists/${playlistId}/beats/batch`, { beats }),
     update: (id, data) => api.put(`/api/admin/beats/${id}`, data),
     delete: (id) => api.delete(`/api/admin/beats/${id}`),
   },
   loops: {
-    list: (playlistId) => api.get(`/api/admin/playlists/${playlistId}/loops`),
+    list: (playlistId, signal) => api.get(`/api/admin/playlists/${playlistId}/loops`, { signal }),
     create: (playlistId, data) => api.post(`/api/admin/playlists/${playlistId}/loops`, data),
     batch: (playlistId, loops) => api.post(`/api/admin/playlists/${playlistId}/loops/batch`, { loops }),
     update: (id, data) => api.put(`/api/admin/loops/${id}`, data),
     delete: (id) => api.delete(`/api/admin/loops/${id}`),
   },
   samplepacks: {
-    list: () => api.get("/api/admin/samplepacks"),
+    list: (signal) => api.get("/api/admin/samplepacks", { signal }),
     create: (data) => api.post("/api/admin/samplepacks", data),
     update: (id, data) => api.put(`/api/admin/samplepacks/${id}`, data),
     delete: (id) => api.delete(`/api/admin/samplepacks/${id}`),
     duplicate: (id) => api.post(`/api/admin/samplepacks/${id}/duplicate`),
   },
   samples: {
-    list: (packId) => api.get(`/api/admin/samplepacks/${packId}/samples`),
+    list: (packId, signal) => api.get(`/api/admin/samplepacks/${packId}/samples`, { signal }),
     create: (packId, data) => api.post(`/api/admin/samplepacks/${packId}/samples`, data),
     batch: (packId, samples) => api.post(`/api/admin/samplepacks/${packId}/samples/batch`, { samples }),
     update: (id, data) => api.put(`/api/admin/samples/${id}`, data),
     delete: (id) => api.delete(`/api/admin/samples/${id}`),
   },
   prodmix: {
-    list: () => api.get("/api/admin/prodmixmasters"),
+    list: (signal) => api.get("/api/admin/prodmixmasters", { signal }),
     create: (data) => api.post("/api/admin/prodmixmasters", data),
     update: (id, data) => api.put(`/api/admin/prodmixmasters/${id}`, data),
     delete: (id) => api.delete(`/api/admin/prodmixmasters/${id}`),
