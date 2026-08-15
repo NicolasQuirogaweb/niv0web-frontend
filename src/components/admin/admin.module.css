@@ -300,6 +300,15 @@
   margin-bottom: 24px;
 }
 
+.pageTitleTop {
+  composes: pageTitle;
+  margin: 8px 0 0;
+}
+
+.sectionHeader {
+  margin-bottom: 24px;
+}
+
 .formTitle {
   color: #fff;
   margin: 0 0 16px;
@@ -579,6 +588,28 @@
   flex-wrap: wrap;
 }
 
+.actionRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.inputError {
+  border: 1px solid #c62828;
+}
+
+.fieldError {
+  color: #c62828;
+  font-size: 12px;
+  margin: 4px 0 0;
+}
+
+.fieldErrorBlock {
+  color: #c62828;
+  font-size: 12px;
+  margin: 4px 0;
+}
+
 .input {
   width: 100%;
   padding: 10px 12px;
@@ -742,7 +773,52 @@
   transition: all 0.15s;
 }
 
+.roleBtnDanger {
+  color: var(--danger);
+}
+
+.roleBtnSuccess {
+  color: var(--success);
+}
+
+.badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeAdmin {
+  background: #1b3a1b;
+  color: #81c784;
+}
+
+.badgeUser {
+  background: #222;
+  color: #999;
+}
+
 /* Batch upload */
+.batchFormTitle {
+  color: #fff;
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.batchTitleIcon {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.noShrink {
+  flex-shrink: 0;
+}
+
 .batchBox {
   background: var(--surface);
   border: 1px solid var(--border);

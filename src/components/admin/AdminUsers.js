@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
 import { useConfirm } from "../../hooks/useConfirm";
-import { s, badge } from "./adminStyles";
 import { SkeletonLine, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
 
@@ -83,11 +82,10 @@ export const AdminUsers = () => {
               <p className={styles.userName}>{user.name || "—"}</p>
               <p className={styles.userEmailText}>{user.email || "—"}</p>
             </div>
-            <span style={badge(user.role)}>{user.role || "user"}</span>
+            <span className={`${styles.badge} ${user.role === "admin" ? styles.badgeAdmin : styles.badgeUser}`}>{user.role || "user"}</span>
             <button
               onClick={() => toggleRole(user)}
-              className={styles.roleBtn}
-              style={{ color: user.role === "admin" ? s.danger : s.success }}
+              className={`${styles.roleBtn} ${user.role === "admin" ? styles.roleBtnDanger : styles.roleBtnSuccess}`}
             >
               {user.role === "admin" ? t("admin.users.revokeAdmin") : t("admin.users.makeAdmin")}
             </button>
