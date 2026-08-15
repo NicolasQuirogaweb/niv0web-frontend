@@ -44,3 +44,7 @@ uploads/
 
 #
 .vercel
+
+# Committed by mistake — contains VERCEL_OIDC_TOKEN
+.env.vercel
+build_error.txt
