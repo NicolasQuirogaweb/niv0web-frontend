@@ -9,12 +9,12 @@ import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./Login.css";
 
-const isDev = typeof window !== "undefined" && window.location.hostname === "localhost";
+const isDev = process.env.NODE_ENV !== "production";
 
 export const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { saveAuth } = useAuth();
+  const { saveAuth, clearAuth } = useAuth();
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,14 +23,13 @@ export const Login = () => {
       setLoading(true);
       const { credential } = response;
       const res = await authService.googleLogin(credential);
-      const { token, user } = res.data;
-      saveAuth(token, user.email, user.role);
+      const { user } = res.data;
+      saveAuth(user.email, user.role);
       navigate("/homelogued", { replace: true });
     } catch (error) {
       console.error("Error en autenticaci\u00f3n de Google:", error);
       setLoginError(t("login.errorBlocked"));
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userEmail");
+      clearAuth();
     } finally {
       setLoading(false);
     }

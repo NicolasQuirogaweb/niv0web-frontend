@@ -6,21 +6,18 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+let unauthorizedHandler = () => {};
+export const setUnauthorizedHandler = (fn) => {
+  unauthorizedHandler = fn;
+};
 
 let isRefreshing = false;
 let failedQueue = [];
 
-const processQueue = (error, token = null) => {
+const processQueue = (error) => {
   failedQueue.forEach((prom) => {
     if (error) prom.reject(error);
-    else prom.resolve(token);
+    else prom.resolve();
   });
   failedQueue = [];
 };
@@ -43,28 +40,19 @@ api.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return api(originalRequest);
-        });
+        }).then(() => api(originalRequest));
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        const response = await api.post("/api/auth/refresh");
-        const newToken = response.data.token;
-        localStorage.setItem("authToken", newToken);
-        processQueue(null, newToken);
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        await api.post("/api/auth/refresh");
+        processQueue(null);
         return api(originalRequest);
       } catch (refreshError) {
-        processQueue(refreshError, null);
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userRole");
-        window.location.href = "/login";
+        processQueue(refreshError);
+        unauthorizedHandler();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
