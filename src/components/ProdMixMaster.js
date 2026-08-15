@@ -1,27 +1,19 @@
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
-import { authService } from "../services/api";
-import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./ProdMixMaster.css";
 
 export const ProdMixMaster = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { clearAuth } = useAuth();
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
+  const handleLogout = useLogout();
 
   return (
     <>
       <SEO title={t("prodMix.seoTitle")} description={t("prodMix.seoDesc")} />
     <section className="prod-mix-master-section">
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "20px 40px 0" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "12px 40px 0" }}>
         <h3 style={{ color: "#bbf0be", margin: 0, fontSize: 50 }}><Link to="/homelogued" style={{ color: "inherit", textDecoration: "none" }}>{t("nav.niv0Beats")}</Link></h3>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <LanguageSwitcher />

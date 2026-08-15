@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { authService, samplePacksService } from "../services/api";
-import { useAuth } from "../hooks/useAuth";
+import { useParams, Link } from "react-router-dom";
+import { samplePacksService } from "../services/api";
+import { useLogout } from "../hooks/useAuth";
+import { usePublicResource } from "../hooks/usePublicResource";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { AudioPlayer } from "./common/AudioPlayer";
 import { downloadFile } from "../utils/download";
@@ -13,38 +14,19 @@ import "./common/AudioPlayer.css";
 export const Samples = () => {
   const { t } = useTranslation();
   const { samplepackId } = useParams();
-  const navigate = useNavigate();
-  const { clearAuth } = useAuth();
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
-  const [packData, setPackData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const handleLogout = useLogout();
+  const { data: packData, loading, error, run, setLoading } = usePublicResource();
   const [playingSrc, setPlayingSrc] = useState(null);
 
   useEffect(() => {
-    const fetchSamples = async () => {
-      if (!samplepackId) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await samplePacksService.getSamples(samplepackId);
-        setPackData(res.data);
-      } catch (err) {
-        setError(err.message || t("samples.errorFallback"));
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSamples();
-  }, [samplepackId, t]);
+    if (!samplepackId) {
+      setLoading(false);
+      return;
+    }
+    run(samplePacksService.getSamples(samplepackId));
+  }, [samplepackId, run, setLoading]);
 
-  if (error) return <p>{t("samples.error")}{error}</p>;
+  if (error) return <p>{t("samples.error")}{error.message || t("samples.errorFallback")}</p>;
 
   const samples = packData?.samples || [];
 

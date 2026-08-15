@@ -1,23 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { authService } from "../services/api";
+import { Link } from "react-router-dom";
+import { useAuth, useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./HomeLogued.css";
 
 export const HomeLogued = () => {
   const { t } = useTranslation();
-  const { userEmail, isAdmin, clearAuth } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
+  const { userEmail, isAdmin } = useAuth();
+  const handleLogout = useLogout();
 
   return (
     <>

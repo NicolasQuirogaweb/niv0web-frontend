@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../hooks/useAuth";
-import { authService } from "../../services/api";
+import { useAuth, useLogout } from "../../hooks/useAuth";
 import { ToastProvider } from "../../hooks/useToast";
 import { ConfirmProvider } from "../../hooks/useConfirm";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
@@ -12,8 +11,8 @@ import styles from "./admin.module.css";
 export const AdminLayout = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const navigate = useNavigate();
-  const { userEmail, clearAuth } = useAuth();
+  const { userEmail } = useAuth();
+  const handleLogout = useLogout("/home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = [
@@ -27,12 +26,6 @@ export const AdminLayout = () => {
   const isActive = (item) => {
     if (item.end) return location.pathname === item.path;
     return location.pathname.startsWith(item.path);
-  };
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/home", { replace: true });
   };
 
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);

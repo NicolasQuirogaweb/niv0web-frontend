@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { authService, beatsService } from "../services/api";
-import { useAuth } from "../hooks/useAuth";
+import { useParams, Link } from "react-router-dom";
+import { beatsService } from "../services/api";
+import { useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { AudioPlayer } from "./common/AudioPlayer";
 import { downloadFile } from "../utils/download";
@@ -13,14 +13,7 @@ import "./common/AudioPlayer.css";
 export const Playlist = () => {
   const { t } = useTranslation();
   const { resourceType, playlistId } = useParams();
-  const navigate = useNavigate();
-  const { clearAuth } = useAuth();
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
+  const handleLogout = useLogout();
   const [playlistData, setPlaylistData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

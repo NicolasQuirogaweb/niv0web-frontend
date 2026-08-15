@@ -1,41 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
-import { authService, loopsService } from "../services/api";
-import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { loopsService } from "../services/api";
+import { useLogout } from "../hooks/useAuth";
+import { usePublicResource } from "../hooks/usePublicResource";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./Beats.css";
 
 export const Loops = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { clearAuth } = useAuth();
-  const [loops, setLoops] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
-  const [error, setError] = useState(null);
+  const handleLogout = useLogout();
+  const { data, loading, error, run } = usePublicResource();
+  const loops = data || [];
 
   useEffect(() => {
-    const fetchLoops = async () => {
-      try {
-        const res = await loopsService.getAll();
-        setLoops(res.data);
-      } catch (err) {
-        setError(err.message || t("loops.errorFallback"));
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchLoops();
-  }, [t]);
+    run(loopsService.getAll());
+  }, [run]);
 
-  if (error) return <p>{t("loops.error")}{error}</p>;
+  if (error) return <p>{t("loops.error")}{error.message || t("loops.errorFallback")}</p>;
 
   return (
     <>

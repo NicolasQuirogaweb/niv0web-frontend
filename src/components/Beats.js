@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
-import { authService, beatsService } from "../services/api";
-import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { beatsService } from "../services/api";
+import { useLogout } from "../hooks/useAuth";
+import { usePublicResource } from "../hooks/usePublicResource";
 import { CardPlaylist } from "./CardPlaylist";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
@@ -10,30 +11,13 @@ import "./Beats.css";
 
 export const Beats = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { clearAuth } = useAuth();
-  const [playlists, setPlaylists] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const handleLogout = async () => {
-    await authService.logout().catch(() => {});
-    clearAuth();
-    navigate("/", { replace: true });
-  };
+  const handleLogout = useLogout();
+  const { data, loading, run } = usePublicResource();
+  const playlists = data || [];
 
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const res = await beatsService.getAll();
-        setPlaylists(res.data);
-      } catch (error) {
-        console.error("Error fetching playlists:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPlaylists();
-  }, []);
+    run(beatsService.getAll());
+  }, [run]);
 
   return (
     <>
