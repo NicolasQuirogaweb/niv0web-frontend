@@ -21,7 +21,7 @@ export class ErrorBoundary extends React.Component {
       return (
         <section className="error-boundary">
           <h2>{i18n.t("errorBoundary.title")}</h2>
-          <p>{this.state.error?.message || i18n.t("errorBoundary.message")}</p>
+          <p>{i18n.t("errorBoundary.message")}</p>
           <button
             onClick={() => {
               this.setState({ hasError: false, error: null });
