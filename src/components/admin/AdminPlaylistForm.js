@@ -47,7 +47,7 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     if (!form.description.trim()) errs.description = t("admin.validation.descriptionRequired");
     else if (form.description.length > 300) errs.description = t("admin.validation.max300");
     if (!form.imageUrl.trim()) errs.imageUrl = t("admin.validation.imageRequired");
-    if (!isSamplePack && !form.backgroundVideo.trim()) errs.backgroundVideo = t("admin.validation.videoRequired");
+    if (!isSamplePack && !form.backgroundVideo.trim()) errs.backgroundVideo = t("admin.validation.backgroundRequired");
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -104,9 +104,9 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
         </div>
         {!isSamplePack && (
           <div>
-            <label className={styles.label}>{t("admin.common.backgroundVideoRequired")}</label>
-            <AdminUploader folder="videos" accept="video/*" onUpload={(url) => { setForm({ ...form, backgroundVideo: url }); setErrors({ ...errors, backgroundVideo: "" }); }} />
-            {form.backgroundVideo && <p className={styles.uploadSuccess}>{t("admin.common.videoUploaded")}</p>}
+            <label className={styles.label}>{t("admin.common.backgroundMediaRequired")}</label>
+            <AdminUploader folder="videos" accept="video/*,image/*,.jfif" onUpload={(url) => { setForm({ ...form, backgroundVideo: url }); setErrors({ ...errors, backgroundVideo: "" }); }} />
+            {form.backgroundVideo && <p className={styles.uploadSuccess}>{t("admin.common.backgroundUploaded")}</p>}
             {errors.backgroundVideo && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.backgroundVideo}</p>}
           </div>
         )}

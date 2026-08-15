@@ -6,6 +6,7 @@ import { useLogout } from "../hooks/useAuth";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { AudioPlayer } from "./common/AudioPlayer";
+import { BackgroundMedia } from "./common/BackgroundMedia";
 import { downloadFile } from "../utils/download";
 import { SEO } from "./common/SEO";
 import "./Playlist.css";
@@ -33,13 +34,7 @@ export const Samples = () => {
   return (
     <>
       <SEO description={t("samples.seoDesc")} />
-      {packData?.backgroundVideo ? (
-        <video className="background-video" autoPlay loop muted playsInline>
-          <source src={packData.backgroundVideo} type="video/mp4" />
-        </video>
-      ) : (
-        <div className="background-fallback" />
-      )}
+      <BackgroundMedia src={packData?.backgroundVideo} />
     <div className="playlist-page">
       <div className="playlist-header">
         <h2><Link to="/homelogued">{t("nav.niv0Beats")}</Link></h2>
