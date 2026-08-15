@@ -170,7 +170,8 @@
       "errorUpdatingRole": "Error updating role",
       "roleChanged": "{{email}} is now {{role}}",
       "batchUploaded": "{{count}} items uploaded",
-      "batchError": "Batch upload error: {{message}}"
+      "batchError": "Batch upload error: {{message}}",
+      "batchPartialError": "{{count}} file(s) failed to upload: {{names}}"
     },
     "confirm": {
       "deleteTitle": "Delete {{name}}?",

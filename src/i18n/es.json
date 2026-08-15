@@ -170,7 +170,8 @@
       "errorUpdatingRole": "Error al actualizar rol",
       "roleChanged": "{{email}} ahora es {{role}}",
       "batchUploaded": "{{count}} elementos subidos",
-      "batchError": "Error de subida masiva: {{message}}"
+      "batchError": "Error de subida masiva: {{message}}",
+      "batchPartialError": "{{count}} archivo(s) no se pudieron subir: {{names}}"
     },
     "confirm": {
       "deleteTitle": "¿Eliminar {{name}}?",

@@ -122,11 +122,22 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     setBatchProgress(t("admin.uploader.uploadingToB2"));
     try {
       const uploadRes = await adminService.upload.batch(batchFiles, batch.folder);
-      const urls = uploadRes.data.urls;
-      setBatchProgress(t("admin.uploader.creatingItems", { name: label.toLowerCase() }));
-      const itemsData = urls.map(batch.mapUpload);
-      await batch.batchFn(itemsData);
-      toast.success(t("admin.toast.batchUploaded", { count: itemsData.length }));
+      const results = uploadRes.data.results;
+      const succeeded = results.filter((r) => r.success);
+      const failed = results.filter((r) => !r.success);
+
+      if (succeeded.length) {
+        setBatchProgress(t("admin.uploader.creatingItems", { name: label.toLowerCase() }));
+        const itemsData = succeeded.map(batch.mapUpload);
+        await batch.batchFn(itemsData);
+        toast.success(t("admin.toast.batchUploaded", { count: itemsData.length }));
+      }
+      if (failed.length) {
+        toast.error(t("admin.toast.batchPartialError", {
+          count: failed.length,
+          names: failed.map((f) => f.originalName).join(", "),
+        }));
+      }
       setBatchMode(false);
       setBatchFiles([]);
       load();
