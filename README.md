@@ -83,12 +83,12 @@ Component → api.js (Axios interceptor adds JWT)
 
 ## Features
 
-- **Google OAuth login** — one-click sign-in with Google, JWT stored in localStorage + httpOnly refresh cookie
+- **Google OAuth login** — one-click sign-in with Google; access + refresh tokens both live in httpOnly cookies (see [BACKEND_MIGRATION_GUIDE.md](BACKEND_MIGRATION_GUIDE.md) for backend rollout status)
 - **Full i18n** — Spanish (default) and English, persisted in localStorage, toggleable via LanguageSwitcher
 - **SEO per page** — each route sets its own `<title>` and `<meta>` via `react-helmet-async`
 - **Audio player** — custom `<AudioPlayer>` with seek bar, time display, and singleton playback (only one plays at a time)
 - **Direct file download** — downloads proxy through the backend to bypass B2 CORS restrictions
-- **Real logout** — calls `POST /api/auth/logout`, clears localStorage and context, navigates to home
+- **Real logout** — calls `POST /api/auth/logout` via a shared `useLogout()` hook, clears auth state and navigates
 - **Admin panel** — full CRUD for all resources with drag-and-drop batch upload, confirmation dialogs, toast notifications
 - **Responsive design** — mobile-first with CSS breakpoints; admin panel uses CSS Modules for scoped styles
 - **AbortController** — cancels in-flight API requests on unmount to prevent race conditions and reduce 429 errors
@@ -119,13 +119,14 @@ niv0-web/
 │   ├── index.css               # Global styles, CSS variables
 │   │
 │   ├── context/
-│   │   └── AuthContext.js      # Auth state (token, email, role) + persistence
+│   │   └── AuthContext.js      # Auth state (email, role) — no token, cookie-based
 │   │
 │   ├── hooks/
-│   │   ├── useAuth.js          # useAuth() + useRequireAuth()
+│   │   ├── useAuth.js          # useAuth() + useLogout() + useRequireAuth()
 │   │   ├── useToast.js         # Toast notification system (Context + Provider)
 │   │   ├── useConfirm.js       # Confirmation modal (Context + Provider)
-│   │   ├── useFetch.js         # Generic fetch hook (loading/data/error/refetch)
+│   │   ├── useAdminResource.js # Shared admin CRUD state/handlers (list + form + delete + batch)
+│   │   ├── usePublicResource.js # Shared loading/data/error bookkeeping for public pages
 │   │   └── useResponsiveWidth.js # Responsive dimension hook
 │   │
 │   ├── services/
@@ -176,8 +177,7 @@ niv0-web/
 │       ├── AdminUploader.js    # Drag-drop file upload component
 │       ├── Spinner.js          # Spinner, SkeletonCard, SkeletonLine
 │       ├── icons.js            # Centralized react-icons/md mapping
-│       ├── adminStyles.js      # Design tokens (colors, radius, badge)
-│       └── admin.module.css    # CSS Modules (scoped admin styles)
+│       └── admin.module.css    # CSS Modules (scoped admin styles, incl. design tokens)
 │
 └── vercel.json                 # SPA rewrites
 ```
@@ -211,6 +211,8 @@ npm start               # starts on http://localhost:3000
 The app validates these at startup via `config.validateEnv()` and throws immediately if missing (fail-fast approach).
 
 > **Production:** Set these in the Vercel dashboard. The `.env.vercel` file is for local Vercel CLI development only.
+
+> **Security:** see [SECURITY.md](SECURITY.md) for known findings, including a Vercel token that needs rotation after having been committed to git history.
 
 ---
 
@@ -249,37 +251,39 @@ All routes use `React.lazy()` + `Suspense` for code splitting.
 
 ## Authentication Flow
 
+> The access token lives in an httpOnly cookie, mirroring the refresh token — the frontend never reads or writes it. See [BACKEND_MIGRATION_GUIDE.md](BACKEND_MIGRATION_GUIDE.md) for the backend contract this depends on and its rollout status.
+
 ```
 1. Login
    User clicks "Login with Google" → Google OAuth popup
      → onSuccess(id_token)
      → api.authService.googleLogin(credential)
      → POST /api/auth/google-login
-     → Backend returns { token, user: { email, role } }
-     → saveAuth() → localStorage + AuthContext
+     → Backend Set-Cookies the access token, returns { user: { email, role } }
+     → saveAuth(email, role) → AuthContext state (no localStorage)
 
 2. Persistence
-   App mount → AuthContext reads localStorage
-     → api.authService.verifyToken()
+   App mount → AuthContext always calls api.authService.verifyToken()
+     → cookie sent automatically (withCredentials: true)
      → If valid: set user state
-     → If invalid (401): clearAuth() → redirect to /home
+     → If invalid (401): clearAuth()
 
 3. Token Refresh
    Any API call → Axios response interceptor catches 401
      → Queue failed request
-     → POST /api/auth/refresh (httpOnly cookie)
-     → Retry original request with new token
-     → If refresh fails: clearAuth() → redirect to /login
+     → POST /api/auth/refresh (httpOnly cookie in, new one Set-Cookie'd back)
+     → Retry original request — new cookie is sent automatically
+     → If refresh fails: the registered "unauthorized" handler runs
+       clearAuth() → navigate("/login")
 
 4. Route Guards
    PrivateRoute → checks isAuthenticated → redirects to /home if false
    AdminRoute   → checks isAdmin → redirects to /homelogued if false
 
 5. Logout
-   handleLogout() → api.authService.logout()
-     → POST /api/auth/logout
-     → clearAuth() → localStorage.removeItem("authToken")
-     → navigate("/", { replace: true })
+   useLogout() → api.authService.logout()
+     → POST /api/auth/logout (backend clears both cookies)
+     → clearAuth() → navigate(redirectTo)
 ```
 
 ---
@@ -346,8 +350,7 @@ The admin panel is a protected section under `/admin/*` with:
 |---|---|---|
 | **Global** | Plain CSS with CSS custom properties | `index.css`, `App.css` |
 | **Public pages** | One CSS file per component | `Home.css`, `Beats.css`, `Playlist.css`, etc. |
-| **Admin panel** | CSS Modules (scoped class names) | `admin.module.css` |
-| **Design tokens** | JS object with color/radius values | `admin/adminStyles.js` |
+| **Admin panel** | CSS Modules (scoped class names), including color/radius design tokens as CSS custom properties | `admin.module.css` |
 | **Icons** | Centralized `react-icons/md` mapping | `admin/icons.js` |
 
 **Color scheme (dark theme):**
