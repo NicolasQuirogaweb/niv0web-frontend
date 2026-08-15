@@ -14,11 +14,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px 40px 0;
+  padding: 12px 40px 0;
 }
 
 .beats-section h3 {
   font-size: 50px;
+  margin: 0;
 }
 
 .beats-section h4 {
@@ -55,7 +56,7 @@
 }
 
 .beats-list {
-  margin-top: 100px;
+  margin-top: 24px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

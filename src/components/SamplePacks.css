@@ -21,7 +21,11 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px 40px 0;
+  padding: 12px 40px 0;
+}
+
+.samplepacks-section h3 {
+  margin: 0;
 }
 
 .samplepacks-section h4 {
@@ -56,7 +60,7 @@
 }
 
 .beats-list-samplepacks {
-  margin-top: 20px;
+  margin-top: 12px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

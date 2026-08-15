@@ -39,8 +39,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px 40px 0;
+  padding: 12px 40px 0;
   box-sizing: border-box;
+}
+
+.playlist-header h2 {
+  margin: 0;
 }
 
 .playlist-header h2 a {
