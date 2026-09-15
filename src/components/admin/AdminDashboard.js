@@ -32,7 +32,6 @@ export const AdminDashboard = () => {
     { label: t("admin.dashboard.cardLoops"), value: stats?.loops, path: "/admin/loops", color: "#48c9b0" },
     { label: t("admin.dashboard.cardSamplePacks"), value: stats?.samplepacks, path: "/admin/samplepacks", color: "#f5b041" },
     { label: t("admin.dashboard.cardSamples"), value: stats?.samples, path: "/admin/samplepacks", color: "#ec7063" },
-    { label: t("admin.dashboard.cardProdMix"), value: stats?.prodmix, path: "/admin/prodmix", color: "#af7ac5" },
     { label: t("admin.dashboard.cardUsers"), value: stats?.users, path: "/admin/users", color: "#85929e" },
   ];
 

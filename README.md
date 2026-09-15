@@ -46,7 +46,6 @@ index.js
   │                           │           ├── AdminLoops
   │                           │           ├── AdminSamplePacks
   │                           │           ├── AdminSamples
-  │                           │           ├── AdminProdMixMaster
   │                           │           └── AdminUsers
   │                           │
   │                           └── AdminUploader (drag & drop)
@@ -172,7 +171,6 @@ niv0-web/
 │       ├── AdminLoops.js       # CRUD for loops
 │       ├── AdminSamplePacks.js # CRUD list for sample packs
 │       ├── AdminSamples.js     # CRUD + batch upload for samples
-│       ├── AdminProdMixMaster.js# CRUD for prod mix items
 │       ├── AdminUsers.js       # List users + toggle admin role
 │       ├── AdminUploader.js    # Drag-drop file upload component
 │       ├── Spinner.js          # Spinner, SkeletonCard, SkeletonLine
@@ -241,7 +239,6 @@ The app validates these at startup via `config.validateEnv()` and throws immedia
 | `/admin/samplepacks` | `AdminSamplePacks` | Admin | CRUD: sample packs |
 | `/admin/samplepacks/new` | `AdminPlaylistForm` | Admin | Create sample pack |
 | `/admin/samplepacks/:id/samples` | `AdminSamples` | Admin | CRUD: samples in pack |
-| `/admin/prodmix` | `AdminProdMixMaster` | Admin | CRUD: prod mix items |
 | `/admin/users` | `AdminUsers` | Admin | Manage user roles |
 | `*` | 404 page | Public | Not found |
 

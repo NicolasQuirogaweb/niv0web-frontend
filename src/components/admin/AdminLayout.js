@@ -19,7 +19,6 @@ export const AdminLayout = () => {
     { path: "/admin", label: t("admin.nav.dashboard"), icon: Icons.Dashboard, end: true },
     { path: "/admin/playlists", label: t("admin.nav.catalogsBeats"), icon: Icons.MusicNote },
     { path: "/admin/samplepacks", label: t("admin.nav.samplePacks"), icon: Icons.Inventory },
-    { path: "/admin/prodmix", label: t("admin.nav.prodMixMasters"), icon: Icons.Tune },
     { path: "/admin/users", label: t("admin.nav.users"), icon: Icons.People },
   ];
 

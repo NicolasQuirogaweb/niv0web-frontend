@@ -112,7 +112,6 @@
       "catalogsBeats": "Catálogos (Beats)",
       "catalogsLoops": "Catálogos (Loops)",
       "samplePacks": "Sample Packs",
-      "prodMixMasters": "Prod Mix Masters",
       "users": "Usuarios"
     },
     "layout": {
@@ -195,7 +194,6 @@
       "cardLoops": "Loops",
       "cardSamplePacks": "Sample Packs",
       "cardSamples": "Samples",
-      "cardProdMix": "Prod Mix Masters",
       "cardUsers": "Usuarios",
       "seoTitle": "Panel Admin",
       "seoDesc": "Panel de administración de Niv0 Beats - gestiona beats, sample packs, loops y usuarios."
@@ -253,15 +251,6 @@
       "none": "No hay sample packs.",
       "samplesCount": "{{count}} samples",
       "packLabel": "Sample Pack"
-    },
-    "prodmix": {
-      "title": "Prod Mix Masters",
-      "new": "Nuevo Prod Mix Master",
-      "editTitle": "Editar",
-      "newTitle": "Nuevo Prod Mix Master",
-      "none": "Sin elementos.",
-      "itemLabel": "Elemento",
-      "prodmixLabel": "Prod Mix Masters"
     },
     "users": {
       "title": "Usuarios",

@@ -84,10 +84,6 @@ export const loopsService = {
   getAll: () => api.get("/api/resources/loops"),
 };
 
-export const prodMixMasterService = {
-  getAll: () => api.get("/api/resources/prodmixmasters"),
-};
-
 export const adminService = {
   dashboard: (signal) => api.get("/api/admin/dashboard", { signal }),
   users: {
@@ -128,12 +124,6 @@ export const adminService = {
     batch: (packId, samples) => api.post(`/api/admin/samplepacks/${packId}/samples/batch`, { samples }),
     update: (id, data) => api.put(`/api/admin/samples/${id}`, data),
     delete: (id) => api.delete(`/api/admin/samples/${id}`),
-  },
-  prodmix: {
-    list: (signal) => api.get("/api/admin/prodmixmasters", { signal }),
-    create: (data) => api.post("/api/admin/prodmixmasters", data),
-    update: (id, data) => api.put(`/api/admin/prodmixmasters/${id}`, data),
-    delete: (id) => api.delete(`/api/admin/prodmixmasters/${id}`),
   },
   upload: {
     file: (file, folder = "uploads") => {

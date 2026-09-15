@@ -12,7 +12,6 @@ import { AdminBeats } from "../components/admin/AdminBeats";
 import { AdminLoops } from "../components/admin/AdminLoops";
 import { AdminSamplePacks } from "../components/admin/AdminSamplePacks";
 import { AdminSamples } from "../components/admin/AdminSamples";
-import { AdminProdMixMaster } from "../components/admin/AdminProdMixMaster";
 import { AdminUsers } from "../components/admin/AdminUsers";
 
 const Home = lazy(() =>
@@ -139,7 +138,6 @@ export const MyRoutes = () => {
                 <Route path="samplepacks/new" element={<AdminPlaylistForm type="samples" />} />
                 <Route path="samplepacks/:id/edit" element={<AdminPlaylistForm type="samples" />} />
                 <Route path="samplepacks/:id/samples" element={<AdminSamples />} />
-                <Route path="prodmix" element={<AdminProdMixMaster />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>
               <Route
