@@ -39,6 +39,7 @@
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
     "entering": "Entering, please wait...",
+    "enteringSlow": "The server can take a few seconds to respond if it hasn't been used in a while.",
     "errorBlocked": "Login failed. If you're using ad blockers or security extensions, disable them and try again.",
     "errorGoogle": "Google login failed. Please try again.",
     "devHint": "Google Login may not work on localhost. Add http://localhost:3000 to your Google Cloud Console allowed origins.",

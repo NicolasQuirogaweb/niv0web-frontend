@@ -50,9 +50,13 @@ export const Login = () => {
           </div>
           <h1>{t("login.title")}</h1>
           {loading ? (
-            <p style={{ marginTop: "2rem", fontWeight: "bold" }}>
-              {t("login.entering")}
-            </p>
+            <div style={{ marginTop: "2rem" }}>
+              <div className="login-spinner" />
+              <p style={{ fontWeight: "bold", margin: 0 }}>
+                {t("login.entering")}
+              </p>
+              <p className="login-entering-hint">{t("login.enteringSlow")}</p>
+            </div>
           ) : (
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <div className="google-btn-wrapper">

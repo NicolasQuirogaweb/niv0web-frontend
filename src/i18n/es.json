@@ -39,6 +39,7 @@
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
     "entering": "Ingresando, por favor espera...",
+    "enteringSlow": "El servidor puede tardar unos segundos en responder si nadie lo usó hace rato.",
     "errorBlocked": "No pudimos iniciar sesión. Si estás usando bloqueadores o extensiones de seguridad, desactívalos e intenta de nuevo.",
     "errorGoogle": "Error al iniciar sesión con Google. Por favor, intenta nuevamente.",
     "devHint": "Es posible que Google Login no funcione en localhost. Agrega http://localhost:3000 a los orígenes permitidos en Google Cloud Console.",
