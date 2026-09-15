@@ -37,7 +37,7 @@
 }
 
 .samplepacks-section h3 a {
-  font-size: 50px;
+  font-size: 22px;
   text-decoration: none;
   color: #bbf0be;
   transition: font-size 0.2s ease, letter-spacing 0.2s ease;
@@ -51,7 +51,7 @@
 }
 
 .samplepacks-section h3 a:hover {
-  font-size: 60px;
+  font-size: 26px;
 }
 
 .samplepacks-section h5 a:hover {

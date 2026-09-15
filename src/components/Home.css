@@ -30,12 +30,12 @@
 .home-section .home-header-row h3 a {
   color: inherit;
   text-decoration: none;
-  font-size: 50px;
+  font-size: 22px;
   transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
 .home-section .home-header-row h3 a:hover {
-  font-size: 55px;
+  font-size: 26px;
   letter-spacing: 1px;
 }
 
