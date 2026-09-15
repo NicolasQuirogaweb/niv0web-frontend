@@ -58,10 +58,10 @@
 .beats-list {
   margin-top: 24px;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
   justify-content: center;
+  gap: 16px;
   margin-bottom: 10px;
 }
 
@@ -195,10 +195,8 @@
   }
 
   .beats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
+    grid-template-columns: repeat(auto-fill, 70px);
+    gap: 12px;
   }
 
   .back-to-catalogue {
