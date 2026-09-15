@@ -102,6 +102,17 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
     expect(apiMock.post).not.toHaveBeenCalled();
   });
 
+  it("does not attempt a refresh (or call the unauthorized handler) for a 401 from verify-token — an anonymous visitor is not a session failure", async () => {
+    const { apiMock, responseErrorHandler, setUnauthorizedHandler } = loadApiModule();
+    const handler = jest.fn();
+    setUnauthorizedHandler(handler);
+    const error = makeError({ config: { url: "/api/auth/verify-token", headers: {} } });
+
+    await expect(responseErrorHandler(error)).rejects.toBe(error);
+    expect(apiMock.post).not.toHaveBeenCalled();
+    expect(handler).not.toHaveBeenCalled();
+  });
+
   it("passes through non-401 errors unchanged", async () => {
     const { apiMock, responseErrorHandler } = loadApiModule();
     const error = makeError({ response: { status: 500 } });

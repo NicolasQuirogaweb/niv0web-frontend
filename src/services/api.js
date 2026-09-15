@@ -35,7 +35,8 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url?.includes("/api/auth/refresh")
+      !originalRequest.url?.includes("/api/auth/refresh") &&
+      !originalRequest.url?.includes("/api/auth/verify-token")
     ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
