@@ -13,16 +13,10 @@ const CardPlaylist = memo(({ playlist, resourceType }) => {
       <Link to={getLink()} className="card-playlist-link">
         <div
           className="card-playlist-image"
-          style={{
-            backgroundImage: `url(${playlist.imageUrl})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          loading="lazy"
-        >
-          <div className="card-playlist-info">
-            <h3 className="card-playlist-title">{playlist.title}</h3>
-          </div>
+          style={{ backgroundImage: `url(${playlist.imageUrl})` }}
+        />
+        <div className="card-playlist-info">
+          <h3 className="card-playlist-title">{playlist.title}</h3>
         </div>
       </Link>
     </div>

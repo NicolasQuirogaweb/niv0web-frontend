@@ -63,7 +63,7 @@
   margin-top: 12px;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 120px);
+  grid-template-columns: repeat(auto-fit, 120px);
   justify-content: center;
   gap: 16px;
   margin-bottom: 10px;
@@ -168,7 +168,7 @@
 
   .beats-list-samplepacks {
     margin-top: 30px;
-    grid-template-columns: repeat(auto-fill, 70px);
+    grid-template-columns: repeat(auto-fit, 70px);
     gap: 12px;
   }
 
