@@ -77,7 +77,8 @@
   width: 220px;
   height: 220px;
   border-radius: 10px;
-  object-fit: cover;
+  background-color: #111;
+  object-fit: contain;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 

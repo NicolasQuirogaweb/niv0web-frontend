@@ -108,6 +108,8 @@
   width: 200px;
   height: 200px;
   border-radius: 10px;
+  background-color: #111;
+  object-fit: contain;
 }
 
 .spotify-playlist-container {
