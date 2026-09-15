@@ -30,17 +30,19 @@ export const SamplePacks = () => {
           <button onClick={handleLogout} style={{ background: "none", border: "none", color: "#bbf0be", cursor: "pointer", fontSize: 14, fontFamily: "monospace" }}>{t("nav.logOut")}</button>
         </div>
       </div>
-      {loading ? (
-        <p>{t("samplePacks.loading")}</p>
-      ) : packs.length === 0 ? (
-        <p>{t("samplePacks.none")}</p>
-      ) : (
-        <div className="beats-list-samplepacks">
-          {packs.map((pack) => (
-            <CardPlaylist key={pack._id} playlist={pack} resourceType="samples" />
-          ))}
-        </div>
-      )}
+      <div className="samplepacks-body">
+        {loading ? (
+          <p>{t("samplePacks.loading")}</p>
+        ) : packs.length === 0 ? (
+          <p>{t("samplePacks.none")}</p>
+        ) : (
+          <div className="beats-list-samplepacks">
+            {packs.map((pack) => (
+              <CardPlaylist key={pack._id} playlist={pack} resourceType="samples" />
+            ))}
+          </div>
+        )}
+      </div>
       <div className="back-to-catalogue">
         <Link to="/homelogued"><button className="back-to-catalogue-btn" aria-label={t("nav.backToHome")}>{t("nav.backToHome")}</button></Link>
       </div>
