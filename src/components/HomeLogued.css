@@ -90,11 +90,6 @@
   text-decoration: none;
   font-size: 32px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#bbf0be, #bbf0be);
-  background-repeat: no-repeat;
-  background-position: 0% 100%;
-  background-size: 0% 3px;
-  padding-bottom: 4px;
 }
 
 .home-section-logued .beats-home a {
@@ -124,7 +119,6 @@
   font-size: 36px;
   letter-spacing: 1px;
   text-shadow: 0 0 15px rgba(187, 240, 190, 0.5);
-  background-size: 100% 3px;
 }
 
 .home-section-logued p {
