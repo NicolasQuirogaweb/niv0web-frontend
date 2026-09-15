@@ -74,8 +74,8 @@
 }
 
 .playlist-image {
-  width: 220px;
-  height: 220px;
+  width: 120px;
+  height: 120px;
   border-radius: 10px;
   object-fit: cover;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
@@ -243,8 +243,8 @@
   }
 
   .playlist-image {
-    width: 180px;
-    height: 180px;
+    width: 70px;
+    height: 70px;
   }
 
   .playlist-title {
