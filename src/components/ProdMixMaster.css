@@ -110,6 +110,13 @@
   border-radius: 10px;
 }
 
+.prodmix-cover-image {
+  margin-top: 50px;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+}
+
 .spotify-playlist-container {
   display: flex;
   justify-content: center;
@@ -156,6 +163,12 @@
   .prodmixmaster-imagen {
     width: 100px;
     height: 100px;
+    margin-top: 20px;
+  }
+
+  .prodmix-cover-image {
+    width: 70px;
+    height: 70px;
     margin-top: 20px;
   }
 

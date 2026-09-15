@@ -21,7 +21,7 @@ export const ProdMixMaster = () => {
         </div>
       </div>
       <div className="prodmix-content">
-        <img src="/images/prodmixmasters/img-sonido-png.png" alt={t("prodMix.iconAlt")} className="prodmixmaster-imagen" loading="lazy" />
+        <img src="/images/prodmixmasters/img-sonido-png.png" alt={t("prodMix.iconAlt")} className="prodmix-cover-image" loading="lazy" />
         <h2>{t("prodMix.title")}</h2>
         <p>{t("prodMix.subtitle")}</p>
         <a className="spotify-playlist-link"
