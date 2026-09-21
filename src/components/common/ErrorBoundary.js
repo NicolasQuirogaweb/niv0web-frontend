@@ -14,6 +14,19 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught:", error, info);
+
+    // After a new deploy, a browser with a stale cached shell (service
+    // worker or otherwise) can try to fetch a JS chunk whose hash no
+    // longer exists on the server, throwing here instead of navigating.
+    // Reload once to pick up the current build instead of showing a
+    // dead screen; guarded so a genuinely broken deploy doesn't loop.
+    const isChunkError = /loading chunk|dynamically imported module|importing a module script failed/i.test(
+      error?.message || ""
+    );
+    if (isChunkError && !sessionStorage.getItem("chunkReloaded")) {
+      sessionStorage.setItem("chunkReloaded", "1");
+      window.location.reload();
+    }
   }
 
   render() {

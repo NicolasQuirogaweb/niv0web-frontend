@@ -7,7 +7,7 @@ export const AdminRoute = ({ children }) => {
   const { isAuthenticated, isAdmin, loading } = useAuth();
 
   if (loading) return <p>{t("loading")}</p>;
-  if (!isAuthenticated) return <Navigate to="/home" replace />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (!isAdmin) return <Navigate to="/homelogued" replace />;
 
   return children;

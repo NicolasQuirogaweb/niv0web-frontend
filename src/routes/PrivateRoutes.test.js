@@ -11,7 +11,7 @@ const renderPrivateRoute = () =>
     <MemoryRouter initialEntries={["/protected"]}>
       <Routes>
         <Route path="/protected" element={<PrivateRoute><div>secret content</div></PrivateRoute>} />
-        <Route path="/home" element={<div>home page</div>} />
+        <Route path="/login" element={<div>login page</div>} />
       </Routes>
     </MemoryRouter>
   );
@@ -21,13 +21,13 @@ describe("PrivateRoute", () => {
     useAuth.mockReturnValue({ isAuthenticated: false, loading: true });
     renderPrivateRoute();
     expect(screen.queryByText("secret content")).not.toBeInTheDocument();
-    expect(screen.queryByText("home page")).not.toBeInTheDocument();
+    expect(screen.queryByText("login page")).not.toBeInTheDocument();
   });
 
-  it("redirects unauthenticated users to /home", () => {
+  it("redirects unauthenticated users to /login", () => {
     useAuth.mockReturnValue({ isAuthenticated: false, loading: false });
     renderPrivateRoute();
-    expect(screen.getByText("home page")).toBeInTheDocument();
+    expect(screen.getByText("login page")).toBeInTheDocument();
     expect(screen.queryByText("secret content")).not.toBeInTheDocument();
   });
 

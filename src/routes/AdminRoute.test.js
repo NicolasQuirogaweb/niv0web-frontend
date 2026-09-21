@@ -11,17 +11,17 @@ const renderAdminRoute = () =>
     <MemoryRouter initialEntries={["/admin"]}>
       <Routes>
         <Route path="/admin" element={<AdminRoute><div>admin content</div></AdminRoute>} />
-        <Route path="/home" element={<div>home page</div>} />
+        <Route path="/login" element={<div>login page</div>} />
         <Route path="/homelogued" element={<div>homelogued page</div>} />
       </Routes>
     </MemoryRouter>
   );
 
 describe("AdminRoute", () => {
-  it("redirects unauthenticated users to /home", () => {
+  it("redirects unauthenticated users to /login", () => {
     useAuth.mockReturnValue({ isAuthenticated: false, isAdmin: false, loading: false });
     renderAdminRoute();
-    expect(screen.getByText("home page")).toBeInTheDocument();
+    expect(screen.getByText("login page")).toBeInTheDocument();
   });
 
   it("redirects authenticated non-admin users to /homelogued", () => {

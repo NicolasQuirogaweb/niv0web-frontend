@@ -7,7 +7,7 @@ export const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) return <p>{t("loading")}</p>;
-  if (!isAuthenticated) return <Navigate to="/home" replace />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return children;
 };
