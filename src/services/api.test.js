@@ -42,6 +42,15 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
     expect(apiMock.interceptors.request.use).not.toHaveBeenCalled();
   });
 
+  it("configures a bounded timeout so a hung request eventually fails instead of hanging forever", () => {
+    loadApiModule();
+    expect(axios.create).toHaveBeenCalledWith(
+      expect.objectContaining({ timeout: expect.any(Number) })
+    );
+    const { timeout } = axios.create.mock.calls[0][0];
+    expect(timeout).toBeGreaterThan(0);
+  });
+
   it("triggers exactly one /api/auth/refresh call for a single 401, then retries the original request without touching localStorage or Authorization headers", async () => {
     const { apiMock, responseErrorHandler } = loadApiModule();
     apiMock.post.mockResolvedValue({});

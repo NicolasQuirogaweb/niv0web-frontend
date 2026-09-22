@@ -4,6 +4,12 @@ import { BACKEND_URL } from "../config";
 const api = axios.create({
   baseURL: BACKEND_URL,
   withCredentials: true,
+  // Without this, a request that never gets a response (a tab resumed
+  // after being backgrounded for a long time, a cold/unreachable
+  // backend) hangs forever — the caller's loading state never clears
+  // and nothing ever redirects to login, even if the session is
+  // actually expired. 20s is generous enough for a cold start.
+  timeout: 20000,
 });
 
 let unauthorizedHandler = () => {};
