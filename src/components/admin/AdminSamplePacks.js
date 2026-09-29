@@ -7,6 +7,7 @@ import { useConfirm } from "../../hooks/useConfirm";
 import { Icons } from "./icons";
 import { SkeletonCard, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
+import { isAbortError } from "../../utils/isAbortError";
 
 export const AdminSamplePacks = () => {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ export const AdminSamplePacks = () => {
     adminService.samplepacks.list(signal)
       .then((res) => setPacks(res.data))
       .catch((err) => {
-        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+        if (isAbortError(err)) return;
         const msg = err.response?.data?.message || err.message;
         toast.error(msg);
       })

@@ -2,17 +2,15 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { samplePacksService } from "../services/api";
-import { useLogout } from "../hooks/useAuth";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { CardPlaylist } from "./CardPlaylist";
-import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
 import "./SamplePacks.css";
 
 export const SamplePacks = () => {
   const { t } = useTranslation();
-  const handleLogout = useLogout();
-  const { data, loading, run } = usePublicResource();
+  const { data, loading, error, run } = usePublicResource();
   const packs = data || [];
 
   useEffect(() => {
@@ -23,16 +21,12 @@ export const SamplePacks = () => {
     <>
       <SEO title={t("samplePacks.seoTitle")} description={t("samplePacks.seoDesc")} />
     <section className="samplepacks-section">
-      <div className="samplepacks-info">
-        <h3><Link to="/homelogued">{t("nav.niv0Beats")}</Link></h3>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <LanguageSwitcher />
-          <button onClick={handleLogout} style={{ background: "none", border: "none", color: "#bbf0be", cursor: "pointer", fontSize: 14, fontFamily: "monospace" }}>{t("nav.logOut")}</button>
-        </div>
-      </div>
+      <PageHeader className="samplepacks-info" />
       <div className="samplepacks-body">
         {loading ? (
           <p>{t("samplePacks.loading")}</p>
+        ) : error ? (
+          <p role="alert">{t("samples.error")}{error.message || t("samples.errorFallback")}</p>
         ) : packs.length === 0 ? (
           <p>{t("samplePacks.none")}</p>
         ) : (
@@ -44,7 +38,7 @@ export const SamplePacks = () => {
         )}
       </div>
       <div className="back-to-catalogue">
-        <Link to="/homelogued"><button className="back-to-catalogue-btn" aria-label={t("nav.backToHome")}>{t("nav.backToHome")}</button></Link>
+        <Link to="/homelogued" className="back-to-catalogue-btn">{t("nav.backToHome")}</Link>
       </div>
     </section>
     </>

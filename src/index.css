@@ -59,3 +59,8 @@ p {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
+/* Los botones de "volver" son links: se ven como botón pero navegan como link. */
+a.back-to-catalogue-btn {
+  display: inline-block;
+  text-decoration: none;
+}

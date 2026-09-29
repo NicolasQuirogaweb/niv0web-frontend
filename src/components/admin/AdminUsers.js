@@ -5,6 +5,7 @@ import { useToast } from "../../hooks/useToast";
 import { useConfirm } from "../../hooks/useConfirm";
 import { SkeletonLine, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
+import { isAbortError } from "../../utils/isAbortError";
 
 export const AdminUsers = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export const AdminUsers = () => {
     adminService.users.list(signal)
       .then((res) => setUsers(res.data))
       .catch((err) => {
-        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+        if (isAbortError(err)) return;
         toast.error(err.response?.data?.message || t("admin.toast.errorLoading", { name: t("admin.users.usersLabel") }));
       })
       .finally(() => setLoading(false));

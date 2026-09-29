@@ -7,6 +7,7 @@ import { useConfirm } from "../../hooks/useConfirm";
 import { Icons } from "./icons";
 import { SkeletonCard, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
+import { isAbortError } from "../../utils/isAbortError";
 
 export const AdminPlaylists = ({ type = "beats" }) => {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ export const AdminPlaylists = ({ type = "beats" }) => {
     adminService.playlists.list(signal)
       .then((res) => setPlaylists(res.data.filter((p) => p.type === type)))
       .catch((err) => {
-        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+        if (isAbortError(err)) return;
         const msg = err.response?.data?.message || err.message;
         toast.error(msg);
       })

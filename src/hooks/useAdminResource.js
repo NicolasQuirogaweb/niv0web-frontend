@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { adminService } from "../services/api";
 import { useToast } from "./useToast";
 import { useConfirm } from "./useConfirm";
+import { isAbortError } from "../utils/isAbortError";
 
 /**
  * Shared state/handlers for the admin "list + form + delete" CRUD screens
@@ -35,7 +36,7 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
       setItems(result.items);
       setParent(result.parent ?? null);
     } catch (err) {
-      if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+      if (isAbortError(err)) return;
       toast.error(t("admin.toast.errorLoading", { name: label }));
     } finally {
       setLoading(false);
