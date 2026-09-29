@@ -19,17 +19,16 @@ export const Home = () => {
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <LanguageSwitcher />
             {isAuthenticated ? (
-              <h4><Link to="/homelogued">{t("nav.logIn")}</Link></h4>
+              <h4><Link to="/homelogued">{t("nav.enter")}</Link></h4>
             ) : (
-              <>
-                <h4><Link to="/login">{t("nav.logIn")}</Link></h4>
-                <h4><Link to="/login">{t("nav.signUp")}</Link></h4>
-              </>
+              // Google crea la cuenta en el primer login, así que es un solo botón.
+              <h4><Link to="/login">{t("nav.logInOrSignUp")}</Link></h4>
             )}
           </div>
         </div>
         <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
         <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
+        <h6 className="loops-home"><Link to="/loops">{t("home.loops")}</Link></h6>
         <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
         <p>{t("home.cta")}</p>
       </div>

@@ -2,7 +2,6 @@
   "nav": {
     "niv0Beats": "niv0 beats",
     "logIn": "iniciar sesión",
-    "signUp": "Registrarse",
     "logOut": "Cerrar sesión",
     "adminPanel": "PANEL ADMIN",
     "contactMe": "Contacto",
@@ -13,7 +12,9 @@
     "backToLoopCatalogs": "Volver a Catálogos de Loops",
     "backToCatalogue": "Volver al catálogo",
     "instagram": "Instagram",
-    "toggleMenu": "Abrir menú"
+    "toggleMenu": "Abrir menú",
+    "enter": "entrar",
+    "logInOrSignUp": "ingresar / registrarse"
   },
   "lang": {
     "switchTo": "Cambiar a Español",
@@ -25,7 +26,8 @@
   },
   "player": {
     "play": "Reproducir",
-    "pause": "Pausa"
+    "pause": "Pausa",
+    "seek": "Posición de reproducción"
   },
   "home": {
     "beats": "BEATS",
@@ -34,7 +36,8 @@
     "cta": "REGISTRATE / INICIA SESIÓN PARA ACCEDER",
     "seoTitle": "Inicio",
     "seoDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master. Regístrate para acceder a beats exclusivos y sample packs.",
-    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master para usuarios registrados."
+    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master para usuarios registrados.",
+    "loops": "LOOPS"
   },
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
@@ -63,7 +66,8 @@
     "none": "No se encontraron beats para esta playlist.",
     "freeLicense": "Gratis para uso sin fines de lucro únicamente, contáctame y compra una licencia.",
     "download": "Descargar",
-    "seoDesc": "Escucha pistas de las playlists de Niv0 Beats."
+    "seoDesc": "Escucha pistas de las playlists de Niv0 Beats.",
+    "downloadError": "No se pudo descargar. Probá de nuevo en un rato."
   },
   "samplePacks": {
     "loading": "Cargando sample packs...",

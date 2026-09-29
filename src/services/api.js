@@ -73,12 +73,12 @@ api.interceptors.response.use(
 export const authService = {
   googleLogin: (credential) => api.post("/api/auth/google-login", { credential }),
   verifyToken: () => api.get("/api/auth/verify-token"),
-  refresh: () => api.post("/api/auth/refresh"),
   logout: () => api.post("/api/auth/logout"),
 };
 
+// Beats y loops comparten el modelo Playlist; el backend filtra por ?type.
 export const beatsService = {
-  getAll: () => api.get("/api/resources/playlists"),
+  getAll: () => api.get("/api/resources/playlists", { params: { type: "beats" } }),
   getById: (id) => api.get(`/api/resources/beats/playlist/${id}`),
 };
 
@@ -88,7 +88,14 @@ export const samplePacksService = {
 };
 
 export const loopsService = {
-  getAll: () => api.get("/api/resources/loops"),
+  getAll: () => api.get("/api/resources/playlists", { params: { type: "loops" } }),
+  getById: (id) => api.get(`/api/resources/loops/playlist/${id}`),
+};
+
+export const playlistServices = { beats: beatsService, loops: loopsService };
+
+export const downloadService = {
+  file: (url) => api.get("/api/download", { params: { url }, responseType: "blob", timeout: 120000 }),
 };
 
 export const adminService = {

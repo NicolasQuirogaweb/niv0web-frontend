@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
 import { AdminUploader } from "./AdminUploader";
+import { isAbortError } from "../../utils/isAbortError";
 import styles from "./admin.module.css";
 
 const INPUT_ERROR = { border: "1px solid #c62828" };
@@ -25,15 +26,21 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
   const itemLabel = isSamplePack ? t("admin.samplePacks.packLabel") : type === "loops" ? t("admin.loops.catalogLabel") : t("admin.playlists.catalogLabel");
 
   useEffect(() => {
-    if (isEdit) {
-      adminService.playlists.list()
-        .then((res) => {
-          const item = res.data.find((p) => p._id === id);
-          if (item) setForm({ title: item.title, description: item.description, imageUrl: item.imageUrl, backgroundVideo: item.backgroundVideo || "" });
-        })
-        .catch(() => toast.error(t("admin.toast.errorLoading", { name: itemLabel.toLowerCase() })));
-    }
-  }, [id, isEdit, toast, t, itemLabel]);
+    if (!isEdit) return;
+    // Los sample packs viven en otra colección: buscarlos en /playlists dejaba el form vacío.
+    const source = isSamplePack ? adminService.samplepacks : adminService.playlists;
+    const ctrl = new AbortController();
+    source.list(ctrl.signal)
+      .then((res) => {
+        const item = res.data.find((p) => p._id === id);
+        if (item) setForm({ title: item.title, description: item.description, imageUrl: item.imageUrl, backgroundVideo: item.backgroundVideo || "" });
+      })
+      .catch((err) => {
+        if (isAbortError(err)) return;
+        toast.error(t("admin.toast.errorLoading", { name: itemLabel.toLowerCase() }));
+      });
+    return () => ctrl.abort();
+  }, [id, isEdit, isSamplePack, toast, t, itemLabel]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -58,10 +65,11 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     setSaving(true);
     try {
       if (isSamplePack) {
-        if (isEdit) await adminService.samplepacks.update(id, form);
-        else await adminService.samplepacks.create(form);
+        const { backgroundVideo, ...packData } = form;
+        if (isEdit) await adminService.samplepacks.update(id, packData);
+        else await adminService.samplepacks.create(packData);
       } else {
-        const data = { ...form, type, backgroundVideo: form.backgroundVideo || " " };
+        const data = { ...form, type };
         if (isEdit) await adminService.playlists.update(id, data);
         else await adminService.playlists.create(data);
       }
@@ -83,15 +91,15 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
       </h2>
       <form onSubmit={handleSubmit} className={styles.formStack}>
         <div>
-          <label className={styles.label}>{t("admin.common.titleRequired")}</label>
-          <input name="title" value={form.title} onChange={handleChange} className={styles.input}
+          <label htmlFor="playlist-title" className={styles.label}>{t("admin.common.titleRequired")}</label>
+          <input id="playlist-title" name="title" value={form.title} onChange={handleChange} className={styles.input}
             style={errors.title ? INPUT_ERROR : undefined}
             placeholder={t("admin.playlists.titleExample")} />
           {errors.title && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.title}</p>}
         </div>
         <div>
-          <label className={styles.label}>{t("admin.common.descriptionRequired")}</label>
-          <textarea name="description" value={form.description} onChange={handleChange} className={styles.textareaLg}
+          <label htmlFor="playlist-description" className={styles.label}>{t("admin.common.descriptionRequired")}</label>
+          <textarea id="playlist-description" name="description" value={form.description} onChange={handleChange} className={styles.textareaLg}
             style={errors.description ? INPUT_ERROR : undefined}
             placeholder={t("admin.playlists.catalogDescription")} />
           {errors.description && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.description}</p>}

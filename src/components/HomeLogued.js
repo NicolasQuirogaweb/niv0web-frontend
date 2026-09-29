@@ -27,6 +27,7 @@ export const HomeLogued = () => {
         </div>
         <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
         <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
+        <h6 className="loops-home"><Link to="/loops">{t("home.loops")}</Link></h6>
         <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
         {isAdmin && (
           <h6 className="admin-home" style={{ marginTop: 16 }}>
