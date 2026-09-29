@@ -1,15 +1,17 @@
-# Security notes
+# Security
 
-Findings and known trade-offs that don't have a fix contained entirely within this repo, tracked here instead of being silently left in code comments.
+## Reporting
 
-## 1. `VERCEL_OIDC_TOKEN` exposed in git history
+If you find a vulnerability, write to nquirogawebdev@gmail.com instead of opening a public issue.
 
-Commit `765e72f` removed `.env.vercel` from tracking, but the file (and the `VERCEL_OIDC_TOKEN` it contained) still exists in the git history of this repository. Removing a file from tracking does not invalidate a secret that was ever committed.
+## Known issues
 
-**Action needed:** rotate this token in the Vercel project settings. Once rotated, the old value in git history is harmless.
+### `VERCEL_OIDC_TOKEN` in git history
 
-## 2. Access token and role stored in `localStorage` — RESOLVED on the frontend, pending backend rollout
+Commit `765e72f` stopped tracking `.env.vercel`, but the file (with a `VERCEL_OIDC_TOKEN`) is still in the history. Untracking a file doesn't invalidate a secret that was already committed.
 
-**Status:** the frontend side of this migration is done. `AuthContext.js`/`services/api.js` no longer read or write `authToken`/`userEmail`/`userRole` to `localStorage` — `userEmail`/`userRole` live only in React state, re-derived from `GET /api/auth/verify-token` on every mount, and no request manually sets an `Authorization` header anymore (`withCredentials: true` lets the browser attach cookies automatically).
+**Pending:** rotate the token in the Vercel project settings. After that, the value left in the history is harmless.
 
-**This only works once the backend also ships its half.** See [BACKEND_MIGRATION_GUIDE.md](BACKEND_MIGRATION_GUIDE.md) for the full spec to hand to whoever (or whichever Claude session) is working in the backend repo: it needs to `Set-Cookie` the access token as `httpOnly`/`Secure`/`SameSite=None` on login and refresh (mirroring the refresh-token cookie, which already works cross-site in production), authenticate `verify-token` purely from that cookie, and clear it on logout. Until the backend deploys this, logging in against this frontend will not persist a session — see the guide's rollout section for the safe deploy order (backend first, in dual-mode, then this frontend, then backend removes the old body/header fallback).
+## Resolved
+
+- **Token and role in `localStorage`:** the session now lives in httpOnly cookies set by the API. The frontend doesn't read or store tokens, and the role comes from `GET /api/auth/verify-token`. See [the backend ADR](https://github.com/NicolasQuirogaweb/niv0web-backend/blob/main/docs/decisions/0001-httponly-cookies.md).
