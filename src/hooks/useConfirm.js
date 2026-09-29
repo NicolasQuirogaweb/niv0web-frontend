@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useRef } from "react";
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const ConfirmContext = createContext(null);
@@ -27,6 +27,18 @@ export const ConfirmProvider = ({ children }) => {
     setState({ open: false, title: "", message: "" });
   }, []);
 
+  // Al abrir, el foco va a "Cancelar" (la opción segura) y Esc cierra.
+  const cancelRef = useRef(null);
+  useEffect(() => {
+    if (!state.open) return;
+    cancelRef.current?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") handleCancel();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [state.open, handleCancel]);
+
   return (
     <ConfirmContext.Provider value={confirm}>
       {children}
@@ -41,6 +53,10 @@ export const ConfirmProvider = ({ children }) => {
           }}
         >
           <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="confirm-title"
+            aria-describedby="confirm-message"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: "#111", border: "1px solid #333", borderRadius: 8,
@@ -48,14 +64,15 @@ export const ConfirmProvider = ({ children }) => {
               boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
             }}
           >
-            <p style={{ color: "#fff", margin: "0 0 8px", fontSize: 15, fontWeight: "bold" }}>
+            <p id="confirm-title" style={{ color: "#fff", margin: "0 0 8px", fontSize: 15, fontWeight: "bold" }}>
               {state.title}
             </p>
-            <p style={{ color: "#aaa", margin: "0 0 20px", fontSize: 13 }}>
+            <p id="confirm-message" style={{ color: "#aaa", margin: "0 0 20px", fontSize: 13 }}>
               {state.message}
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button
+                ref={cancelRef}
                 onClick={handleCancel}
                 style={{
                   background: "transparent", border: "1px solid #333",

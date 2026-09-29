@@ -43,6 +43,16 @@ export const AudioPlayer = ({ src, onPlay, playingId }) => {
     el.currentTime = ratio * duration;
   };
 
+  // Flechas para adelantar/atrasar 5s desde el teclado.
+  const handleSeekKey = (e) => {
+    const el = audioRef.current;
+    if (!el || !duration) return;
+    const step = { ArrowRight: 5, ArrowUp: 5, ArrowLeft: -5, ArrowDown: -5 }[e.key];
+    if (step === undefined) return;
+    e.preventDefault();
+    el.currentTime = Math.min(duration, Math.max(0, el.currentTime + step));
+  };
+
   return (
     <div className="audio-player">
       <audio
@@ -60,7 +70,18 @@ export const AudioPlayer = ({ src, onPlay, playingId }) => {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg>
         )}
       </button>
-      <div className="audio-progress" onClick={handleSeek}>
+      <div
+        className="audio-progress"
+        onClick={handleSeek}
+        onKeyDown={handleSeekKey}
+        role="slider"
+        tabIndex={0}
+        aria-label={t("player.seek")}
+        aria-valuemin={0}
+        aria-valuemax={Math.round(duration)}
+        aria-valuenow={Math.round(current)}
+        aria-valuetext={formatTime(current)}
+      >
         <div className="audio-progress-track" />
         <div className="audio-progress-fill" style={{ width: `${duration ? (current / duration) * 100 : 0}%` }} />
       </div>
