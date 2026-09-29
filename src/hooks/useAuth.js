@@ -20,14 +20,3 @@ export const useLogout = (redirectTo = "/") => {
     navigate(redirectTo, { replace: true });
   }, [clearAuth, navigate, redirectTo]);
 };
-
-export const useRequireAuth = () => {
-  const { isAuthenticated, loading } = useAuth();
-  const navigate = useNavigate();
-
-  if (!loading && !isAuthenticated) {
-    navigate("/", { replace: true });
-  }
-
-  return { isAuthenticated, loading };
-};

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth, useLogout } from "../../hooks/useAuth";
@@ -18,6 +18,7 @@ export const AdminLayout = () => {
   const navItems = [
     { path: "/admin", label: t("admin.nav.dashboard"), icon: Icons.Dashboard, end: true },
     { path: "/admin/playlists", label: t("admin.nav.catalogsBeats"), icon: Icons.MusicNote },
+    { path: "/admin/loops", label: t("admin.nav.catalogsLoops"), icon: Icons.Loop },
     { path: "/admin/samplepacks", label: t("admin.nav.samplePacks"), icon: Icons.Inventory },
     { path: "/admin/users", label: t("admin.nav.users"), icon: Icons.People },
   ];
@@ -88,7 +89,9 @@ export const AdminLayout = () => {
         </div>
         <ToastProvider>
           <ConfirmProvider>
-            <Outlet />
+            <Suspense fallback={<p>{t("loading")}</p>}>
+              <Outlet />
+            </Suspense>
           </ConfirmProvider>
         </ToastProvider>
       </main>
