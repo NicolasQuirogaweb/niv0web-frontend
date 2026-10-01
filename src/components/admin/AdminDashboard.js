@@ -6,6 +6,7 @@ import { useToast } from "../../hooks/useToast";
 import { SkeletonCard, SpinnerStyles } from "./Spinner";
 import { SEO } from "../common/SEO";
 import styles from "./admin.module.css";
+import { isAbortError } from "../../utils/isAbortError";
 
 export const AdminDashboard = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export const AdminDashboard = () => {
     adminService.dashboard(ctrl.signal)
       .then((res) => setStats(res.data))
       .catch((err) => {
-        if (err.name === "CanceledError" || err.code === "ERR_CANCELED") return;
+        if (isAbortError(err)) return;
         toast.error(err.response?.data?.message || t("admin.toast.errorLoading", { name: t("admin.dashboard.title") }));
       })
       .finally(() => setLoading(false));
@@ -26,8 +27,8 @@ export const AdminDashboard = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cards = [
-    { label: t("admin.dashboard.cardCatalogsBeats"), value: stats?.playlists, path: "/admin/playlists", color: "#7c6ff0" },
-    { label: t("admin.dashboard.cardCatalogsLoops"), value: stats?.loops, path: "/admin/loops", color: "#5dade2" },
+    { label: t("admin.dashboard.cardCatalogsBeats"), value: stats?.beatPlaylists, path: "/admin/playlists", color: "#7c6ff0" },
+    { label: t("admin.dashboard.cardCatalogsLoops"), value: stats?.loopPlaylists, path: "/admin/loops", color: "#5dade2" },
     { label: t("admin.dashboard.cardBeats"), value: stats?.beats, path: "/admin/playlists", color: "#58d68d" },
     { label: t("admin.dashboard.cardLoops"), value: stats?.loops, path: "/admin/loops", color: "#48c9b0" },
     { label: t("admin.dashboard.cardSamplePacks"), value: stats?.samplepacks, path: "/admin/samplepacks", color: "#f5b041" },

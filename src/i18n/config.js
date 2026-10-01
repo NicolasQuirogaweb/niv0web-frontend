@@ -12,4 +12,9 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
+// Lectores de pantalla y el traductor del browser usan <html lang>.
+const syncHtmlLang = (lng) => document.documentElement.setAttribute("lang", lng);
+syncHtmlLang(i18n.language);
+i18n.on("languageChanged", syncHtmlLang);
+
 export default i18n;

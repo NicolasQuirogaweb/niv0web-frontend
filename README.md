@@ -1,403 +1,104 @@
-# 🎵 niv0web — Frontend
+# niv0web
 
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](package.json)
-[![React Router](https://img.shields.io/badge/React_Router-6.26-CA4245?logo=reactrouter)](package.json)
-[![i18next](https://img.shields.io/badge/i18next-26.3-26A69A?logo=i18next)](package.json)
-[![Axios](https://img.shields.io/badge/Axios-1.7-5A29E4?logo=axios)](package.json)
-[![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8)](public/manifest.json)
-[![Vercel](https://img.shields.io/badge/Deployed-Vercel-000?logo=vercel)](https://vercel.com)
+[![CI](https://github.com/NicolasQuirogaweb/niv0web-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/NicolasQuirogaweb/niv0web-frontend/actions/workflows/ci.yml)
 
-**niv0 prod** is a digital audio marketplace where producers showcase beats, samples, loops, and prod-mix-master services. This is the React SPA with full i18n (EN/ES), Google OAuth authentication, and a complete admin panel with CRUD operations for all resources.
+The frontend of **niv0 prod**, where I publish my beats, loops and sample packs. You log in with Google, listen in the browser and download what you want. I manage the whole catalog from an admin panel built into the same app.
 
----
+<!-- ✍️ NICO: a screenshot or GIF here beats any paragraph. Suggestion: a 10-second GIF showing
+     home → a catalog → play → download. Save it to docs/ and link it:  ![niv0 demo](docs/demo.gif) -->
 
-## Architecture
+<!-- ✍️ NICO: 2-3 lines about why it exists (same idea as the backend README, don't copy it word for word). -->
 
-```
-index.js
-  ├── HelmetProvider (SEO via react-helmet-async)
-  │   └── ErrorBoundary (crash recovery)
-  │       └── App.js
-  │           └── MyRoutes.js (BrowserRouter)
-  │               └── AuthProvider (React Context)
-  │                   │
-  │                   ├── [Public Routes]
-  │                   │   ├── /home        → Home (landing)
-  │                   │   ├── /homelogued  → HomeLogued (logged-in landing)
-  │                   │   └── /login       → Login (GoogleOAuthProvider)
-  │                   │
-  │                   ├── [Private Routes] (via PrivateRoute)
-  │                   │   ├── /beats            → Beats → CardPlaylist[]
-  │                   │   ├── /samplepacks      → SamplePacks → CardPlaylist[]
-  │                   │   ├── /:type/playlist/:id → Playlist → AudioPlayer[]
-  │                   │   ├── /samples/samplepack/:id → Samples → AudioPlayer[]
-  │                   │   ├── /loops            → Loops
-  │                   │   └── /prodmixmaster    → ProdMixMaster
-  │                   │
-  │                   └── [Admin Routes] (via AdminRoute)
-  │                       └── AdminLayout (sidebar + topbar)
-  │                           ├── ToastProvider
-  │                           │   └── ConfirmProvider
-  │                           │       └── <Outlet />
-  │                           │           ├── AdminDashboard
-  │                           │           ├── AdminPlaylists (type=beats|loops)
-  │                           │           ├── AdminPlaylistForm
-  │                           │           ├── AdminBeats
-  │                           │           ├── AdminLoops
-  │                           │           ├── AdminSamplePacks
-  │                           │           ├── AdminSamples
-  │                           │           └── AdminUsers
-  │                           │
-  │                           └── AdminUploader (drag & drop)
-  │
-  └── serviceWorkerRegistration (PWA)
-```
+Live: [niv0web.vercel.app](https://niv0web.vercel.app) · API: [niv0web-backend](https://github.com/NicolasQuirogaweb/niv0web-backend)
 
-**Data flow:**
-```
-Component → api.js (Axios interceptor adds JWT)
-  → Express API (Render)
-    → MongoDB (Atlas) + Backblaze B2 (storage)
-```
+> Versión en español: [README.es.md](README.es.md)
 
----
+## Stack and why
 
-## Tech Stack
-
-| Category | Technology | Purpose |
+| | Choice | Why |
 |---|---|---|
-| **Framework** | React 18.3 | UI library |
-| **Routing** | react-router-dom 6.26 | SPA routing with lazy loading |
-| **Auth** | @react-oauth/google 0.12 | Google OAuth popup |
-| **HTTP** | Axios 1.7 | API client with interceptors |
-| **i18n** | i18next 26.3 + react-i18next 17.0 | Full ES/EN localization |
-| **SEO** | react-helmet-async 3.0 | Dynamic meta tags |
-| **Icons** | react-icons (MD) + FontAwesome 6 | UI icons |
-| **Styling** | CSS Modules (admin) + Global CSS (public) | Scoped + global styles |
-| **PWA** | Service Worker | Offline support |
-| **Build** | Create React App 5.0 | Build toolchain |
-| **Deploy** | Vercel | Hosting + CI/CD |
+| UI | React 18 (Create React App) | It's what the project started on. Migrating to Vite is planned but not urgent ([ADR 0001](docs/decisions/0001-stay-on-cra-for-now.md)). |
+| Routing | React Router 6 | Every page is lazy-loaded, the admin panel included. |
+| Data | axios + a couple of small hooks | There's no global cache: each page fetches what it shows. `usePublicResource` and `useAdminResource` hold the loading and error logic. |
+| Auth | Google Sign-In, session in httpOnly cookies | The frontend never touches a token ([why](https://github.com/NicolasQuirogaweb/niv0web-backend/blob/main/docs/decisions/0001-httponly-cookies.md)). |
+| i18n | i18next, ES/EN | Everything visible goes through translation keys. The two files have the same 224 keys. |
+| Hosting | Vercel | Deploys from `main`, with preview deploys on PRs. |
 
----
-
-## Features
-
-- **Google OAuth login** — one-click sign-in with Google; access + refresh tokens both live in httpOnly cookies (see [BACKEND_MIGRATION_GUIDE.md](BACKEND_MIGRATION_GUIDE.md) for backend rollout status)
-- **Full i18n** — Spanish (default) and English, persisted in localStorage, toggleable via LanguageSwitcher
-- **SEO per page** — each route sets its own `<title>` and `<meta>` via `react-helmet-async`
-- **Audio player** — custom `<AudioPlayer>` with seek bar, time display, and singleton playback (only one plays at a time)
-- **Direct file download** — downloads proxy through the backend to bypass B2 CORS restrictions
-- **Real logout** — calls `POST /api/auth/logout` via a shared `useLogout()` hook, clears auth state and navigates
-- **Admin panel** — full CRUD for all resources with drag-and-drop batch upload, confirmation dialogs, toast notifications
-- **Responsive design** — mobile-first with CSS breakpoints; admin panel uses CSS Modules for scoped styles
-- **AbortController** — cancels in-flight API requests on unmount to prevent race conditions and reduce 429 errors
-- **PWA** — installable as a standalone app with service worker
-- **Lazy loading** — all page components use `React.lazy()` + `Suspense` for code splitting
-
----
-
-## Project Structure
-
-```
-niv0-web/
-├── public/
-│   ├── index.html
-│   ├── manifest.json           # PWA manifest
-│   └── images/                 # Static assets organized by section
-│       ├── beats/
-│       ├── Loops/
-│       ├── Sample packs/
-│       ├── logued/
-│       ├── nologued/
-│       └── icons/              # SVG icons (download, play, pause, etc.)
-│
-├── src/
-│   ├── index.js                # Entry point: HelmetProvider, ErrorBoundary, i18n init
-│   ├── App.js                  # Root component
-│   ├── config.js               # Env constants + validation (fails fast)
-│   ├── index.css               # Global styles, CSS variables
-│   │
-│   ├── context/
-│   │   └── AuthContext.js      # Auth state (email, role) — no token, cookie-based
-│   │
-│   ├── hooks/
-│   │   ├── useAuth.js          # useAuth() + useLogout() + useRequireAuth()
-│   │   ├── useToast.js         # Toast notification system (Context + Provider)
-│   │   ├── useConfirm.js       # Confirmation modal (Context + Provider)
-│   │   ├── useAdminResource.js # Shared admin CRUD state/handlers (list + form + delete + batch)
-│   │   ├── usePublicResource.js # Shared loading/data/error bookkeeping for public pages
-│   │   └── useResponsiveWidth.js # Responsive dimension hook
-│   │
-│   ├── services/
-│   │   └── api.js              # Axios instance + interceptors + ALL service objects
-│   │
-│   ├── routes/
-│   │   ├── MyRoutes.js         # Route table with lazy loading
-│   │   ├── PrivateRoutes.js    # Auth guard (redirects to /home)
-│   │   └── AdminRoute.js       # Admin guard (redirects to /homelogued)
-│   │
-│   ├── i18n/
-│   │   ├── config.js           # i18next initialization (es default, en fallback)
-│   │   ├── es.json             # Spanish translations (289 keys)
-│   │   └── en.json             # English translations (289 keys)
-│   │
-│   ├── utils/
-│   │   └── download.js         # downloadFile() — proxy through backend
-│   │
-│   ├── components/
-│   │   ├── common/
-│   │   │   ├── SEO.js              # Dynamic meta tags via react-helmet-async
-│   │   │   ├── AudioPlayer.js/css  # Custom audio player with seek + singleton
-│   │   │   ├── LanguageSwitcher.js # ES/EN toggle (persisted in localStorage)
-│   │   │   └── ErrorBoundary.js/css# Crash recovery UI
-│   │   │
-│   │   ├── Home.js/css             # Public landing page
-│   │   ├── HomeLogued.js/css       # Authenticated landing page
-│   │   ├── Login.js/css            # Google OAuth login
-│   │   ├── Beats.js/css            # Beats catalog → CardPlaylist[]
-│   │   ├── Playlist.js/css         # Single playlist with AudioPlayer[]
-│   │   ├── SamplePacks.js/css      # Sample packs catalog → CardPlaylist[]
-│   │   ├── Samples.js/css          # Single sample pack with AudioPlayer[]
-│   │   ├── Loops.js                # Loops catalog
-│   │   ├── ProdMixMaster.js/css    # Prod mix master (static + Spotify)
-│   │   └── CardPlaylist.js/css     # Reusable playlist card (memo-ized)
-│   │
-│   └── admin/
-│       ├── AdminLayout.js      # Sidebar + topbar + Outlet shell
-│       ├── AdminDashboard.js   # Stats cards + quick action links
-│       ├── AdminPlaylists.js   # CRUD list (beats/loops catalogs)
-│       ├── AdminPlaylistForm.js# Create/edit playlists + sample packs
-│       ├── AdminBeats.js       # CRUD + batch upload (drag-drop audio files)
-│       ├── AdminLoops.js       # CRUD for loops
-│       ├── AdminSamplePacks.js # CRUD list for sample packs
-│       ├── AdminSamples.js     # CRUD + batch upload for samples
-│       ├── AdminUsers.js       # List users + toggle admin role
-│       ├── AdminUploader.js    # Drag-drop file upload component
-│       ├── Spinner.js          # Spinner, SkeletonCard, SkeletonLine
-│       ├── icons.js            # Centralized react-icons/md mapping
-│       └── admin.module.css    # CSS Modules (scoped admin styles, incl. design tokens)
-│
-└── vercel.json                 # SPA rewrites
-```
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- Backend API running (see [niv0web-backend](https://github.com/NicolasQuirogaweb/niv0web-backend))
-- Google Cloud Console OAuth 2.0 Client ID
-
-### Installation
+## Run it locally
 
 ```bash
-nvm use
-npm install
-cp .env.example .env   # fill in your values
-npm start               # starts on http://localhost:3000
+cp .env.example .env          # REACT_APP_BACKEND_URL and REACT_APP_GOOGLE_CLIENT_ID
+npm install --legacy-peer-deps
+npm start                     # http://localhost:3000
+npm test                      # watch mode; CI runs with --watchAll=false
 ```
 
-### Environment Variables
+The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) running (default `http://localhost:5000`). If a variable is missing, the app fails on startup with a clear message (`src/config.js`).
 
-| Variable | Required | Description |
+`--legacy-peer-deps` is there because CRA 5 declares old peer dependency ranges. It's one of the reasons to migrate.
+
+## Pages
+
+| Route | Access | |
 |---|---|---|
-| `REACT_APP_BACKEND_URL` | ✅ | Backend API base URL (e.g., `http://localhost:5000`) |
-| `REACT_APP_GOOGLE_CLIENT_ID` | ✅ | Google OAuth client ID |
+| `/home` | public | Landing |
+| `/login` | public | Google Sign-In. The first login creates the account. |
+| `/homelogued` | logged in | Home with links to each section |
+| `/beats`, `/loops` | logged in | Catalog grids |
+| `/:type/playlist/:id` | logged in | A catalog with player and download (`type` = `beats` or `loops`) |
+| `/samplepacks`, `/samples/samplepack/:id` | logged in | Sample packs |
+| `/prodmixmaster` | logged in | Production and mixing services |
+| `/admin/*` | admin | Dashboard, beat and loop catalogs, sample packs, users |
 
-The app validates these at startup via `config.validateEnv()` and throws immediately if missing (fail-fast approach).
+`PrivateRoute` and `AdminRoute` only hide pages in the UI. The real permission checks happen in the API.
 
-> **Production:** Set these in the Vercel dashboard. The `.env.vercel` file is for local Vercel CLI development only.
-
-> **Security:** see [SECURITY.md](SECURITY.md) for known findings, including a Vercel token that needs rotation after having been committed to git history.
-
----
-
-## Routing
-
-| Route | Component | Access | Description |
-|---|---|---|---|
-| `/` | Redirect → `/home` | Public | Root redirect |
-| `/home` | `Home` | Public | Landing page with resource links |
-| `/homelogued` | `HomeLogued` | Public | Logged-in landing with user info |
-| `/login` | `Login` | Public | Google OAuth sign-in |
-| `/beats` | `Beats` | Authenticated | Beat playlist catalog |
-| `/samplepacks` | `SamplePacks` | Authenticated | Sample pack catalog |
-| `/:resourceType/playlist/:playlistId` | `Playlist` | Authenticated | Playlist detail |
-| `/samples/samplepack/:samplepackId` | `Samples` | Authenticated | Sample pack detail |
-| `/loops` | `Loops` | Authenticated | Loops catalog |
-| `/prodmixmaster` | `ProdMixMaster` | Authenticated | Prod mix master page |
-| `/admin` | `AdminDashboard` | Admin | Admin dashboard (stats) |
-| `/admin/playlists` | `AdminPlaylists` | Admin | CRUD: beat catalogs |
-| `/admin/playlists/new` | `AdminPlaylistForm` | Admin | Create beat catalog |
-| `/admin/playlists/:id/edit` | `AdminPlaylistForm` | Admin | Edit beat catalog |
-| `/admin/playlists/:id/beats` | `AdminBeats` | Admin | CRUD: beats in playlist |
-| `/admin/loops` | `AdminPlaylists` | Admin | CRUD: loop catalogs |
-| `/admin/loops/new` | `AdminPlaylistForm` | Admin | Create loop catalog |
-| `/admin/loops/:id/loops` | `AdminLoops` | Admin | CRUD: loops in playlist |
-| `/admin/samplepacks` | `AdminSamplePacks` | Admin | CRUD: sample packs |
-| `/admin/samplepacks/new` | `AdminPlaylistForm` | Admin | Create sample pack |
-| `/admin/samplepacks/:id/samples` | `AdminSamples` | Admin | CRUD: samples in pack |
-| `/admin/users` | `AdminUsers` | Admin | Manage user roles |
-| `*` | 404 page | Public | Not found |
-
-All routes use `React.lazy()` + `Suspense` for code splitting.
-
----
-
-## Authentication Flow
-
-> The access token lives in an httpOnly cookie, mirroring the refresh token — the frontend never reads or writes it. See [BACKEND_MIGRATION_GUIDE.md](BACKEND_MIGRATION_GUIDE.md) for the backend contract this depends on and its rollout status.
+## How it's organized
 
 ```
-1. Login
-   User clicks "Login with Google" → Google OAuth popup
-     → onSuccess(id_token)
-     → api.authService.googleLogin(credential)
-     → POST /api/auth/google-login
-     → Backend Set-Cookies the access token, returns { user: { email, role } }
-     → saveAuth(email, role) → AuthContext state (no localStorage)
-
-2. Persistence
-   App mount → AuthContext always calls api.authService.verifyToken()
-     → cookie sent automatically (withCredentials: true)
-     → If valid: set user state
-     → If invalid (401): clearAuth()
-
-3. Token Refresh
-   Any API call → Axios response interceptor catches 401
-     → Queue failed request
-     → POST /api/auth/refresh (httpOnly cookie in, new one Set-Cookie'd back)
-     → Retry original request — new cookie is sent automatically
-     → If refresh fails: the registered "unauthorized" handler runs
-       clearAuth() → navigate("/login")
-
-4. Route Guards
-   PrivateRoute → checks isAuthenticated → redirects to /home if false
-   AdminRoute   → checks isAdmin → redirects to /homelogued if false
-
-5. Logout
-   useLogout() → api.authService.logout()
-     → POST /api/auth/logout (backend clears both cookies)
-     → clearAuth() → navigate(redirectTo)
+src/
+  components/         public pages (Beats, Playlist, Samples...) and their CSS
+    common/           PageHeader, TrackList, AudioPlayer, SEO, ErrorBoundary
+    admin/            admin panel (CSS modules)
+  context/            AuthContext: who's logged in, from GET /verify-token
+  hooks/              usePublicResource, useAdminResource, useToast, useConfirm
+  services/api.js     the axios client and every endpoint. Nothing else calls the API directly.
+  routes/             MyRoutes (lazy routes), PrivateRoute, AdminRoute
+  i18n/               es.json / en.json
 ```
 
----
+**Session:** `services/api.js` sends cookies with every request. When the API answers 401, the interceptor calls `/api/auth/refresh` once, queues the requests that come in meanwhile, and retries them. If the refresh fails, it clears the session and redirects to `/login`.
 
-## Internationalization (i18n)
+**Downloads:** B2 files are on another domain, so the browser ignores `<a download>`. `utils/download.js` fetches them through the API proxy and saves them as a blob.
 
-- **Default language:** Spanish (`es`)
-- **Fallback:** Spanish
-- **Detection:** `localStorage.getItem("lang")` (persisted across sessions)
-- **Library:** `i18next` + `react-i18next`
+## Quality
 
-The `<LanguageSwitcher>` component toggles between ES/EN and persists the choice. All UI strings use the `useTranslation()` hook (`t("key")` pattern).
+- `npm run lint`: ESLint with zero warnings allowed.
+- `npm test`: React Testing Library. It covers the session and refresh interceptor, the route guards, a full admin CRUD flow, the playlist page by type, the sample pack edit form and the dashboard.
+- CI (GitHub Actions) runs lint, tests and a build on every push and PR.
+- Accessibility: the player's seek bar can be used from the keyboard, confirmation dialogs are real dialogs (focus and Esc), and `<html lang>` follows the chosen language.
 
-**Translation keys structure:**
-```
-nav          → Navigation (logIn, logOut, adminPanel, etc.)
-lang         → Language switcher (switchTo, switchFrom)
-seo          → SEO meta tags (siteName, fallbackDesc)
-player       → Audio player (play, pause)
-home         → Landing page
-beats        → Beats catalog
-playlist     → Playlist detail
-samples      → Samples detail
-samplePacks  → Sample packs catalog
-loops        → Loops catalog
-prodMix      → Prod mix master
-login        → Login page
-notFound     → 404 page
-admin.*      → Admin panel (dashboard, nav, CRUD labels, toast messages, validation)
-```
+## Decisions
 
----
+- [0001 — Stay on CRA for now (and how to leave it)](docs/decisions/0001-stay-on-cra-for-now.md)
 
-## Admin Panel
+The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 
-The admin panel is a protected section under `/admin/*` with:
+## Known limitations
 
-- **Sidebar navigation** — collapsible, with icons for Dashboard, Beats, Sample Packs, Prod Mix, Users
-- **Toast notifications** — success (green, 3.5s) and error (red, 5s) feedback via `useToast()`
-- **Confirmation dialogs** — destructive actions (delete, role change) require confirmation via `useConfirm()`
-- **AbortController** — all list-fetching pages cancel in-flight requests on unmount to prevent 429 rate-limit errors
-- **Batch upload** — drag-and-drop multiple audio files → upload to B2 → create items in one flow
-- **Skeleton loading** — `Spinner.js` provides skeleton cards/lines while data loads
-- **Responsive design** — CSS Modules with `flex-wrap`, mobile breakpoints (≤768px), stacked cards on small screens
+- Create React App no longer gets updates. See the ADR for the migration plan.
+- Styles are mixed: global CSS per page on the public side, CSS modules in the admin, and some inline styles.
+- No SSR. The public pages need a login anyway, so SEO only matters for `/home`.
 
----
+<!-- ✍️ NICO: "What I'd do next". Suggestions: migrate to Vite, TypeScript, a global player that keeps
+     playing when you change pages. Pick the ones you actually want to do. -->
 
-## Data Fetching Patterns
+## Working with AI
 
-| Pattern | Used In | Description |
-|---|---|---|
-| `useState` + `useEffect` | Public pages (Beats, Playlist, etc.) | Simple fetch on mount |
-| `useCallback` + `useEffect` + `AbortController` | Admin pages | Cancels requests on unmount |
-| `useToast` | Admin CRUD | Success/error feedback |
-| `useConfirm` | Admin destructive actions | Confirmation before delete/role change |
-| `adminService.upload.batch()` | Admin upload flow | Uploads files, then creates items |
-| `downloadFile()` | Playlist, Samples | Proxies download through backend |
+I build this with Claude Code. The repo has what an agent needs so it doesn't start from zero:
+[`CLAUDE.md`](CLAUDE.md) (conventions and limits), [`.claude/settings.json`](.claude/settings.json) (permissions and a hook that runs ESLint on every edited file) and [`.claude/skills/`](.claude/skills) (how to add a page with its translations, and the pre-release checklist).
 
----
-
-## Styling
-
-| Scope | Approach | Files |
-|---|---|---|
-| **Global** | Plain CSS with CSS custom properties | `index.css`, `App.css` |
-| **Public pages** | One CSS file per component | `Home.css`, `Beats.css`, `Playlist.css`, etc. |
-| **Admin panel** | CSS Modules (scoped class names), including color/radius design tokens as CSS custom properties | `admin.module.css` |
-| **Icons** | Centralized `react-icons/md` mapping | `admin/icons.js` |
-
-**Color scheme (dark theme):**
-- Background: `#0a0a0a`
-- Surfaces: `#111` / `#1a1a1a`
-- Accent: `#7c6ff0` (purple)
-- Text: `#e0e0e0`
-
----
-
-## PWA
-
-The app registers a service worker in production mode (`NODE_ENV === "production"`). The `manifest.json` provides:
-- `display: standalone` — full-screen app when installed
-- `start_url: /home` — landing page on launch
-- Dark theme colors matching the app design
-
----
-
-## Deployment
-
-The app is deployed on **Vercel** with automatic CI/CD from GitHub.
-
-**`vercel.json`:**
-```json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
-```
-
-This single rewrite ensures all SPA routes work correctly when accessed directly (Vercel serves `index.html` for every path).
-
-**Build command:** `react-scripts build` (default CRA)
-**Output directory:** `build/`
-
----
-
-## Available Scripts
-
-```bash
-npm start       # Development server (http://localhost:3000)
-npm run build   # Production build to build/
-npm test        # Test runner (jest)
-npm run eject   # Eject CRA (irreversible)
-```
-
----
+<!-- ✍️ NICO: a line of your own about how you work with it. -->
 
 ## License
 
-MIT — built by [Nicolas Quiroga](https://github.com/NicolasQuirogaweb)
+[MIT](LICENSE)

@@ -4,45 +4,30 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { PrivateRoute } from "./PrivateRoutes";
 import { AdminRoute } from "./AdminRoute";
-import { AdminLayout } from "../components/admin/AdminLayout";
-import { AdminDashboard } from "../components/admin/AdminDashboard";
-import { AdminPlaylists } from "../components/admin/AdminPlaylists";
-import { AdminPlaylistForm } from "../components/admin/AdminPlaylistForm";
-import { AdminBeats } from "../components/admin/AdminBeats";
-import { AdminLoops } from "../components/admin/AdminLoops";
-import { AdminSamplePacks } from "../components/admin/AdminSamplePacks";
-import { AdminSamples } from "../components/admin/AdminSamples";
-import { AdminUsers } from "../components/admin/AdminUsers";
 
-const Home = lazy(() =>
-  import("../components/Home").then((m) => ({ default: m.Home }))
-);
-const HomeLogued = lazy(() =>
-  import("../components/HomeLogued").then((m) => ({ default: m.HomeLogued }))
-);
-const Login = lazy(() =>
-  import("../components/Login").then((m) => ({ default: m.Login }))
-);
-const Beats = lazy(() =>
-  import("../components/Beats").then((m) => ({ default: m.Beats }))
-);
-const Playlist = lazy(() =>
-  import("../components/Playlist").then((m) => ({ default: m.Playlist }))
-);
-const SamplePacks = lazy(() =>
-  import("../components/SamplePacks").then((m) => ({ default: m.SamplePacks }))
-);
-const Samples = lazy(() =>
-  import("../components/Samples").then((m) => ({ default: m.Samples }))
-);
-const Loops = lazy(() =>
-  import("../components/Loops").then((m) => ({ default: m.Loops }))
-);
-const ProdMixMaster = lazy(() =>
-  import("../components/ProdMixMaster").then((m) => ({
-    default: m.ProdMixMaster,
-  }))
-);
+// Todas las páginas se cargan bajo demanda. El panel admin en particular no
+// tiene por qué viajar en el bundle de alguien que solo escucha beats.
+const lazyNamed = (loader, name) => lazy(() => loader().then((m) => ({ default: m[name] })));
+
+const Home = lazyNamed(() => import("../components/Home"), "Home");
+const HomeLogued = lazyNamed(() => import("../components/HomeLogued"), "HomeLogued");
+const Login = lazyNamed(() => import("../components/Login"), "Login");
+const Beats = lazyNamed(() => import("../components/Beats"), "Beats");
+const Playlist = lazyNamed(() => import("../components/Playlist"), "Playlist");
+const SamplePacks = lazyNamed(() => import("../components/SamplePacks"), "SamplePacks");
+const Samples = lazyNamed(() => import("../components/Samples"), "Samples");
+const Loops = lazyNamed(() => import("../components/Loops"), "Loops");
+const ProdMixMaster = lazyNamed(() => import("../components/ProdMixMaster"), "ProdMixMaster");
+
+const AdminLayout = lazyNamed(() => import("../components/admin/AdminLayout"), "AdminLayout");
+const AdminDashboard = lazyNamed(() => import("../components/admin/AdminDashboard"), "AdminDashboard");
+const AdminPlaylists = lazyNamed(() => import("../components/admin/AdminPlaylists"), "AdminPlaylists");
+const AdminPlaylistForm = lazyNamed(() => import("../components/admin/AdminPlaylistForm"), "AdminPlaylistForm");
+const AdminBeats = lazyNamed(() => import("../components/admin/AdminBeats"), "AdminBeats");
+const AdminLoops = lazyNamed(() => import("../components/admin/AdminLoops"), "AdminLoops");
+const AdminSamplePacks = lazyNamed(() => import("../components/admin/AdminSamplePacks"), "AdminSamplePacks");
+const AdminSamples = lazyNamed(() => import("../components/admin/AdminSamples"), "AdminSamples");
+const AdminUsers = lazyNamed(() => import("../components/admin/AdminUsers"), "AdminUsers");
 
 const Loading = () => {
   const { t } = useTranslation();
@@ -59,7 +44,14 @@ export const MyRoutes = () => {
             <Routes>
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/homelogued" element={<HomeLogued />} />
+              <Route
+                path="/homelogued"
+                element={
+                  <PrivateRoute>
+                    <HomeLogued />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route
                 path="/beats"

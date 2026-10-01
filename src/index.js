@@ -6,7 +6,6 @@ import App from "./App";
 import { validateEnv } from "./config";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import { HelmetProvider } from "react-helmet-async";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 validateEnv();
 
@@ -20,5 +19,3 @@ root.render(
     </HelmetProvider>
   </React.StrictMode>
 );
-
-serviceWorkerRegistration.register();

@@ -199,3 +199,14 @@
     margin-top: 20px;
   }
 }
+
+.prodmix-header h3 {
+  color: #bbf0be;
+  margin: 0;
+  font-size: 22px;
+}
+
+.prodmix-header h3 a {
+  color: inherit;
+  text-decoration: none;
+}

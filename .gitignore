@@ -1,50 +1,23 @@
-# Node.js dependencies
 node_modules/
-
-# Build outputs
 build/
-dist/
-
-# Logs
-logs/
+coverage/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# Environment variables
+# Secretos. .env.production solo tiene flags de build, sin secretos.
 .env
-.env.local
-.env.development
-.env.production
+.env.*
+!.env.example
+!.env.production
 
-# Editor/OS specific files
+# Vercel CLI
+.vercel
+.env.vercel
+
+# Editor / SO
 .DS_Store
+Thumbs.db
 .vscode/
 .idea/
-Thumbs.db
 
-# Temporary files
-*.swp
-*.swo
-*.tmp
-
-# Testing outputs
-coverage/
-.nyc_output/
-
-# Frontend specific
-# Generated files for static sites or apps
-out/
-.next/
-
-# Backend specific
-# Uploaded files or temporary directories
-uploads/
-
-#
-.vercel
-
-# Committed by mistake — contains VERCEL_OIDC_TOKEN
-.env.vercel
-build_error.txt
+# Claude Code: la config compartida se versiona, la personal no
+.claude/settings.local.json

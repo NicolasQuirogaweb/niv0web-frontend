@@ -2,7 +2,6 @@
   "nav": {
     "niv0Beats": "niv0 beats",
     "logIn": "log in",
-    "signUp": "sign up",
     "logOut": "Log out",
     "adminPanel": "ADMIN PANEL",
     "contactMe": "Contact me",
@@ -13,7 +12,9 @@
     "backToLoopCatalogs": "Back to Loop Catalogs",
     "backToCatalogue": "Back to catalogue",
     "instagram": "Instagram",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "enter": "enter",
+    "logInOrSignUp": "log in / sign up"
   },
   "lang": {
     "switchTo": "Switch to English",
@@ -25,7 +26,8 @@
   },
   "player": {
     "play": "Play",
-    "pause": "Pause"
+    "pause": "Pause",
+    "seek": "Seek"
   },
   "home": {
     "beats": "BEATS",
@@ -34,7 +36,8 @@
     "cta": "SIGN UP / LOGIN TO HAVE ACCESS",
     "seoTitle": "Home",
     "seoDesc": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master. Sign up to access exclusive beats and sample packs.",
-    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master for logged-in users."
+    "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master for logged-in users.",
+    "loops": "LOOPS"
   },
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
@@ -63,7 +66,8 @@
     "none": "No beats found for this playlist.",
     "freeLicense": "Free for non profit use only, contact me and buy a license.",
     "download": "Download",
-    "seoDesc": "Listen to tracks from Niv0 Beats playlists."
+    "seoDesc": "Listen to tracks from Niv0 Beats playlists.",
+    "downloadError": "The download failed. Try again in a moment."
   },
   "samplePacks": {
     "loading": "Loading sample packs...",
