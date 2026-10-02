@@ -4,11 +4,10 @@ Context for AI coding agents working in this repo. Humans: see README.md.
 
 ## Commands
 
-- `npm start`: dev server on :3000. Needs `.env` with `REACT_APP_BACKEND_URL` and `REACT_APP_GOOGLE_CLIENT_ID`.
-- `CI=true npm test -- --watchAll=false`: tests once, non-interactive. Plain `npm test` opens watch mode and never exits.
+- `npm run dev`: Vite dev server on :3000 (fixed port: CORS and the Google client allow it). Needs `.env` with `VITE_BACKEND_URL` and `VITE_GOOGLE_CLIENT_ID`.
+- `npm test`: Vitest, runs once and exits. `npm run test:watch` for watch mode.
 - `npm run lint`: `--max-warnings=0`, so a warning fails CI.
-- `npm run build`: production build (no source maps, see `.env.production`).
-- Install with `npm install --legacy-peer-deps` (CRA 5 peer ranges).
+- `npm run build`: production build into `build/` (no source maps, see `vite.config.js`).
 
 Run lint and tests before saying a change is done.
 
@@ -33,7 +32,8 @@ The backend is `niv0web-backend`. Fields the UI depends on: `itemsCount` on cata
 
 ## Don't
 
-- Don't migrate to Vite or TypeScript as a side effect of another task. There's a plan in `docs/decisions/0001-stay-on-cra-for-now.md`.
+- Don't start a TypeScript migration as a side effect of another task.
+- Env vars are read with `import.meta.env.VITE_*`, never `process.env`. Files with JSX use the `.jsx` extension.
 - Don't add media to `public/`. Catalog media is served from Backblaze B2.
 - Don't read or print `.env`.
 

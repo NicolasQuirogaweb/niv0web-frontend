@@ -10,14 +10,14 @@ La documentación completa está en inglés en [README.md](README.md).
 
 ## Stack
 
-React 18 (Create React App), React Router 6, axios, i18next (español/inglés) y login con Google. Está deployado en Vercel.
+React 18 con Vite, React Router 6, axios, i18next (español/inglés) y login con Google. Está deployado en Vercel.
 
 ## Correrlo en local
 
 ```bash
-cp .env.example .env          # REACT_APP_BACKEND_URL y REACT_APP_GOOGLE_CLIENT_ID
-npm install --legacy-peer-deps
-npm start                     # http://localhost:3000
+cp .env.example .env          # VITE_BACKEND_URL y VITE_GOOGLE_CLIENT_ID
+npm install
+npm run dev                   # http://localhost:3000
 ```
 
 Necesita la [API](https://github.com/NicolasQuirogaweb/niv0web-backend) corriendo.
@@ -25,7 +25,7 @@ Necesita la [API](https://github.com/NicolasQuirogaweb/niv0web-backend) corriend
 ## Dónde mirar
 
 - Páginas y organización del código: [README.md](README.md#pages)
-- Por qué sigue en CRA y cómo sería la migración a Vite: [docs/decisions/0001-stay-on-cra-for-now.md](docs/decisions/0001-stay-on-cra-for-now.md)
+- Por qué y cómo se migró de Create React App a Vite: [docs/decisions/0002-migrate-to-vite.md](docs/decisions/0002-migrate-to-vite.md)
 - Instrucciones para agentes de IA: [CLAUDE.md](CLAUDE.md)
 
 ## Cómo trabajo con IA
