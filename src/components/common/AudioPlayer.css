@@ -12,6 +12,7 @@
   border-radius: 50%;
   border: none;
   background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -23,6 +24,19 @@
 .audio-play-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: scale(1.08);
+}
+
+.audio-play-btn--playing {
+  background: #bbf0be;
+  color: #0d0d0d;
+}
+
+.audio-play-btn--playing:hover {
+  background: #d4f7d6;
+}
+
+.audio-progress[aria-disabled="true"] {
+  cursor: default;
 }
 
 .audio-play-btn:active {

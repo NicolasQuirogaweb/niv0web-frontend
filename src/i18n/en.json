@@ -27,7 +27,10 @@
   "player": {
     "play": "Play",
     "pause": "Pause",
-    "seek": "Seek"
+    "seek": "Seek",
+    "playAll": "Play catalog",
+    "pauseAll": "Pause catalog",
+    "nowPlaying": "Now playing"
   },
   "home": {
     "beats": "BEATS",

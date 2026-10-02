@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import "../i18n/config";
+import i18n from "../i18n/config";
 import { Playlist } from "./Playlist";
 import { beatsService, loopsService } from "../services/api";
 
@@ -40,6 +40,7 @@ describe("Playlist page", () => {
     renderAt("/beats/playlist/p1");
 
     expect(await screen.findByText("Night Drive")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: i18n.t("player.playAll") })).toBeInTheDocument();
     expect(beatsService.getById).toHaveBeenCalledWith("p1");
     expect(loopsService.getById).not.toHaveBeenCalled();
   });

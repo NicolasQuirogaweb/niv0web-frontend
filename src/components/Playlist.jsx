@@ -4,7 +4,8 @@ import { useParams, Link } from "react-router-dom";
 import { playlistServices } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { PageHeader } from "./common/PageHeader";
-import { TrackList } from "./common/TrackList";
+import { TrackList, PlayAllButton } from "./common/TrackList";
+import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
 import { BackgroundMedia } from "./common/BackgroundMedia";
 import { SEO } from "./common/SEO";
 import "./Playlist.css";
@@ -25,10 +26,15 @@ export const Playlist = () => {
     run(service.getById(playlistId));
   }, [service, playlistId, run, setLoading]);
 
+  const tracks = playlistData?.[resourceType] || [];
+  // En beats y loops, al terminar un tema pasa al siguiente (como un álbum).
+  const player = usePlaylistPlayer(tracks, {
+    autoAdvance: true,
+    meta: { album: playlistData?.title, artwork: playlistData?.imageUrl },
+  });
+
   if (!service) return <p>{t("notFound.title")}</p>;
   if (error) return <p>{t("playlist.error")}{error.message || t("playlist.errorFallback")}</p>;
-
-  const tracks = playlistData?.[resourceType] || [];
 
   return (
     <>
@@ -45,12 +51,15 @@ export const Playlist = () => {
                 <img src={playlistData.imageUrl} alt={playlistData.title} className="playlist-image" loading="lazy" />
               )}
               <div className="playlist-info">
-                <h1 className="playlist-title">{playlistData.title}</h1>
+                <div className="playlist-title-row">
+                  <PlayAllButton player={player} disabled={tracks.length === 0} />
+                  <h1 className="playlist-title">{playlistData.title}</h1>
+                </div>
                 <p className="playlist-description">{playlistData.description}</p>
               </div>
             </div>
             {tracks.length > 0 ? (
-              <TrackList tracks={tracks} fallbackName={resourceType === "loops" ? "loop" : "beat"} showArtist />
+              <TrackList tracks={tracks} player={player} fallbackName={resourceType === "loops" ? "loop" : "beat"} showArtist />
             ) : (
               <p>{t("playlist.none")}</p>
             )}
