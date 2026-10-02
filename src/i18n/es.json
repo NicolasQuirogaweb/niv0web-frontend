@@ -27,7 +27,10 @@
   "player": {
     "play": "Reproducir",
     "pause": "Pausa",
-    "seek": "Posición de reproducción"
+    "seek": "Posición de reproducción",
+    "playAll": "Reproducir catálogo",
+    "pauseAll": "Pausar catálogo",
+    "nowPlaying": "Sonando ahora"
   },
   "home": {
     "beats": "BEATS",

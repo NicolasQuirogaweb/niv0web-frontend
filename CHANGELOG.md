@@ -4,6 +4,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 
 ## [Unreleased]
 
+### Added
+- Playlist mode in beat and loop catalogs: a play-all button next to the title, auto-advance to the next track, stop after the last one.
+- Tracks live in a scrollable box, so the whole page no longer scrolls on mobile.
+- Lock-screen and notification controls on phones (Media Session API).
+- The track that is playing is highlighted with an animated equalizer.
+
+### Changed
+- One <audio> element per page instead of one per track.
+
 ### Changed
 - Migrated from Create React App to Vite + Vitest. Production build ~33 s → ~1 s.
 - Env vars renamed: `REACT_APP_BACKEND_URL` → `VITE_BACKEND_URL`, `REACT_APP_GOOGLE_CLIENT_ID` → `VITE_GOOGLE_CLIENT_ID`.

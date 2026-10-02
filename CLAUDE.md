@@ -16,6 +16,7 @@ Run lint and tests before saying a change is done.
 - All HTTP goes through `src/services/api.js`. Components never import axios or call `fetch`. The response interceptor unwraps `{ success, data }`, so `res.data` is already the payload.
 - Public pages fetch with `usePublicResource().run(promise)`. Admin lists use `useAdminResource`. Abort errors are ignored with `utils/isAbortError`.
 - Private pages start with `<PageHeader />` and render tracks with `<TrackList />`. Don't copy those blocks back into pages.
+- Playback state lives in `usePlaylistPlayer` (one `<audio>` per page), created by the page and passed to `<TrackList player={...} />` and `<PlayAllButton />`. `AudioPlayer` is presentational only. Never add another `<audio>` per row.
 - Auth state lives in `AuthContext`, filled from `GET /api/auth/verify-token`. Tokens are httpOnly cookies: never read, store or send a token from JS, and never write auth data to `localStorage`.
 
 ## Conventions

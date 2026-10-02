@@ -5,6 +5,7 @@ import { samplePacksService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { PageHeader } from "./common/PageHeader";
 import { TrackList } from "./common/TrackList";
+import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
 import { BackgroundMedia } from "./common/BackgroundMedia";
 import { SEO } from "./common/SEO";
 import "./Playlist.css";
@@ -22,9 +23,14 @@ export const Samples = () => {
     run(samplePacksService.getSamples(samplepackId));
   }, [samplepackId, run, setLoading]);
 
-  if (error) return <p>{t("samples.error")}{error.message || t("samples.errorFallback")}</p>;
-
   const samples = packData?.samples || [];
+  // Los samples se escuchan de a uno: sin pasar solo al siguiente.
+  const player = usePlaylistPlayer(samples, {
+    autoAdvance: false,
+    meta: { album: packData?.title, artwork: packData?.imageUrl },
+  });
+
+  if (error) return <p>{t("samples.error")}{error.message || t("samples.errorFallback")}</p>;
 
   return (
     <>
@@ -46,7 +52,7 @@ export const Samples = () => {
               </div>
             </div>
             {samples.length > 0 ? (
-              <TrackList tracks={samples} fallbackName="sample" />
+              <TrackList tracks={samples} player={player} fallbackName="sample" />
             ) : (
               <p>{t("samples.none")}</p>
             )}
