@@ -6,8 +6,8 @@ import { AdminDashboard } from "./AdminDashboard";
 import { ToastProvider } from "../../hooks/useToast";
 import { adminService } from "../../services/api";
 
-jest.mock("../../services/api", () => ({
-  adminService: { dashboard: jest.fn() },
+vi.mock("../../services/api", () => ({
+  adminService: { dashboard: vi.fn() },
 }));
 
 describe("AdminDashboard", () => {

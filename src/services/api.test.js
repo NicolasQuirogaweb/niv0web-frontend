@@ -1,28 +1,25 @@
 import axios from "axios";
 
-jest.mock("axios", () => ({ create: jest.fn() }));
+vi.mock("axios", () => ({ default: { create: vi.fn() } }));
 
 const makeApiMock = () => {
-  const apiMock = jest.fn();
+  const apiMock = vi.fn();
   apiMock.interceptors = {
-    request: { use: jest.fn() },
-    response: { use: jest.fn() },
+    request: { use: vi.fn() },
+    response: { use: vi.fn() },
   };
-  apiMock.get = jest.fn();
-  apiMock.post = jest.fn();
-  apiMock.put = jest.fn();
-  apiMock.delete = jest.fn();
+  apiMock.get = vi.fn();
+  apiMock.post = vi.fn();
+  apiMock.put = vi.fn();
+  apiMock.delete = vi.fn();
   return apiMock;
 };
 
-const loadApiModule = () => {
-  let apiMock;
-  let apiExports;
-  jest.isolateModules(() => {
-    apiMock = makeApiMock();
-    axios.create.mockReturnValue(apiMock);
-    apiExports = require("./api");
-  });
+const loadApiModule = async () => {
+  vi.resetModules();
+  const apiMock = makeApiMock();
+  axios.create.mockReturnValue(apiMock);
+  const apiExports = await import("./api");
   const responseErrorHandler = apiMock.interceptors.response.use.mock.calls[0][1];
   return { apiMock, responseErrorHandler, ...apiExports };
 };
@@ -34,16 +31,16 @@ const makeError = (overrides = {}) => ({
 
 describe("api.js response interceptor (401 refresh flow, cookie-based auth)", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  it("never registers a request interceptor (no manual Authorization header)", () => {
-    const { apiMock } = loadApiModule();
+  it("never registers a request interceptor (no manual Authorization header)", async () => {
+    const { apiMock } = await loadApiModule();
     expect(apiMock.interceptors.request.use).not.toHaveBeenCalled();
   });
 
-  it("configures a bounded timeout so a hung request eventually fails instead of hanging forever", () => {
-    loadApiModule();
+  it("configures a bounded timeout so a hung request eventually fails instead of hanging forever", async () => {
+    await loadApiModule();
     expect(axios.create).toHaveBeenCalledWith(
       expect.objectContaining({ timeout: expect.any(Number) })
     );
@@ -52,10 +49,10 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("triggers exactly one /api/auth/refresh call for a single 401, then retries the original request without touching localStorage or Authorization headers", async () => {
-    const { apiMock, responseErrorHandler } = loadApiModule();
+    const { apiMock, responseErrorHandler } = await loadApiModule();
     apiMock.post.mockResolvedValue({});
     apiMock.mockResolvedValue({ data: {} });
-    jest.spyOn(window.localStorage.__proto__, "setItem");
+    vi.spyOn(window.localStorage.__proto__, "setItem");
 
     const error = makeError();
     await responseErrorHandler(error);
@@ -70,7 +67,7 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("queues concurrent 401s behind a single refresh call and retries all of them", async () => {
-    const { apiMock, responseErrorHandler } = loadApiModule();
+    const { apiMock, responseErrorHandler } = await loadApiModule();
     let resolveRefresh;
     apiMock.post.mockImplementation(
       () => new Promise((resolve) => { resolveRefresh = resolve; })
@@ -93,8 +90,8 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("calls the registered unauthorized handler when the refresh call itself fails", async () => {
-    const { apiMock, responseErrorHandler, setUnauthorizedHandler } = loadApiModule();
-    const handler = jest.fn();
+    const { apiMock, responseErrorHandler, setUnauthorizedHandler } = await loadApiModule();
+    const handler = vi.fn();
     setUnauthorizedHandler(handler);
     apiMock.post.mockRejectedValue(new Error("refresh failed"));
 
@@ -104,7 +101,7 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("does not attempt a refresh for a 401 coming from the refresh endpoint itself", async () => {
-    const { apiMock, responseErrorHandler } = loadApiModule();
+    const { apiMock, responseErrorHandler } = await loadApiModule();
     const error = makeError({ config: { url: "/api/auth/refresh", headers: {} } });
 
     await expect(responseErrorHandler(error)).rejects.toBe(error);
@@ -112,8 +109,8 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("does not attempt a refresh (or call the unauthorized handler) for a 401 from verify-token — an anonymous visitor is not a session failure", async () => {
-    const { apiMock, responseErrorHandler, setUnauthorizedHandler } = loadApiModule();
-    const handler = jest.fn();
+    const { apiMock, responseErrorHandler, setUnauthorizedHandler } = await loadApiModule();
+    const handler = vi.fn();
     setUnauthorizedHandler(handler);
     const error = makeError({ config: { url: "/api/auth/verify-token", headers: {} } });
 
@@ -123,7 +120,7 @@ describe("api.js response interceptor (401 refresh flow, cookie-based auth)", ()
   });
 
   it("passes through non-401 errors unchanged", async () => {
-    const { apiMock, responseErrorHandler } = loadApiModule();
+    const { apiMock, responseErrorHandler } = await loadApiModule();
     const error = makeError({ response: { status: 500 } });
 
     await expect(responseErrorHandler(error)).rejects.toBe(error);

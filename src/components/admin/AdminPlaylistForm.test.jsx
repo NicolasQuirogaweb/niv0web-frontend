@@ -5,11 +5,11 @@ import { AdminPlaylistForm } from "./AdminPlaylistForm";
 import { ToastProvider } from "../../hooks/useToast";
 import { adminService } from "../../services/api";
 
-jest.mock("../../services/api", () => ({
+vi.mock("../../services/api", () => ({
   adminService: {
-    playlists: { list: jest.fn(), update: jest.fn(), create: jest.fn() },
-    samplepacks: { list: jest.fn(), update: jest.fn(), create: jest.fn() },
-    upload: { file: jest.fn() },
+    playlists: { list: vi.fn(), update: vi.fn(), create: vi.fn() },
+    samplepacks: { list: vi.fn(), update: vi.fn(), create: vi.fn() },
+    upload: { file: vi.fn() },
   },
 }));
 
@@ -25,7 +25,7 @@ const renderEdit = (path, routePath, type) =>
   );
 
 describe("AdminPlaylistForm in edit mode", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   it("loads a sample pack from the sample packs endpoint (it used to come up empty)", async () => {
     adminService.samplepacks.list.mockResolvedValue({

@@ -5,16 +5,16 @@ import "../i18n/config";
 import { Playlist } from "./Playlist";
 import { beatsService, loopsService } from "../services/api";
 
-jest.mock("../hooks/useAuth", () => ({ useLogout: () => jest.fn() }));
+vi.mock("../hooks/useAuth", () => ({ useLogout: () => vi.fn() }));
 
-jest.mock("../services/api", () => {
-  const beatsService = { getById: jest.fn() };
-  const loopsService = { getById: jest.fn() };
+vi.mock("../services/api", () => {
+  const beatsService = { getById: vi.fn() };
+  const loopsService = { getById: vi.fn() };
   return {
     beatsService,
     loopsService,
     playlistServices: { beats: beatsService, loops: loopsService },
-    downloadService: { file: jest.fn() },
+    downloadService: { file: vi.fn() },
   };
 });
 
@@ -30,7 +30,7 @@ const renderAt = (path) =>
   );
 
 describe("Playlist page", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => vi.clearAllMocks());
 
   it("fetches a beats catalog and lists its beats", async () => {
     beatsService.getById.mockResolvedValue({

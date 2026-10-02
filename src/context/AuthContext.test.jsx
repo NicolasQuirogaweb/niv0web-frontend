@@ -4,9 +4,9 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import { authService, setUnauthorizedHandler } from "../services/api";
 
-jest.mock("../services/api", () => ({
-  authService: { verifyToken: jest.fn() },
-  setUnauthorizedHandler: jest.fn(),
+vi.mock("../services/api", () => ({
+  authService: { verifyToken: vi.fn() },
+  setUnauthorizedHandler: vi.fn(),
 }));
 
 const Consumer = () => {
@@ -34,8 +34,8 @@ const renderAuthProvider = () =>
 
 describe("AuthContext", () => {
   beforeEach(() => {
-    jest.spyOn(window.localStorage.__proto__, "setItem");
-    jest.clearAllMocks();
+    vi.spyOn(window.localStorage.__proto__, "setItem");
+    vi.clearAllMocks();
   });
 
   afterEach(() => {

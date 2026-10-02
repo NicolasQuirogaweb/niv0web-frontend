@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./Login.css";
 
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = import.meta.env.DEV;
 
 export const Login = () => {
   const { t } = useTranslation();

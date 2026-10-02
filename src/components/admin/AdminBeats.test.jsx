@@ -7,17 +7,17 @@ import { ToastProvider } from "../../hooks/useToast";
 import { ConfirmProvider } from "../../hooks/useConfirm";
 import { adminService } from "../../services/api";
 
-jest.mock("../../services/api", () => ({
+vi.mock("../../services/api", () => ({
   adminService: {
-    playlists: { list: jest.fn() },
+    playlists: { list: vi.fn() },
     beats: {
-      list: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      delete: jest.fn(),
-      batch: jest.fn(),
+      list: vi.fn(),
+      update: vi.fn(),
+      create: vi.fn(),
+      delete: vi.fn(),
+      batch: vi.fn(),
     },
-    upload: { file: jest.fn(), batch: jest.fn() },
+    upload: { file: vi.fn(), batch: vi.fn() },
   },
 }));
 
@@ -45,7 +45,7 @@ const renderAdminBeats = () =>
 
 describe("AdminBeats (representative admin CRUD flow)", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     adminService.playlists.list.mockResolvedValue({ data: [PLAYLIST] });
     adminService.beats.list.mockResolvedValue({ data: [BEAT] });
   });

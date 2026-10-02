@@ -4,7 +4,7 @@ import "../i18n/config";
 import { AdminRoute } from "./AdminRoute";
 import { useAuth } from "../hooks/useAuth";
 
-jest.mock("../hooks/useAuth", () => ({ useAuth: jest.fn() }));
+vi.mock("../hooks/useAuth", () => ({ useAuth: vi.fn() }));
 
 const renderAdminRoute = () =>
   render(

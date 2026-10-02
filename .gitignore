@@ -3,11 +3,10 @@ build/
 coverage/
 *.log
 
-# Secretos. .env.production solo tiene flags de build, sin secretos.
+# Secretos
 .env
 .env.*
 !.env.example
-!.env.production
 
 # Vercel CLI
 .vercel
