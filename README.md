@@ -46,7 +46,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 | `/login` | public | Google Sign-In. The first login creates the account. |
 | `/homelogued` | logged in | Home with links to each section |
 | `/beats`, `/loops` | logged in | Catalog grids |
-| `/:type/playlist/:id` | logged in | A catalog with player and download (`type` = `beats` or `loops`) |
+| `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
 | `/samplepacks`, `/samples/samplepack/:id` | logged in | Sample packs |
 | `/prodmixmaster` | logged in | Production and mixing services |
 | `/admin/*` | admin | Dashboard, beat and loop catalogs, sample packs, users |
@@ -69,12 +69,14 @@ src/
 
 **Session:** `services/api.js` sends cookies with every request. When the API answers 401, the interceptor calls `/api/auth/refresh` once, queues the requests that come in meanwhile, and retries them. If the refresh fails, it clears the session and redirects to `/login`.
 
+**Player:** one `<audio>` per page, owned by `hooks/usePlaylistPlayer.js`. The page decides whether a finished track hands over to the next one (beat and loop catalogs) or not (sample packs, where you audition one sound at a time). Tracks sit in a box with its own scroll, so on a phone you don't scroll the whole page to reach the last one. The hook also feeds the Media Session API, so the title, cover and play/pause/next show up on the lock screen.
+
 **Downloads:** B2 files are on another domain, so the browser ignores `<a download>`. `utils/download.js` fetches them through the API proxy and saves them as a blob.
 
 ## Quality
 
 - `npm run lint`: ESLint with zero warnings allowed.
-- `npm test`: Vitest + React Testing Library. It covers the session and refresh interceptor, the route guards, a full admin CRUD flow, the playlist page by type, the sample pack edit form and the dashboard.
+- `npm test`: Vitest + React Testing Library. It covers the session and refresh interceptor, the route guards, a full admin CRUD flow, the playlist page by type, the player (play all, auto-advance, stop at the end, no auto-advance in sample packs), the sample pack edit form and the dashboard.
 - CI (GitHub Actions) runs lint, tests and a build on every push and PR.
 - Accessibility: the player's seek bar can be used from the keyboard, confirmation dialogs are real dialogs (focus and Esc), and `<html lang>` follows the chosen language.
 
