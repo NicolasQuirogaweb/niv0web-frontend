@@ -1,6 +1,6 @@
 # 0001 — Stay on Create React App for now
 
-**Status:** accepted, with a planned migration · **Date:** 2026-09
+**Status:** superseded by [0002](0002-migrate-to-vite.md) · **Date:** 2026-09
 
 ## Context
 

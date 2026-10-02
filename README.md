@@ -19,7 +19,7 @@ Live: [niv0web.vercel.app](https://niv0web.vercel.app) · API: [niv0web-backend]
 
 | | Choice | Why |
 |---|---|---|
-| UI | React 18 (Create React App) | It's what the project started on. Migrating to Vite is planned but not urgent ([ADR 0001](docs/decisions/0001-stay-on-cra-for-now.md)). |
+| UI | React 18 + Vite | Started on Create React App and moved to Vite when CRA stopped being maintained: production build went from ~33 s to ~1 s ([ADR 0002](docs/decisions/0002-migrate-to-vite.md)). |
 | Routing | React Router 6 | Every page is lazy-loaded, the admin panel included. |
 | Data | axios + a couple of small hooks | There's no global cache: each page fetches what it shows. `usePublicResource` and `useAdminResource` hold the loading and error logic. |
 | Auth | Google Sign-In, session in httpOnly cookies | The frontend never touches a token ([why](https://github.com/NicolasQuirogaweb/niv0web-backend/blob/main/docs/decisions/0001-httponly-cookies.md)). |
@@ -29,15 +29,14 @@ Live: [niv0web.vercel.app](https://niv0web.vercel.app) · API: [niv0web-backend]
 ## Run it locally
 
 ```bash
-cp .env.example .env          # REACT_APP_BACKEND_URL and REACT_APP_GOOGLE_CLIENT_ID
-npm install --legacy-peer-deps
-npm start                     # http://localhost:3000
-npm test                      # watch mode; CI runs with --watchAll=false
+cp .env.example .env          # VITE_BACKEND_URL and VITE_GOOGLE_CLIENT_ID
+npm install
+npm run dev                   # http://localhost:3000
+npm test                      # vitest, runs once (npm run test:watch to keep it open)
 ```
 
 The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) running (default `http://localhost:5000`). If a variable is missing, the app fails on startup with a clear message (`src/config.js`).
 
-`--legacy-peer-deps` is there because CRA 5 declares old peer dependency ranges. It's one of the reasons to migrate.
 
 ## Pages
 
@@ -75,19 +74,19 @@ src/
 ## Quality
 
 - `npm run lint`: ESLint with zero warnings allowed.
-- `npm test`: React Testing Library. It covers the session and refresh interceptor, the route guards, a full admin CRUD flow, the playlist page by type, the sample pack edit form and the dashboard.
+- `npm test`: Vitest + React Testing Library. It covers the session and refresh interceptor, the route guards, a full admin CRUD flow, the playlist page by type, the sample pack edit form and the dashboard.
 - CI (GitHub Actions) runs lint, tests and a build on every push and PR.
 - Accessibility: the player's seek bar can be used from the keyboard, confirmation dialogs are real dialogs (focus and Esc), and `<html lang>` follows the chosen language.
 
 ## Decisions
 
-- [0001 — Stay on CRA for now (and how to leave it)](docs/decisions/0001-stay-on-cra-for-now.md)
+- [0001 — Stay on CRA for now](docs/decisions/0001-stay-on-cra-for-now.md) (superseded by 0002)
+- [0002 — Migrate to Vite](docs/decisions/0002-migrate-to-vite.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 
 ## Known limitations
 
-- Create React App no longer gets updates. See the ADR for the migration plan.
 - Styles are mixed: global CSS per page on the public side, CSS modules in the admin, and some inline styles.
 - No SSR. The public pages need a login anyway, so SEO only matters for `/home`.
 - **Licensing is manual.** The site states that tracks are free for non-profit use only and that commercial use needs a license, but buying one happens outside the app: you contact me through my social links. A proper license flow (terms per license type, checkout) is something I know I need to build.

@@ -17,7 +17,7 @@ describe("ErrorBoundary", () => {
   });
 
   it("shows a generic i18n fallback message and never leaks the raw error message", () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
@@ -42,7 +42,7 @@ describe("ErrorBoundary chunk-load error handling", () => {
 
   beforeEach(() => {
     sessionStorage.clear();
-    reloadSpy = jest.fn();
+    reloadSpy = vi.fn();
     originalLocation = window.location;
     delete window.location;
     window.location = { ...originalLocation, reload: reloadSpy };
@@ -53,7 +53,7 @@ describe("ErrorBoundary chunk-load error handling", () => {
   });
 
   it("reloads once when a stale-deploy chunk-load error is caught", () => {
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
@@ -69,7 +69,7 @@ describe("ErrorBoundary chunk-load error handling", () => {
 
   it("does not reload again (and shows the normal fallback) if a chunk error recurs after the first reload", () => {
     sessionStorage.setItem("chunkReloaded", "1");
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>

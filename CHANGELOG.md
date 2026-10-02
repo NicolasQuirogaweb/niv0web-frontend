@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 
 ## [Unreleased]
 
+### Changed
+- Migrated from Create React App to Vite + Vitest. Production build ~33 s → ~1 s.
+- Env vars renamed: `REACT_APP_BACKEND_URL` → `VITE_BACKEND_URL`, `REACT_APP_GOOGLE_CLIENT_ID` → `VITE_GOOGLE_CLIENT_ID`.
+- ESLint 9 flat config. No more `--legacy-peer-deps`.
+
+## 2026-09-30
+
 Requires the backend from the same date (`/samplepacks` in lowercase, `itemsCount`, `?type=` on playlists, `beatPlaylists` on the dashboard).
 
 ### Fixed

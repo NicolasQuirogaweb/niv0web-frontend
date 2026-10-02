@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 import "./CardPlaylist.css";
 
-const CardPlaylist = memo(({ playlist, resourceType }) => {
+const CardPlaylist = memo(function CardPlaylist({ playlist, resourceType }) {
   const getLink = () =>
     resourceType === "samples"
       ? `/samples/samplepack/${playlist._id}`

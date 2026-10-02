@@ -9,8 +9,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      REACT_APP_BACKEND_URL: http://localhost:5000
-      REACT_APP_GOOGLE_CLIENT_ID: ci-placeholder-client-id
+      VITE_BACKEND_URL: http://localhost:5000
+      VITE_GOOGLE_CLIENT_ID: ci-placeholder-client-id
     steps:
       - uses: actions/checkout@v4
 
@@ -19,10 +19,10 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
 
       - run: npm run lint
 
-      - run: npm test -- --watchAll=false
+      - run: npm test
 
       - run: npm run build
