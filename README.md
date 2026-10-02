@@ -7,7 +7,9 @@ The frontend of **niv0 prod**, where I publish my beats, loops and sample packs.
 <!-- ✍️ NICO: a screenshot or GIF here beats any paragraph. Suggestion: a 10-second GIF showing
      home → a catalog → play → download. Save it to docs/ and link it:  ![niv0 demo](docs/demo.gif) -->
 
-<!-- ✍️ NICO: 2-3 lines about why it exists (same idea as the backend README, don't copy it word for word). -->
+I built niv0 so that when someone asks me "do you have beats I can use?", I can answer with a single link. Artists can browse my beats, loops and sample packs, listen to everything and download what they need, instead of waiting for me to send files one by one. It was also an excuse to build a music app of my own and have full control over how my catalog is shown.
+
+The functionality is where I want it: an interactive catalog and a bridge to contact me. The UI and UX are still evolving while I find the look that fits.
 
 Live: [niv0web.vercel.app](https://niv0web.vercel.app) · API: [niv0web-backend](https://github.com/NicolasQuirogaweb/niv0web-backend)
 
@@ -88,16 +90,20 @@ The API-side decisions (cookies, B2, Docker) are documented in [the backend](htt
 - Create React App no longer gets updates. See the ADR for the migration plan.
 - Styles are mixed: global CSS per page on the public side, CSS modules in the admin, and some inline styles.
 - No SSR. The public pages need a login anyway, so SEO only matters for `/home`.
+- **Licensing is manual.** The site states that tracks are free for non-profit use only and that commercial use needs a license, but buying one happens outside the app: you contact me through my social links. A proper license flow (terms per license type, checkout) is something I know I need to build.
 
-<!-- ✍️ NICO: "What I'd do next". Suggestions: migrate to Vite, TypeScript, a global player that keeps
-     playing when you change pages. Pick the ones you actually want to do. -->
+**What I'd do next**
+
+- Keep polishing the UI and UX until the look matches the music.
+- A license flow inside the app: license types, terms and checkout.
+- A global player that keeps playing while you move between pages.
 
 ## Working with AI
 
 I build this with Claude Code. The repo has what an agent needs so it doesn't start from zero:
 [`CLAUDE.md`](CLAUDE.md) (conventions and limits), [`.claude/settings.json`](.claude/settings.json) (permissions and a hook that runs ESLint on every edited file) and [`.claude/skills/`](.claude/skills) (how to add a page with its translations, and the pre-release checklist).
 
-<!-- ✍️ NICO: a line of your own about how you work with it. -->
+I use AI to move faster, not to stop thinking. I read what I ask for and what I get back, and I check every change before it goes in. It's a powerful tool, which is exactly why I keep studying it and following the practices that get the most out of it. This repo's setup is part of that.
 
 ## License
 
