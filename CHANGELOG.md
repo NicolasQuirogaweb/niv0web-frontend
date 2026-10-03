@@ -10,10 +10,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - Lock-screen and notification controls on phones (Media Session API).
 - The track that is playing is highlighted with an animated equalizer.
 
-### Changed
-- One <audio> element per page instead of one per track.
+### Fixed
+- Android: tapping "next" on the lock screen closed the media notification and stopped playback. Track changes now call `play()` synchronously inside the handler that triggered them, the session reports `playbackState` explicitly, and the notification gets a seek bar (`setPositionState`).
+- A track that fails to load is skipped instead of stopping the catalog.
 
 ### Changed
+- One `<audio>` element per page instead of one per track.
 - Migrated from Create React App to Vite + Vitest. Production build ~33 s → ~1 s.
 - Env vars renamed: `REACT_APP_BACKEND_URL` → `VITE_BACKEND_URL`, `REACT_APP_GOOGLE_CLIENT_ID` → `VITE_GOOGLE_CLIENT_ID`.
 - ESLint 9 flat config. No more `--legacy-peer-deps`.

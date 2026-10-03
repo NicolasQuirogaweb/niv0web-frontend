@@ -69,7 +69,9 @@ src/
 
 **Session:** `services/api.js` sends cookies with every request. When the API answers 401, the interceptor calls `/api/auth/refresh` once, queues the requests that come in meanwhile, and retries them. If the refresh fails, it clears the session and redirects to `/login`.
 
-**Player:** one `<audio>` per page, owned by `hooks/usePlaylistPlayer.js`. The page decides whether a finished track hands over to the next one (beat and loop catalogs) or not (sample packs, where you audition one sound at a time). Tracks sit in a box with its own scroll, so on a phone you don't scroll the whole page to reach the last one. The hook also feeds the Media Session API, so the title, cover and play/pause/next show up on the lock screen.
+**Player:** one `<audio>` per page, owned by `hooks/usePlaylistPlayer.js`. The page decides whether a finished track hands over to the next one (beat and loop catalogs) or not (sample packs, where you audition one sound at a time). Tracks sit in a box with its own scroll, so on a phone you don't scroll the whole page to reach the last one. The hook also feeds the Media Session API, so the title, cover, a seek bar and play/pause/next/previous show up on the lock screen.
+
+The hook drives the `<audio>` element imperatively on purpose. With the screen locked, Android Chrome only lets audio start inside the handler that triggered it (the notification's "next" button, the end of a track). If a track change went through a React re-render and a `useEffect` before calling `play()`, the call would arrive too late, the element would sit paused on a new `src`, and Chrome would drop the notification. So `loadAndPlay` swaps the `src` and calls `play()` in the same tick, and React state only drives the UI.
 
 **Downloads:** B2 files are on another domain, so the browser ignores `<a download>`. `utils/download.js` fetches them through the API proxy and saves them as a blob.
 
