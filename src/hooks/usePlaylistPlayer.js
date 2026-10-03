@@ -12,41 +12,55 @@ const setAction = (action, handler) => {
 };
 
 const SEEK_STEP = 10;
+const HAVE_FUTURE_DATA = 3;
+const MEDIA_EVENTS = ["play", "playing", "pause", "waiting", "ended", "error", "timeupdate", "loadedmetadata"];
+
+// Para escuchar se usa la versión MP3 liviana si existe; la descarga siempre usa el original.
+const playbackSrc = (track, original = false) => (!original && track.previewFile) || track.audioFile;
 
 /**
- * Un solo <audio> por página, manejado de forma imperativa.
+ * Reproductor de una lista de temas, con dos elementos <audio> fuera del DOM.
  *
- * Por qué imperativo: con la pantalla bloqueada, Chrome en Android solo deja
- * arrancar audio dentro del handler que disparó la acción (el botón "siguiente"
- * de la notificación, el fin de un tema). Si el cambio de tema pasara por un
- * re-render de React y un useEffect, el play() llegaría tarde, el audio quedaría
- * en pausa con un src nuevo y Chrome cerraría el reproductor de la notificación.
- * Por eso `loadAndPlay` cambia el src y llama a play() en el mismo tick, y el
- * estado de React solo se usa para dibujar la UI.
+ * - Cambio de tema síncrono: con la pantalla bloqueada, Chrome en Android solo
+ *   deja arrancar audio dentro del handler que disparó la acción ("siguiente" en
+ *   la notificación, el fin de un tema). `loadAndPlay` cambia el src y llama a
+ *   play() en ese mismo tick; el estado de React solo dibuja la UI.
+ * - Precarga: mientras suena un tema, el otro elemento ya va bajando el
+ *   siguiente. Al pasar de tema se le da play a ese elemento, que arranca al
+ *   instante en vez de abrir otra conexión y esperar buffer.
+ * - Previews: si el tema tiene `previewFile` (MP3 de un WAV), se escucha ese; si
+ *   falla, se reintenta con el original antes de saltarlo.
  *
  * `autoAdvance`: al terminar un tema pasa al siguiente (catálogos de beats/loops).
  * `meta`: nombre del catálogo y tapa para la Media Session.
  */
 export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {}) => {
-  const audioRef = useRef(null);
+  const [elements] = useState(() => [new Audio(), new Audio()]);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Valores vivos para los handlers de la Media Session, que se registran una sola vez.
+  // Valores vivos para listeners y handlers que se registran una sola vez.
   const tracksRef = useRef(tracks);
   const optionsRef = useRef({ autoAdvance, meta });
+  const activeRef = useRef(0); // cuál de los dos elementos está sonando
   const indexRef = useRef(null);
+  const preloadedRef = useRef(null); // índice cargado en el elemento de reserva
+  const triedOriginalRef = useRef(false);
   const switchingRef = useRef(false);
   const lastPositionUpdate = useRef(0);
   tracksRef.current = tracks;
   optionsRef.current = { autoAdvance, meta };
 
+  const active = () => elements[activeRef.current];
+  const spare = () => elements[1 - activeRef.current];
+
   const updatePositionState = useCallback(() => {
     const session = mediaSession();
-    const el = audioRef.current;
-    if (!session?.setPositionState || !el) return;
+    const el = elements[activeRef.current];
+    if (!session?.setPositionState) return;
     const total = el.duration;
     if (!Number.isFinite(total) || total <= 0) return;
     try {
@@ -58,7 +72,7 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
     } catch {
       // Chrome tira si los valores son inconsistentes durante una carga; no es grave.
     }
-  }, []);
+  }, [elements]);
 
   const setPlaybackState = (state) => {
     const session = mediaSession();
@@ -78,11 +92,22 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
     });
   };
 
-  const stop = useCallback(() => {
+  const stop = () => {
     switchingRef.current = false;
     setIsPlaying(false);
+    setIsLoading(false);
     setPlaybackState("paused");
-  }, []);
+  };
+
+  const play = (el) => {
+    const attempt = el.play();
+    if (attempt?.catch) {
+      attempt.catch((err) => {
+        // AbortError = otro cambio de tema le ganó a este; no es un fallo real.
+        if (err?.name !== "AbortError" && el === active()) stop();
+      });
+    }
+  };
 
   // "Siguiente" solo existe si hay un tema después; "anterior" siempre (reinicia el tema).
   const updateTrackActions = (index) => {
@@ -92,38 +117,61 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
       return;
     }
     const hasNext = index < tracksRef.current.length - 1;
-    setAction("nexttrack", hasNext ? () => loadAndPlayRef.current(index + 1) : null);
-    setAction("previoustrack", () => previousRef.current());
+    setAction("nexttrack", hasNext ? () => actions.current.loadAndPlay(index + 1) : null);
+    setAction("previoustrack", () => actions.current.previous());
+  };
+
+  // Deja el siguiente tema bajando en el elemento de reserva.
+  const preloadNext = () => {
+    if (!optionsRef.current.autoAdvance) return;
+    const next = indexRef.current + 1;
+    const track = tracksRef.current[next];
+    if (!track || preloadedRef.current === next) return;
+    const el = spare();
+    el.preload = "auto";
+    el.src = playbackSrc(track);
+    el.load();
+    preloadedRef.current = next;
   };
 
   const loadAndPlay = (index) => {
-    const el = audioRef.current;
     const track = tracksRef.current[index];
-    if (!el || !track?.audioFile) return;
+    if (!track?.audioFile) return;
 
     // Todo esto pasa en el mismo tick que el click / la acción de la notificación.
     switchingRef.current = true;
+    triedOriginalRef.current = false;
     indexRef.current = index;
     updateMetadata(index);
-    el.src = track.audioFile;
-    const attempt = el.play();
-    if (attempt?.catch) {
-      attempt.catch((err) => {
-        // AbortError = otro cambio de tema le ganó a este; no es un fallo real.
-        if (err?.name !== "AbortError") stop();
-      });
-    }
 
+    const previous = active();
+    let el;
+    if (preloadedRef.current === index) {
+      // El siguiente ya estaba bajando: se cambia de elemento y arranca al instante.
+      activeRef.current = 1 - activeRef.current;
+      el = active();
+      previous.pause();
+    } else {
+      el = previous;
+      el.src = playbackSrc(track);
+    }
+    preloadedRef.current = null;
+    el.currentTime = 0;
+
+    // El estado va antes del play(): si el navegador dispara "playing" enseguida,
+    // no tiene que quedar pisado por un "cargando" viejo.
     setCurrentIndex(index);
     setCurrentTime(0);
-    setDuration(0);
+    setDuration(Number.isFinite(el.duration) ? el.duration : 0);
+    setIsLoading(el.readyState < HAVE_FUTURE_DATA);
     updateTrackActions(index);
+    play(el);
   };
 
   const previous = () => {
-    const el = audioRef.current;
+    const el = active();
     const index = indexRef.current;
-    if (index === null || !el) return;
+    if (index === null) return;
     // Como en cualquier reproductor: pasados unos segundos, "anterior" reinicia el tema.
     if (el.currentTime > 3 || index === 0) {
       el.currentTime = 0;
@@ -133,35 +181,100 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
     loadAndPlay(index - 1);
   };
 
-  const loadAndPlayRef = useRef(loadAndPlay);
-  const previousRef = useRef(previous);
-  loadAndPlayRef.current = loadAndPlay;
-  previousRef.current = previous;
-
   const resume = () => {
-    const el = audioRef.current;
-    if (!el) return;
     if (indexRef.current === null) {
-      if (tracksRef.current.length > 0) loadAndPlayRef.current(0);
+      if (tracksRef.current.length > 0) loadAndPlay(0);
       return;
     }
-    const attempt = el.play();
-    if (attempt?.catch) attempt.catch(() => stop());
+    play(active());
   };
-  const resumeRef = useRef(resume);
-  resumeRef.current = resume;
+
+  const advanceOrStop = () => {
+    const index = indexRef.current;
+    if (optionsRef.current.autoAdvance && index !== null && index < tracksRef.current.length - 1) {
+      loadAndPlay(index + 1);
+      return;
+    }
+    setCurrentTime(0);
+    stop();
+  };
+
+  // Eventos del elemento activo. El de reserva solo puede avisar que su precarga falló.
+  const onMediaEvent = (e) => {
+    const el = e.currentTarget;
+    if (el !== active()) {
+      if (e.type === "error") preloadedRef.current = null;
+      return;
+    }
+    switch (e.type) {
+      case "play":
+        setIsPlaying(true);
+        break;
+      case "playing":
+        switchingRef.current = false;
+        setIsPlaying(true);
+        setIsLoading(false);
+        setPlaybackState("playing");
+        updatePositionState();
+        preloadNext();
+        break;
+      case "waiting":
+        setIsLoading(true);
+        break;
+      case "pause":
+        // Cambiar el src pausa el audio un instante, y el navegador también dispara
+        // "pause" justo antes de "ended". Ninguna es una pausa del usuario: si
+        // avisáramos "paused" a la Media Session, Android podría cerrar la notificación.
+        if (switchingRef.current || el.ended) return;
+        setIsPlaying(false);
+        setIsLoading(false);
+        setPlaybackState("paused");
+        updatePositionState();
+        break;
+      case "ended":
+        advanceOrStop();
+        break;
+      case "error": {
+        if (!el.getAttribute("src")) return;
+        const track = tracksRef.current[indexRef.current];
+        // Si falló el preview, se intenta una vez con el archivo original.
+        if (track?.previewFile && !triedOriginalRef.current) {
+          triedOriginalRef.current = true;
+          el.src = playbackSrc(track, true);
+          play(el);
+          return;
+        }
+        // Un archivo que no carga (borrado en B2, sin red) no corta la playlist.
+        advanceOrStop();
+        break;
+      }
+      case "timeupdate": {
+        setCurrentTime(el.currentTime || 0);
+        const now = Date.now();
+        if (now - lastPositionUpdate.current > 1000) {
+          lastPositionUpdate.current = now;
+          updatePositionState();
+        }
+        break;
+      }
+      case "loadedmetadata":
+        setDuration(el.duration || 0);
+        updatePositionState();
+        break;
+      default:
+    }
+  };
+
+  // Siempre la versión del último render, para listeners y handlers registrados una vez.
+  const actions = useRef(null);
+  actions.current = { loadAndPlay, previous, resume, onMediaEvent };
 
   const toggleTrack = useCallback((index) => {
-    const el = audioRef.current;
-    if (!el) return;
-    if (index !== indexRef.current) {
-      loadAndPlayRef.current(index);
-    } else if (el.paused) {
-      resumeRef.current();
-    } else {
-      el.pause();
-    }
-  }, []);
+    const el = elements[activeRef.current];
+    if (index !== indexRef.current) actions.current.loadAndPlay(index);
+    else if (el.paused) actions.current.resume();
+    else el.pause();
+  }, [elements]);
 
   const togglePlayAll = useCallback(() => {
     if (tracksRef.current.length === 0) return;
@@ -170,43 +283,42 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
 
   const next = useCallback(() => {
     const index = indexRef.current;
-    if (index !== null && index < tracksRef.current.length - 1) loadAndPlayRef.current(index + 1);
+    if (index !== null && index < tracksRef.current.length - 1) actions.current.loadAndPlay(index + 1);
   }, []);
 
-  const prev = useCallback(() => previousRef.current(), []);
+  const prev = useCallback(() => actions.current.previous(), []);
 
   const seek = useCallback((seconds) => {
-    const el = audioRef.current;
-    if (!el || !Number.isFinite(el.duration)) return;
+    const el = elements[activeRef.current];
+    if (!Number.isFinite(el.duration)) return;
     el.currentTime = Math.min(el.duration, Math.max(0, seconds));
     setCurrentTime(el.currentTime);
     updatePositionState();
-  }, [updatePositionState]);
+  }, [elements, updatePositionState]);
 
-  // Handlers de la notificación / pantalla bloqueada: se registran una vez y leen refs.
+  // Listeners de los dos elementos y handlers de la notificación: se registran una vez.
   useEffect(() => {
-    if (!mediaSession()) return undefined;
-    setAction("play", () => resumeRef.current());
-    setAction("pause", () => audioRef.current?.pause());
+    const listener = (e) => actions.current.onMediaEvent(e);
+    elements.forEach((el) => {
+      el.preload = "metadata";
+      MEDIA_EVENTS.forEach((type) => el.addEventListener(type, listener));
+    });
+
+    setAction("play", () => actions.current.resume());
+    setAction("pause", () => elements[activeRef.current].pause());
     setAction("seekto", (details) => {
       if (typeof details?.seekTime === "number") seek(details.seekTime);
     });
-    setAction("seekforward", (details) => {
-      const el = audioRef.current;
-      if (el) seek(el.currentTime + (details?.seekOffset || SEEK_STEP));
-    });
-    setAction("seekbackward", (details) => {
-      const el = audioRef.current;
-      if (el) seek(el.currentTime - (details?.seekOffset || SEEK_STEP));
-    });
+    setAction("seekforward", (details) => seek(elements[activeRef.current].currentTime + (details?.seekOffset || SEEK_STEP)));
+    setAction("seekbackward", (details) => seek(elements[activeRef.current].currentTime - (details?.seekOffset || SEEK_STEP)));
 
-    const el = audioRef.current;
     return () => {
-      el?.pause();
-      if (el) {
+      elements.forEach((el) => {
+        MEDIA_EVENTS.forEach((type) => el.removeEventListener(type, listener));
+        el.pause();
         el.removeAttribute("src");
         el.load();
-      }
+      });
       const session = mediaSession();
       if (!session) return;
       session.metadata = null;
@@ -215,80 +327,33 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
         setAction(action, null)
       );
     };
-  }, [seek]);
+  }, [elements, seek]);
 
   // Si la página cambia de catálogo sin desmontarse, el tema viejo ya no pertenece a esta lista.
   const tracksKey = tracks.map((t) => t._id).join("|");
   useEffect(() => {
     const index = indexRef.current;
     if (index === null) return;
-    const el = audioRef.current;
-    const stillHere = tracksRef.current[index]?.audioFile && el?.src === tracksRef.current[index].audioFile;
-    if (stillHere) return;
-    el?.pause();
-    el?.removeAttribute("src");
+    const track = tracksRef.current[index];
+    const el = elements[activeRef.current];
+    if (track && el.getAttribute("src") && [track.previewFile, track.audioFile].includes(el.getAttribute("src"))) return;
+    elements.forEach((e) => {
+      e.pause();
+      e.removeAttribute("src");
+    });
     indexRef.current = null;
+    preloadedRef.current = null;
     setCurrentIndex(null);
     setCurrentTime(0);
     setDuration(0);
-    stop();
-  }, [tracksKey, stop]);
-
-  const audioProps = {
-    ref: audioRef,
-    preload: "metadata",
-    onPlay: () => setIsPlaying(true),
-    onPlaying: () => {
-      switchingRef.current = false;
-      setIsPlaying(true);
-      setPlaybackState("playing");
-      updatePositionState();
-    },
-    onPause: (e) => {
-      // Cambiar el src pausa el audio un instante, y el navegador también dispara
-      // "pause" justo antes de "ended". Ninguna de las dos es una pausa del usuario:
-      // si avisáramos "paused" a la Media Session, Android podría cerrar la notificación.
-      if (switchingRef.current || e.currentTarget.ended) return;
-      setIsPlaying(false);
-      setPlaybackState("paused");
-      updatePositionState();
-    },
-    onEnded: () => {
-      const index = indexRef.current;
-      if (optionsRef.current.autoAdvance && index !== null && index < tracksRef.current.length - 1) {
-        loadAndPlayRef.current(index + 1);
-        return;
-      }
-      setCurrentTime(0);
-      stop();
-    },
-    onError: () => {
-      // Un archivo que no carga (borrado en B2, sin red) no tiene que cortar la playlist.
-      const index = indexRef.current;
-      if (index === null || !audioRef.current?.getAttribute("src")) return;
-      if (optionsRef.current.autoAdvance && index < tracksRef.current.length - 1) {
-        loadAndPlayRef.current(index + 1);
-        return;
-      }
-      stop();
-    },
-    onTimeUpdate: (e) => {
-      setCurrentTime(e.currentTarget.currentTime || 0);
-      const now = Date.now();
-      if (now - lastPositionUpdate.current > 1000) {
-        lastPositionUpdate.current = now;
-        updatePositionState();
-      }
-    },
-    onLoadedMetadata: (e) => {
-      setDuration(e.currentTarget.duration || 0);
-      updatePositionState();
-    },
-  };
+    setIsPlaying(false);
+    setIsLoading(false);
+  }, [tracksKey, elements]);
 
   return {
     currentIndex,
     isPlaying,
+    isLoading,
     currentTime,
     duration,
     toggleTrack,
@@ -296,6 +361,5 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
     next,
     prev,
     seek,
-    audioProps,
   };
 };
