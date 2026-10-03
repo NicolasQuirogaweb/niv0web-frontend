@@ -16,7 +16,8 @@ Run lint and tests before saying a change is done.
 - All HTTP goes through `src/services/api.js`. Components never import axios or call `fetch`. The response interceptor unwraps `{ success, data }`, so `res.data` is already the payload.
 - Public pages fetch with `usePublicResource().run(promise)`. Admin lists use `useAdminResource`. Abort errors are ignored with `utils/isAbortError`.
 - Private pages start with `<PageHeader />` and render tracks with `<TrackList />`. Don't copy those blocks back into pages.
-- Playback state lives in `usePlaylistPlayer` (one `<audio>` per page), created by the page and passed to `<TrackList player={...} />` and `<PlayAllButton />`. `AudioPlayer` is presentational only. Never add another `<audio>` per row.
+- Playback state lives in `usePlaylistPlayer` (two detached `Audio` elements: one plays, the other preloads the next track), created by the page and passed to `<TrackList player={...} />` and `<PlayAllButton />`. `AudioPlayer` is presentational only. Never render an `<audio>` per row.
+- Play `track.previewFile || track.audioFile`; download only `track.audioFile`. Downloads go through `downloadTrack` (signed B2 link, proxy as fallback): never go back to fetching the file into a blob as the main path, it makes downloads look frozen.
 - Track changes must set `src` and call `play()` synchronously inside the handler that triggered them (`loadAndPlay`). Don't move that into a `useEffect` or pass `src` as a prop: it breaks "next" from the Android lock screen. `src/hooks/usePlaylistPlayer.test.jsx` has a test that checks this.
 - Auth state lives in `AuthContext`, filled from `GET /api/auth/verify-token`. Tokens are httpOnly cookies: never read, store or send a token from JS, and never write auth data to `localStorage`.
 
