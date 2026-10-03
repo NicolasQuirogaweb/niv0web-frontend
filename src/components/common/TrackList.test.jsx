@@ -63,6 +63,15 @@ describe("TrackList downloads", () => {
     expect(HTMLAnchorElement.prototype.click).toHaveBeenCalledTimes(1);
   });
 
+  it("explains that a beat WAV comes with the license, without retrying through the proxy", async () => {
+    downloadService.link.mockRejectedValue({ response: { status: 403, data: { code: "LICENSE_REQUIRED" } } });
+    render(<TrackList tracks={TRACKS} player={player} />);
+
+    await act(async () => fireEvent.click(downloadButton()));
+    expect(screen.getByRole("alert")).toHaveTextContent(i18n.t("playlist.licenseRequired"));
+    expect(downloadService.file).not.toHaveBeenCalled();
+  });
+
   it("shows an error when both ways fail", async () => {
     downloadService.link.mockRejectedValue(new Error("502"));
     downloadService.file.mockRejectedValue(new Error("502"));

@@ -64,6 +64,7 @@ export const Playlist = () => {
               <p>{t("playlist.none")}</p>
             )}
             <p className="free-license">{t("playlist.freeLicense")}</p>
+            {resourceType === "beats" && <p className="free-license free-license--note">{t("playlist.mp3Note")}</p>}
           </div>
         ) : null}
         <div className="back-button">

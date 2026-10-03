@@ -57,8 +57,8 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
     try {
       await downloadTrack(track, fallbackName);
       setDownloadState(track._id, "started");
-    } catch {
-      setDownloadState(track._id, "error");
+    } catch (err) {
+      setDownloadState(track._id, err?.response?.data?.code === "LICENSE_REQUIRED" ? "licensed" : "error");
     }
     timers.current.push(
       setTimeout(() => {
@@ -95,9 +95,9 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
                 <div className="beat-card-info">
                   <p className="beat-title">{track.title}</p>
                   {showArtist && track.artist && <p className="beat-artist">{track.artist}</p>}
-                  {state === "error" && (
+                  {(state === "error" || state === "licensed") && (
                     <p role="alert" className="beat-artist" style={{ color: "#ef9a9a" }}>
-                      {t("playlist.downloadError")}
+                      {t(state === "licensed" ? "playlist.licenseRequired" : "playlist.downloadError")}
                     </p>
                   )}
                 </div>

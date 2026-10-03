@@ -455,3 +455,8 @@
   background: rgba(187, 240, 190, 0.2);
   color: #bbf0be;
 }
+
+.free-license--note {
+  margin-top: 8px;
+  font-size: 13px;
+}

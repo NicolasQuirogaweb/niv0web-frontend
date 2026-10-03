@@ -33,7 +33,9 @@ export const downloadTrack = async (track, fallbackName = "track") => {
     const { data } = await downloadService.link(track.audioFile, name);
     clickLink(data.url);
     return "direct";
-  } catch {
+  } catch (err) {
+    // El WAV de un beat viene con la licencia: el proxy también lo rechaza, no tiene sentido reintentar.
+    if (err?.response?.status === 403) throw err;
     const response = await downloadService.file(track.audioFile);
     const blobUrl = URL.createObjectURL(response.data);
     clickLink(blobUrl, `${name}${fileExtension(track.audioFile)}`);
