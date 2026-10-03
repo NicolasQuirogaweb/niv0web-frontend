@@ -30,7 +30,8 @@
     "seek": "Posición de reproducción",
     "playAll": "Reproducir catálogo",
     "pauseAll": "Pausar catálogo",
-    "nowPlaying": "Sonando ahora"
+    "nowPlaying": "Sonando ahora",
+    "loading": "Cargando…"
   },
   "home": {
     "beats": "BEATS",
@@ -70,7 +71,9 @@
     "freeLicense": "Gratis para uso sin fines de lucro únicamente, contáctame y compra una licencia.",
     "download": "Descargar",
     "seoDesc": "Escucha pistas de las playlists de Niv0 Beats.",
-    "downloadError": "No se pudo descargar. Probá de nuevo en un rato."
+    "downloadError": "No se pudo descargar. Probá de nuevo en un rato.",
+    "preparingDownload": "Preparando la descarga…",
+    "downloadStarted": "La descarga arrancó"
   },
   "samplePacks": {
     "loading": "Cargando sample packs...",
