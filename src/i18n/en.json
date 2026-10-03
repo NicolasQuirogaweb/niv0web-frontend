@@ -30,7 +30,8 @@
     "seek": "Seek",
     "playAll": "Play catalog",
     "pauseAll": "Pause catalog",
-    "nowPlaying": "Now playing"
+    "nowPlaying": "Now playing",
+    "loading": "Loading…"
   },
   "home": {
     "beats": "BEATS",
@@ -70,7 +71,11 @@
     "freeLicense": "Free for non profit use only, contact me and buy a license.",
     "download": "Download",
     "seoDesc": "Listen to tracks from Niv0 Beats playlists.",
-    "downloadError": "The download failed. Try again in a moment."
+    "downloadError": "The download failed. Try again in a moment.",
+    "preparingDownload": "Preparing download…",
+    "downloadStarted": "Download started",
+    "mp3Note": "The free download is an MP3. The WAV and the stems come with the license.",
+    "licenseRequired": "The WAV of this beat comes with the license. Contact me to get it."
   },
   "samplePacks": {
     "loading": "Loading sample packs...",

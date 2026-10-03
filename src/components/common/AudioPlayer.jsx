@@ -7,11 +7,19 @@ export const formatTime = (s) => {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 };
 
-// Solo controles: el <audio> vive en usePlaylistPlayer, uno por página.
+export const Spinner = ({ size = 14 }) => (
+  <svg className="spin" width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
+    <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+  </svg>
+);
+
+// Solo controles: el audio vive en usePlaylistPlayer, uno por página.
 // Una fila que no es la activa muestra la barra en 0 y no se puede mover.
-export const AudioPlayer = ({ isActive, isPlaying, currentTime, duration, onToggle, onSeek }) => {
+export const AudioPlayer = ({ isActive, isPlaying, isLoading, currentTime, duration, onToggle, onSeek }) => {
   const { t } = useTranslation();
   const playing = isActive && isPlaying;
+  const loading = isActive && isLoading;
   const time = isActive ? currentTime : 0;
   const total = isActive ? duration : 0;
 
@@ -35,9 +43,12 @@ export const AudioPlayer = ({ isActive, isPlaying, currentTime, duration, onTogg
         type="button"
         className={`audio-play-btn${playing ? " audio-play-btn--playing" : ""}`}
         onClick={onToggle}
-        aria-label={playing ? t("player.pause") : t("player.play")}
+        aria-label={loading ? t("player.loading") : playing ? t("player.pause") : t("player.play")}
+        aria-busy={loading || undefined}
       >
-        {playing ? (
+        {loading ? (
+          <Spinner />
+        ) : playing ? (
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
         ) : (
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="8,5 19,12 8,19"/></svg>

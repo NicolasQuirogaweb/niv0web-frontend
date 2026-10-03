@@ -440,3 +440,23 @@
     margin-top: 20px;
   }
 }
+
+/* Descarga: mientras se prepara no se puede volver a tocar; después muestra ✓ */
+.btn-download {
+  color: #fff;
+}
+
+.btn-download:disabled {
+  cursor: default;
+  transform: none;
+}
+
+.btn-download--done {
+  background: rgba(187, 240, 190, 0.2);
+  color: #bbf0be;
+}
+
+.free-license--note {
+  margin-top: 8px;
+  font-size: 13px;
+}

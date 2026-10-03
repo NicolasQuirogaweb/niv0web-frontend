@@ -95,6 +95,9 @@ export const loopsService = {
 export const playlistServices = { beats: beatsService, loops: loopsService };
 
 export const downloadService = {
+  // Link firmado de B2: el navegador baja el archivo directo, con su barra de progreso.
+  link: (url, name) => api.get("/api/download/link", { params: { url, name } }),
+  // Fallback: el archivo entero pasa por el backend y se guarda como blob.
   file: (url) => api.get("/api/download", { params: { url }, responseType: "blob", timeout: 120000 }),
 };
 
