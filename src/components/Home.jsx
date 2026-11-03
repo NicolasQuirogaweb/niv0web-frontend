@@ -29,6 +29,8 @@ export const Home = () => {
         <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
         <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
         <h6 className="loops-home"><Link to="/loops">{t("home.loops")}</Link></h6>
+        {/* Mismo estilo que el link de loops; About es pública. */}
+        <h6 className="loops-home about-home"><Link to="/about">{t("home.about")}</Link></h6>
         <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
         <p>{t("home.cta")}</p>
       </div>

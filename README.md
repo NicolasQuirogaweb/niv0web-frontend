@@ -44,6 +44,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 |---|---|---|
 | `/home` | public | Landing |
 | `/login` | public | Google Sign-In. The first login creates the account. |
+| `/about` | public | My story and my discography as a vinyl grid. Releases come from Spotify (`/api/discography`) and play in Spotify's embedded player, so the plays count on Spotify. |
 | `/homelogued` | logged in | Home with links to each section |
 | `/beats`, `/loops` | logged in | Catalog grids |
 | `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
@@ -68,6 +69,8 @@ src/
 ```
 
 **Session:** `services/api.js` sends cookies with every request. When the API answers 401, the interceptor calls `/api/auth/refresh` once, queues the requests that come in meanwhile, and retries them. If the refresh fails, it clears the session and redirects to `/login`.
+
+**Discography:** the About page does not use our player on purpose. Each release opens Spotify's embed (`open.spotify.com/embed/album/{id}`): listeners logged into Spotify hear the full album and it counts as a play there; others get a 30-second preview with a link to Spotify.
 
 **Player:** playback is owned by `hooks/usePlaylistPlayer.js`, with two `<audio>` elements outside the DOM. The page decides whether a finished track hands over to the next one (beat and loop catalogs) or not (sample packs, where you audition one sound at a time). Tracks sit in a box with its own scroll, so on a phone you don't scroll the whole page to reach the last one. The hook also feeds the Media Session API, so the title, cover, a seek bar and play/pause/next/previous show up on the lock screen.
 

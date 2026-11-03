@@ -12,6 +12,10 @@ La documentación completa está en inglés en [README.md](README.md).
 
 React 18 con Vite, React Router 6, axios, i18next (español/inglés) y login con Google. Está deployado en Vercel.
 
+## Sobre mí
+
+`/about` es pública (no pide login): mi historia y mi discografía como una grilla de vinilos. Los lanzamientos se traen solos de Spotify y se escuchan con el reproductor de Spotify, así las escuchas suman allá.
+
 ## El reproductor
 
 Los catálogos de beats y loops se escuchan como un álbum: botón de play general al lado del título y, al terminar un tema, arranca el siguiente. Los temas están en una caja con scroll propio para que en el celular no haya que bajar toda la página, y desde la pantalla bloqueada se puede pausar o pasar de tema.
