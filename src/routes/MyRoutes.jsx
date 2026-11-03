@@ -16,6 +16,7 @@ const Beats = lazyNamed(() => import("../components/Beats"), "Beats");
 const Playlist = lazyNamed(() => import("../components/Playlist"), "Playlist");
 const SamplePacks = lazyNamed(() => import("../components/SamplePacks"), "SamplePacks");
 const Samples = lazyNamed(() => import("../components/Samples"), "Samples");
+const About = lazyNamed(() => import("../components/About"), "About");
 const Loops = lazyNamed(() => import("../components/Loops"), "Loops");
 const ProdMixMaster = lazyNamed(() => import("../components/ProdMixMaster"), "ProdMixMaster");
 
@@ -53,6 +54,8 @@ export const MyRoutes = () => {
                 }
               />
               <Route path="/login" element={<Login />} />
+              {/* Pública: About y discografía se ven sin login. */}
+              <Route path="/about" element={<About />} />
               <Route
                 path="/beats"
                 element={

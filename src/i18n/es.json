@@ -288,5 +288,19 @@
       "uploadingToB2": "Subiendo archivos a B2...",
       "creatingItems": "Creando {{name}}..."
     }
+  },
+  "about": {
+    "seoTitle": "Sobre mí",
+    "seoDesc": "La historia de niv0 como productor y su discografía en Spotify.",
+    "title": "Sobre mí",
+    "story": [
+      "Hice niv0 para que, cuando alguien me pregunta \"¿tenés beats para usar?\", la respuesta sea un solo link. El artista entra, escucha mi catálogo y elige lo que necesita.",
+      "También fue la excusa para hacer mi propia app de música y tener control total sobre cómo se muestra mi trabajo. Acá abajo está todo lo que saqué en Spotify."
+    ],
+    "discography": "Discografía",
+    "listenOnSpotify": "Abrir en Spotify",
+    "close": "Cerrar",
+    "noCover": "Sin tapa",
+    "photoAlt": "Foto de niv0"
   }
 }

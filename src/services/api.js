@@ -92,6 +92,11 @@ export const loopsService = {
   getById: (id) => api.get(`/api/resources/loops/playlist/${id}`),
 };
 
+// Discografía pública de Spotify (página About).
+export const discographyService = {
+  getAll: () => api.get("/api/discography"),
+};
+
 export const playlistServices = { beats: beatsService, loops: loopsService };
 
 export const downloadService = {
