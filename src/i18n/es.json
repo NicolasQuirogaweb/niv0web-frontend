@@ -74,8 +74,8 @@
     "downloadError": "No se pudo descargar. Probá de nuevo en un rato.",
     "preparingDownload": "Preparando la descarga…",
     "downloadStarted": "La descarga arrancó",
-    "mp3Note": "La descarga gratis es en MP3. El WAV y las stems vienen con la licencia.",
-    "licenseRequired": "El WAV de este beat viene con la licencia. Escribime para conseguirlo."
+    "licenseRequired": "El WAV de este beat viene con la licencia. Escribime para conseguirlo.",
+    "beatsLicenseNote": "Los beats se compran con licencia (común, exclusiva o exclusiva + stems). Muy pronto vas a poder comprarlos acá; mientras tanto, escribime."
   },
   "samplePacks": {
     "loading": "Cargando sample packs...",

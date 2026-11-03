@@ -59,12 +59,12 @@ export const Playlist = () => {
               </div>
             </div>
             {tracks.length > 0 ? (
-              <TrackList tracks={tracks} player={player} fallbackName={resourceType === "loops" ? "loop" : "beat"} showArtist />
+              <TrackList tracks={tracks} player={player} fallbackName={resourceType === "loops" ? "loop" : "beat"} showArtist allowDownload={resourceType !== "beats"} />
             ) : (
               <p>{t("playlist.none")}</p>
             )}
             <p className="free-license">{t("playlist.freeLicense")}</p>
-            {resourceType === "beats" && <p className="free-license free-license--note">{t("playlist.mp3Note")}</p>}
+            {resourceType === "beats" && <p className="free-license free-license--note">{t("playlist.beatsLicenseNote")}</p>}
           </div>
         ) : null}
         <div className="back-button">

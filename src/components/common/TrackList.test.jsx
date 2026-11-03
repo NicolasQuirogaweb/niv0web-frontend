@@ -82,6 +82,14 @@ describe("TrackList downloads", () => {
   });
 });
 
+describe("TrackList without downloads", () => {
+  it("renders no download button when allowDownload is false", () => {
+    render(<TrackList tracks={TRACKS} player={player} allowDownload={false} />);
+    expect(screen.getByText("Night Drive")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: new RegExp(i18n.t("playlist.download")) })).not.toBeInTheDocument();
+  });
+});
+
 describe("fileExtension", () => {
   it("keeps the real extension so a WAV isn't saved as .mp3", () => {
     expect(fileExtension("https://x/a/b.WAV")).toBe(".wav");
