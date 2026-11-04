@@ -56,8 +56,11 @@ describe("ConsoleMenu", () => {
     expect(links()[0]).toHaveFocus();
   });
 
-  it("keeps the glowing NIV0 orb out of screen readers", () => {
+  it("fills the orb with sound bars, hidden from screen readers", () => {
     const { container } = renderMenu();
-    expect(container.querySelector(".console-orb")).toHaveAttribute("aria-hidden", "true");
+    const orb = container.querySelector(".console-orb");
+    expect(orb).toHaveAttribute("aria-hidden", "true");
+    expect(orb.querySelectorAll(".console-orb-bar")).toHaveLength(7);
+    expect(orb).toHaveTextContent("");
   });
 });

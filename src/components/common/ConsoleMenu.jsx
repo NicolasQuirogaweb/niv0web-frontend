@@ -5,10 +5,11 @@ import { HOME_SECTIONS } from "../../content/sections";
 import "./ConsoleMenu.css";
 
 const KEY_STEP = { ArrowDown: 1, ArrowUp: -1 };
+const ORB_BARS = [0, 1, 2, 3, 4, 5, 6];
 
 /**
  * Menú de secciones de los dos homes, al estilo de un dashboard de consola
- * (ADR 0005): un círculo con NIV0 que respira y una lista de barras. Siempre
+ * (ADR 0005): un círculo con barras de sonido que respira y una lista de barras. Siempre
  * hay una sección elegida (la primera al entrar); la elige el mouse, el foco
  * o las flechas ↑ ↓, y Enter entra.
  */
@@ -28,7 +29,11 @@ export const ConsoleMenu = () => {
   return (
     <div className="console-menu">
       <div className="console-orb" aria-hidden="true">
-        <span className="console-orb-word">NIV0</span>
+        <div className="console-orb-bars">
+          {ORB_BARS.map((bar) => (
+            <span key={bar} className="console-orb-bar" />
+          ))}
+        </div>
       </div>
       <nav className="console-nav" aria-label={t("home.menuLabel")}>
         <ul className="console-list">
