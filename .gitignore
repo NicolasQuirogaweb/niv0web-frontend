@@ -26,3 +26,5 @@ Thumbs.db
 
 # Salida de scripts/encode-background.sh
 bg-out/
+bg-in/
+public/bg-preview/

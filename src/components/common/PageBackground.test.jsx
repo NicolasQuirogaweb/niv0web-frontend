@@ -56,6 +56,21 @@ describe("PageBackground", () => {
     expect(container.querySelector(".page-bg")).toHaveAttribute("aria-hidden", "true");
   });
 
+  // React no escribe el atributo `muted` en el HTML y algunos navegadores no
+  // arrancan el autoplay sin él: el componente marca el video como mudo y le da play.
+  it("starts playing on its own once it appears, muted", () => {
+    const { container } = render(<PageBackground media={{ poster: POSTER, video: VIDEO }} />);
+    expect(video(container).defaultMuted).toBe(true);
+    expect(HTMLMediaElement.prototype.play).toHaveBeenCalled();
+  });
+
+  it("keeps the image if the browser refuses to play the video", async () => {
+    HTMLMediaElement.prototype.play.mockRejectedValue(new DOMException("blocked", "NotAllowedError"));
+    const { container } = render(<PageBackground media={{ poster: POSTER, video: VIDEO }} />);
+    await act(async () => {});
+    expect(container.querySelector(".page-bg").style.backgroundImage).toContain(POSTER);
+  });
+
   it("uses the lighter video on small screens", () => {
     setBrowser({ mobile: true });
     const { container } = render(<PageBackground media={{ poster: POSTER, video: VIDEO, videoMobile: VIDEO_MOBILE }} />);

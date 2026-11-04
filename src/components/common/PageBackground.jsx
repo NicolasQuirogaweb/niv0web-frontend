@@ -46,6 +46,17 @@ export const PageBackground = ({ media }) => {
   const videoSrc = (mobile && media?.videoMobile) || media?.video;
   const showVideo = Boolean(videoSrc && allowed && pageLoaded);
 
+  // React pone `muted` como propiedad pero no como atributo, y Chrome a veces no
+  // arranca el autoplay así. Lo marcamos mudo a mano y le damos play; si el
+  // navegador se niega, queda la imagen de fondo.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!showVideo || !el) return;
+    el.defaultMuted = true;
+    el.muted = true;
+    el.play()?.catch?.(() => {});
+  }, [showVideo, videoSrc]);
+
   useEffect(() => {
     if (!showVideo) return undefined;
     const onVisibility = () => {
