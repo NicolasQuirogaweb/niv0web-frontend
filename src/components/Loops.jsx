@@ -7,6 +7,8 @@ import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
 import "./Beats.css";
+import { PageBackground } from "./common/PageBackground";
+import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 // Los loops se organizan en catálogos igual que los beats, así que la página
 // es la misma grilla de cards apuntando a /loops/playlist/:id.
@@ -22,6 +24,7 @@ export const Loops = () => {
   return (
     <>
       <SEO title={t("loops.seoTitle")} description={t("loops.seoDesc")} />
+      <PageBackground media={PAGE_BACKGROUNDS.loops} />
       <section className="beats-section">
         <PageHeader className="beats-info" />
         {loading ? (

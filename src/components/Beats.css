@@ -1,8 +1,8 @@
 .beats-section {
   min-height: 100vh;
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(https://f005.backblazeb2.com/file/niv0-audios/images/fotohomeloguedfr.webp) no-repeat center center fixed;
-  background-size: cover;
+  background: transparent; /* fondo: <PageBackground> (ADR 0004) */
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   position: relative;
   color: white;
@@ -34,7 +34,7 @@
 .beats-section h4 a,
 .beats-section h5 a {
   text-decoration: none;
-  color: #bbf0be;
+  color: var(--color-accent);
   transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
@@ -56,13 +56,56 @@
 }
 
 .beats-list {
-  margin-top: 24px;
+  margin-top: 8px;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 120px);
+  grid-template-columns: repeat(auto-fit, 200px);
   justify-content: center;
-  gap: 16px;
+  gap: 24px;
   margin-bottom: 10px;
+}
+
+/* ---------- Encabezado y bloques (rediseño, ver ADR 0003) ---------- */
+
+.beats-hero {
+  max-width: 1000px;
+  margin: 28px auto 8px;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-accent-soft), rgba(255, 255, 255, 0.02));
+  border: var(--glass-border);
+}
+
+.beats-hero h1 {
+  margin: 0 0 6px;
+  font-size: 40px;
+  letter-spacing: 1px;
+}
+
+.beats-hero p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 16px;
+}
+
+.beats-block {
+  max-width: 1000px;
+  margin: 36px auto 0;
+  padding: 0 24px;
+}
+
+.beats-block-title {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.beats-block-subtitle {
+  margin: -8px 0 28px;
+  color: var(--color-text-muted);
 }
 
 .back-button-container {
@@ -97,8 +140,8 @@
 .back-to-catalogue-btn {
   padding: 12px 32px;
   background: transparent;
-  color: #bbf0be;
-  border: 2px solid #bbf0be;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
@@ -107,14 +150,14 @@
   width: auto;
   margin: 50px auto;
   text-transform: uppercase;
-  box-shadow: 0 0 8px rgba(187, 240, 190, 0.4), 0 0 20px rgba(187, 240, 190, 0.15);
+  box-shadow: 0 0 8px rgb(var(--color-accent-rgb) / 0.4), 0 0 20px rgb(var(--color-accent-rgb) / 0.15);
   transition: all 0.3s ease;
 }
 
 .back-to-catalogue-btn:hover {
-  background: #bbf0be;
+  background: var(--color-accent);
   color: #0d0d0d;
-  box-shadow: 0 0 16px rgba(187, 240, 190, 0.8), 0 0 40px rgba(187, 240, 190, 0.3);
+  box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8), 0 0 40px rgb(var(--color-accent-rgb) / 0.3);
   transform: scale(1.05);
 }
 
@@ -125,7 +168,7 @@
 }
 
 .instagram-icon-loops {
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 @media (max-width: 768px) {
@@ -207,5 +250,30 @@
     padding: 10px 24px;
     font-size: 14px;
     width: auto;
+  }
+}
+
+/* Rediseño en el celular: catálogos de a 2 y licencias apiladas (LicenseCards.css). */
+@media (max-width: 768px) {
+  .beats-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    justify-items: center;
+  }
+
+  .beats-hero {
+    margin: 16px 12px 0;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .beats-hero h1 {
+    font-size: 30px;
+  }
+
+  .beats-block {
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
 }

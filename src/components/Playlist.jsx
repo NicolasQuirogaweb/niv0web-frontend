@@ -6,7 +6,8 @@ import { usePublicResource } from "../hooks/usePublicResource";
 import { PageHeader } from "./common/PageHeader";
 import { TrackList, PlayAllButton } from "./common/TrackList";
 import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
-import { BackgroundMedia } from "./common/BackgroundMedia";
+import { PageBackground } from "./common/PageBackground";
+import { catalogBackground } from "../content/backgrounds";
 import { SEO } from "./common/SEO";
 import "./Playlist.css";
 
@@ -39,7 +40,7 @@ export const Playlist = () => {
   return (
     <>
       <SEO title={playlistData?.title} description={t("playlist.seoDesc")} />
-      <BackgroundMedia src={playlistData?.backgroundVideo} />
+      <PageBackground media={catalogBackground(playlistData?.backgroundVideo)} />
       <div className="playlist-page">
         <PageHeader className="playlist-header" titleAs="h2" />
         {loading ? (

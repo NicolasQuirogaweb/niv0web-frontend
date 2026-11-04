@@ -57,10 +57,6 @@
   "beats": {
     "loading": "Loading playlists...",
     "none": "No playlists found.",
-    "licenses": "LICENSES",
-    "exclusiveStems": "Exclusive + stems $100usd $100mil AR",
-    "exclusiveWav": "Exclusive wav $80usd $80mil AR",
-    "commonLease": "common lease wav $20usd $20mil AR",
     "seoTitle": "Beats",
     "seoDesc": "Browse exclusive beats from Niv0. Listen, lease, and download premium beats."
   },
@@ -306,5 +302,45 @@
     "close": "Close",
     "noCover": "No cover",
     "photoAlt": "Photo of niv0"
+  },
+  "card": {
+    "items_beats_one": "{{count}} beat",
+    "items_beats_other": "{{count}} beats",
+    "items_loops_one": "{{count}} loop",
+    "items_loops_other": "{{count}} loops",
+    "items_samples_one": "{{count}} sample",
+    "items_samples_other": "{{count}} samples"
+  },
+  "licenses": {
+    "title": "Licenses",
+    "subtitle": "All of them include the untagged WAV. Pick the one that fits your project.",
+    "featured": "Most chosen",
+    "contact": "Message me",
+    "included": "included",
+    "notIncluded": "not included",
+    "common": {
+      "name": "Common",
+      "summary": "To release your track. The beat stays available to others."
+    },
+    "exclusive": {
+      "name": "Exclusive",
+      "summary": "The beat is yours only and comes off sale."
+    },
+    "exclusiveStems": {
+      "name": "Exclusive + stems",
+      "summary": "Exclusivity plus the separate tracks to mix it your way."
+    },
+    "features": {
+      "wav": "Untagged WAV",
+      "commercialLimited": "Commercial use with limits",
+      "commercialUnlimited": "Unlimited commercial use",
+      "exclusive": "Exclusivity",
+      "stems": "Stems (separate tracks)"
+    }
+  },
+  "beatsPage": {
+    "title": "Beats",
+    "subtitle": "Listen to the catalogs and pick your license.",
+    "catalogs": "Catalogs"
   }
 }

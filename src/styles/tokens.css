@@ -1,0 +1,42 @@
+/*
+ * Tokens del sistema visual de niv0 (ver docs/decisions/0003-visual-system.md).
+ * Los componentes nuevos usan estas variables en lugar de valores sueltos.
+ * Los CSS viejos se migran de a poco, cuando se tocan.
+ */
+:root {
+  /* Color */
+  --color-bg: #0b0d0f;
+  --color-surface: #14181b;
+  /* Acento ámbar/dorado (elegido por niv0 en 2026-11; antes verde #bbf0be). */
+  --color-accent-rgb: 245 194 107;
+  --color-accent: rgb(var(--color-accent-rgb));
+  --color-accent-strong: #f8d595;
+  --color-accent-soft: rgb(var(--color-accent-rgb) / 0.15);
+  --color-accent-line: rgb(var(--color-accent-rgb) / 0.4);
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+  --color-text-faint: rgba(255, 255, 255, 0.35);
+  --color-on-accent: #0d0d0d;
+
+  /* Vidrio */
+  --glass-bg: rgba(15, 18, 20, 0.55);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(8px);
+
+  /* Forma y profundidad */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --shadow-card: 0 10px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lift: 0 14px 34px rgba(0, 0, 0, 0.55);
+  --glow-accent: 0 0 30px rgb(var(--color-accent-rgb) / 0.18);
+
+  /* Movimiento (se anula con prefers-reduced-motion en cada componente) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.2s;
+  --dur-med: 0.4s;
+
+  /* Tipografía */
+  --font-body: Arial, sans-serif;
+}
