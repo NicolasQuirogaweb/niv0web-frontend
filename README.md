@@ -46,7 +46,8 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 | `/login` | public | Google Sign-In. The first login creates the account. |
 | `/about` | public | My story and my discography as a vinyl grid. Releases come from Spotify (`/api/discography`) and play in Spotify's embedded player, so the plays count on Spotify. |
 | `/homelogued` | logged in | Home with links to each section |
-| `/beats`, `/loops` | logged in | Catalog grids |
+| `/beats` | logged in | Heading, catalog cards (glass + equalizer) and the three license cards |
+| `/loops` | logged in | Loop catalog cards |
 | `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
 | `/samplepacks`, `/samples/samplepack/:id` | logged in | Sample packs |
 | `/prodmixmaster` | logged in | Production and mixing services |
@@ -91,6 +92,7 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 
 - [0001 — Stay on CRA for now](docs/decisions/0001-stay-on-cra-for-now.md) (superseded by 0002)
 - [0002 — Migrate to Vite](docs/decisions/0002-migrate-to-vite.md)
+- [0003 — Visual system: tokens, glass and motion](docs/decisions/0003-visual-system.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 
@@ -109,7 +111,7 @@ The API-side decisions (cookies, B2, Docker) are documented in [the backend](htt
 ## Working with AI
 
 I build this with Claude Code. The repo has what an agent needs so it doesn't start from zero:
-[`CLAUDE.md`](CLAUDE.md) (conventions and limits), [`.claude/settings.json`](.claude/settings.json) (permissions and a hook that runs ESLint on every edited file) and [`.claude/skills/`](.claude/skills) (how to add a page with its translations, and the pre-release checklist).
+[`CLAUDE.md`](CLAUDE.md) (conventions and limits), [`.claude/settings.json`](.claude/settings.json) (permissions and a hook that runs ESLint on every edited file) and [`.claude/skills/`](.claude/skills) (how to add a page with its translations, how to build a component in the site's visual style, and the pre-release checklist).
 
 I use AI to move faster, not to stop thinking. I read what I ask for and what I get back, and I check every change before it goes in. It's a powerful tool, which is exactly why I keep studying it and following the practices that get the most out of it. This repo's setup is part of that.
 

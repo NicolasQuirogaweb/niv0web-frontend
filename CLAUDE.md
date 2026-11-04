@@ -27,6 +27,8 @@ Run lint and tests before saying a change is done.
 
 - Every visible string is an i18n key, and it must be added to **both** `src/i18n/es.json` and `en.json` (they have to keep the same keys). Spanish is the default language.
 - Public pages use global CSS per page (`Beats.css`...). The admin uses `admin.module.css`. Follow whichever the file you're in uses.
+- **Visual style:** new or redesigned components use the tokens in `src/styles/tokens.css` (never a raw `#bbf0be`), hover is lift + glow and always also `:focus-visible`, and every animation has a `prefers-reduced-motion` fallback. Follow the `ui-component` skill and `docs/decisions/0003-visual-system.md`.
+- Data a component displays that may later come from the API (license prices, features) lives in `src/content/`; texts live in i18n.
 - Navigation that looks like a button is `<Link className="back-to-catalogue-btn">`, never a `<button>` inside a `<Link>`.
 - New routes are lazy (`lazyNamed` in `src/routes/MyRoutes.js`).
 - Commits: conventional commits, with a body explaining why.
@@ -46,3 +48,4 @@ The backend is `niv0web-backend`. Fields the UI depends on: `itemsCount` on cata
 
 - `.claude/skills/add-page`: new page with route, i18n keys, SEO and test.
 - `.claude/skills/release-check`: before merging to `main` (Vercel deploys it).
+- `.claude/skills/ui-component`: build or restyle a visual component in niv0's style (tokens, glass, focus, reduced motion, i18n, tests).
