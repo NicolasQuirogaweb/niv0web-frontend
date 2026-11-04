@@ -1,0 +1,25 @@
+/* Fondo fijo de las páginas logueadas (ADR 0004). El contenido va encima con z-index 1. */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--color-bg);
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+.page-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* El mismo oscurecido que tenían las imágenes, para que el texto se lea encima. */
+.page-bg-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75));
+}

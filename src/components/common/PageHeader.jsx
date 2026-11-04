@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 const logoutButtonStyle = {
   background: "none",
   border: "none",
-  color: "#bbf0be",
+  color: "var(--color-accent)",
   cursor: "pointer",
   fontSize: 14,
   fontFamily: "monospace",

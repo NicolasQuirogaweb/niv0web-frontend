@@ -1,8 +1,8 @@
 .samplepacks-section {
   min-height: 100vh;
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(https://f005.backblazeb2.com/file/niv0-audios/images/fotohomeloguedfr.webp) no-repeat center center fixed;
-  background-size: cover;
+  background: transparent; /* fondo: <PageBackground> (ADR 0004) */
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -50,14 +50,14 @@
 .samplepacks-section h3 a {
   font-size: 22px;
   text-decoration: none;
-  color: #bbf0be;
+  color: var(--color-accent);
   transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
 .samplepacks-section h4 a,
 .samplepacks-section h5 a {
   text-decoration: none;
-  color: #bbf0be;
+  color: var(--color-accent);
   transition: font-size 0.2s ease, letter-spacing 0.2s ease;
 }
 
@@ -73,9 +73,9 @@
 .beats-list-samplepacks {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 120px);
+  grid-template-columns: repeat(auto-fit, 200px);
   justify-content: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .back-to-catalogue {
@@ -88,8 +88,8 @@
 .back-to-catalogue-btn {
   padding: 12px 32px;
   background: transparent;
-  color: #bbf0be;
-  border: 2px solid #bbf0be;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
@@ -98,14 +98,14 @@
   width: auto;
   margin: 0 auto;
   text-transform: uppercase;
-  box-shadow: 0 0 8px rgba(187, 240, 190, 0.4), 0 0 20px rgba(187, 240, 190, 0.15);
+  box-shadow: 0 0 8px rgb(var(--color-accent-rgb) / 0.4), 0 0 20px rgb(var(--color-accent-rgb) / 0.15);
   transition: all 0.3s ease;
 }
 
 .back-to-catalogue-btn:hover {
-  background: #bbf0be;
+  background: var(--color-accent);
   color: #0d0d0d;
-  box-shadow: 0 0 16px rgba(187, 240, 190, 0.8), 0 0 40px rgba(187, 240, 190, 0.3);
+  box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8), 0 0 40px rgb(var(--color-accent-rgb) / 0.3);
   transform: scale(1.05);
 }
 
@@ -116,7 +116,7 @@
 }
 
 .instagram-icon-loops {
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 @media (max-width: 768px) {
@@ -177,8 +177,10 @@
   }
 
   .beats-list-samplepacks {
-    grid-template-columns: repeat(auto-fit, 70px);
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 0 12px;
+    justify-items: center;
   }
 
   .beat-item {

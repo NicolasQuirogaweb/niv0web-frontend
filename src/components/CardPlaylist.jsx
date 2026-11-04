@@ -1,25 +1,24 @@
 import { memo } from "react";
-import { Link } from "react-router-dom";
-import "./CardPlaylist.css";
+import { useTranslation } from "react-i18next";
+import { GlassCard } from "./common/GlassCard";
 
+// Card de un catálogo (beats, loops, sample packs) con la cantidad de temas.
 const CardPlaylist = memo(function CardPlaylist({ playlist, resourceType }) {
-  const getLink = () =>
+  const { t } = useTranslation();
+  const to =
     resourceType === "samples"
       ? `/samples/samplepack/${playlist._id}`
       : `/${resourceType}/playlist/${playlist._id}`;
+  const countKey = resourceType === "samples" ? "card.items_samples" : resourceType === "loops" ? "card.items_loops" : "card.items_beats";
 
   return (
-    <div className="card-playlist">
-      <Link to={getLink()} className="card-playlist-link">
-        <div
-          className="card-playlist-image"
-          style={{ backgroundImage: `url(${playlist.imageUrl})` }}
-        />
-        <div className="card-playlist-info">
-          <h3 className="card-playlist-title">{playlist.title}</h3>
-        </div>
-      </Link>
-    </div>
+    <GlassCard
+      to={to}
+      imageUrl={playlist.imageUrl}
+      title={playlist.title}
+      meta={t(countKey, { count: playlist.itemsCount ?? 0 })}
+      className="card-playlist"
+    />
   );
 });
 

@@ -23,7 +23,7 @@
 }
 
 .home-section .home-header-row h3 {
-  color: #bbf0be;
+  color: var(--color-accent);
   margin: 0;
 }
 
@@ -45,10 +45,10 @@
 
 .home-section .home-header-row h4 a {
   text-decoration: none;
-  color: #bbf0be;
+  color: var(--color-accent);
   font-size: 20px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#bbf0be, #bbf0be);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
   background-position: 0% 100%;
   background-size: 0% 2px;
@@ -58,21 +58,21 @@
 .home-section .home-header-row h4 a:hover {
   font-size: 32px;
   letter-spacing: 1px;
-  text-shadow: 0 0 12px rgba(187, 240, 190, 0.6);
+  text-shadow: 0 0 12px rgb(var(--color-accent-rgb) / 0.6);
   background-size: 100% 2px;
 }
 
 .home-section .home-header-row h5 {
   margin: 0;
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 .home-section .home-header-row h5 a {
   text-decoration: none;
-  color: #bbf0be;
+  color: var(--color-accent);
   font-size: 20px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#bbf0be, #bbf0be);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
   background-position: 0% 100%;
   background-size: 0% 2px;
@@ -82,7 +82,7 @@
 .home-section .home-header-row h5 a:hover {
   font-size: 32px;
   letter-spacing: 1px;
-  text-shadow: 0 0 12px rgba(187, 240, 190, 0.6);
+  text-shadow: 0 0 12px rgb(var(--color-accent-rgb) / 0.6);
   background-size: 100% 2px;
 }
 
@@ -129,19 +129,19 @@
 .home-section .prodmixmaster-home a:hover {
   font-size: 36px;
   letter-spacing: 1px;
-  text-shadow: 0 0 15px rgba(187, 240, 190, 0.5);
+  text-shadow: 0 0 15px rgb(var(--color-accent-rgb) / 0.5);
 }
 
 .icon-insta .instagram-icon {
   font-size: 20px;
   margin-top: 3px;
-  color: #bbf0be;
+  color: var(--color-accent);
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .icon-insta .instagram-icon:hover {
   transform: scale(1.2);
-  color: #d4f7d6;
+  color: var(--color-accent-strong);
 }
 
 .home-section p {
