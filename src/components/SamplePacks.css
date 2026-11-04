@@ -73,9 +73,9 @@
 .beats-list-samplepacks {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 120px);
+  grid-template-columns: repeat(auto-fill, 200px);
   justify-content: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .back-to-catalogue {
@@ -177,8 +177,10 @@
   }
 
   .beats-list-samplepacks {
-    grid-template-columns: repeat(auto-fit, 70px);
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 0 12px;
+    justify-items: center;
   }
 
   .beat-item {
