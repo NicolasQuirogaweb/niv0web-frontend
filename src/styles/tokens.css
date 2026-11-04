@@ -37,8 +37,7 @@
   --dur-fast: 0.2s;
   --dur-med: 0.4s;
 
-  /* Tipografía */
-  --font-body: Arial, sans-serif;
-  /* Letra de consola: solo para el menú de los homes (ADR 0005). */
+  /* Tipografía (ADR 0006): consola para marca e interfaz, Inter para leer. */
+  --font-body: "Inter", Arial, sans-serif;
   --font-display: "Orbitron", "Inter", sans-serif;
 }

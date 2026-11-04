@@ -1,7 +1,7 @@
 @import "./styles/tokens.css";
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
@@ -12,6 +12,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Tipografía (ADR 0006): títulos, botones y textos de interfaz con la letra de
+   consola; el texto que se lee de corrido queda en Inter (el body). */
+h1, h2, h3, h4, h5, h6,
+button,
+.font-display {
+  font-family: var(--font-display);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
 }
 
 *, *::before, *::after {

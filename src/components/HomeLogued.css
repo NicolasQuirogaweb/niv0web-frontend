@@ -83,6 +83,8 @@
 }
 
 .home-section-logued p {
+  font-family: var(--font-display);
+  letter-spacing: 1px;
   font-size: 14px;
   margin: 2px 0 10px;
 }
