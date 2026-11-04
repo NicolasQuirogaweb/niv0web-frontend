@@ -42,7 +42,7 @@
     "seoDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master. Regístrate para acceder a beats exclusivos y sample packs.",
     "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master para usuarios registrados.",
     "loops": "LOOPS",
-    "about": "SOBRE MÍ"
+    "about": "NIV0"
   },
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
@@ -291,9 +291,9 @@
     }
   },
   "about": {
-    "seoTitle": "Sobre mí",
+    "seoTitle": "niv0",
     "seoDesc": "La historia de niv0 como productor y su discografía en Spotify.",
-    "title": "Sobre mí",
+    "title": "niv0",
     "story": [
       "Hice niv0 para que, cuando alguien me pregunta \"¿tenés beats para usar?\", la respuesta sea un solo link. El artista entra, escucha mi catálogo y elige lo que necesita.",
       "También fue la excusa para hacer mi propia app de música y tener control total sobre cómo se muestra mi trabajo. Acá abajo está todo lo que saqué en Spotify."
