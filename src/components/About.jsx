@@ -6,11 +6,14 @@ import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { VinylGrid } from "./common/VinylGrid";
 import { SEO } from "./common/SEO";
 import { ABOUT_PHOTO_URL } from "../content/about";
+import { useHomePath } from "../hooks/useAuth";
 import "./About.css";
 
-// Página pública (sin login): no usa PageHeader ni nada que dependa de la sesión.
+// Página pública (sin login): no usa PageHeader ni nada que exija sesión. El logo
+// lleva al home logueado si hay sesión y al público si no.
 export const About = () => {
   const { t } = useTranslation();
+  const homePath = useHomePath();
   const [albums, setAlbums] = useState([]);
   const story = t("about.story", { returnObjects: true });
 
@@ -30,7 +33,7 @@ export const About = () => {
       <SEO title={t("about.seoTitle")} description={t("about.seoDesc")} />
       <main className="about-page">
         <header className="about-header">
-          <Link to="/home" className="about-logo">{t("nav.niv0Beats")}</Link>
+          <Link to={homePath} className="about-logo">{t("nav.niv0Beats")}</Link>
           <LanguageSwitcher />
         </header>
 

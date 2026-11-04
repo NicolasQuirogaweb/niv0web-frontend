@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 
 ## [Unreleased]
 
+### Fixed
+- On the About page the "niv0 beats" logo takes a logged-in visitor to the logged-in home instead of the public one.
+
 ## 2026-11-04
 
 ### Added
