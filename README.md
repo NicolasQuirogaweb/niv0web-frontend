@@ -97,6 +97,7 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 - [0003 — Visual system: tokens, glass and motion](docs/decisions/0003-visual-system.md)
 - [0004 — Animated page backgrounds without hurting performance](docs/decisions/0004-animated-page-backgrounds.md)
 - [0005 — Console-style section menu on both homes](docs/decisions/0005-console-style-home-menu.md)
+- [0006 — Two typefaces: console for interface, Inter for reading](docs/decisions/0006-typography.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 

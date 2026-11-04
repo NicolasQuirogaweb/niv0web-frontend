@@ -8,7 +8,7 @@ description: Build or restyle a visual component of the niv0web frontend in the 
 Read `docs/decisions/0003-visual-system.md` first. It explains why things look the way they do.
 
 ## Rules
-1. **Tokens only.** Colors, radii, shadows, glass and timings come from `src/styles/tokens.css` (`var(--color-accent)`, `var(--glass-bg)`, `var(--radius-lg)`, `var(--dur-med)`...). If a value you need doesn't exist, add a token. Never add a raw color like `#f5c26b`. The display font for console-style UI is `var(--font-display)`.
+1. **Tokens only.** Colors, radii, shadows, glass and timings come from `src/styles/tokens.css` (`var(--color-accent)`, `var(--glass-bg)`, `var(--radius-lg)`, `var(--dur-med)`...). If a value you need doesn't exist, add a token. Never add a raw color like `#f5c26b`. Type: `var(--font-display)` for headings, buttons, prices and short interface labels; `var(--font-body)` for anything read in a row (ADR 0006).
 2. **One stylesheet per component**, next to it (`Thing.jsx` + `Thing.css`), with class names prefixed by the component (`.license-card`, `.card-glass`...).
    - Watch out for page-level selectors like `.beats-section h3`. If they leak into your component, raise specificity with `.component .element`. Don't use `!important`.
 3. **Hover = lift + glow** (`translateY(-4px…-6px)`, `--shadow-lift`, `--glow-accent`). The same rule always lists `:focus-visible` too.
