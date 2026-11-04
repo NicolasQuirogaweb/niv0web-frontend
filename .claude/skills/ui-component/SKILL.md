@@ -23,7 +23,8 @@ Read `docs/decisions/0003-visual-system.md` first. It explains why things look t
    - Every visible string is an i18n key, in both `es.json` and `en.json`.
    - Counts use i18next plurals (`key_one`/`key_other`).
    - Data that may come from the API later (prices, lists) lives in `src/content/*.js`, not in JSX.
-7. **Mobile**
+7. **Backgrounds and video**: never a CSS background image or a raw `<video>`. Use `PageBackground` + `src/content/backgrounds.js` and encode with `scripts/encode-background.sh` (ADR 0004).
+8. **Mobile**
    - Add a `@media (max-width: 768px)` block.
    - Grids go to 2 columns for cards and 1 column for wide blocks.
    - No horizontal overflow.

@@ -79,6 +79,8 @@ Why two elements: while one plays, the other is already downloading the next tra
 
 The hook drives the `<audio>` element imperatively on purpose. With the screen locked, Android Chrome only lets audio start inside the handler that triggered it (the notification's "next" button, the end of a track). If a track change went through a React re-render and a `useEffect` before calling `play()`, the call would arrive too late, the element would sit paused on a new `src`, and Chrome would drop the notification. So `loadAndPlay` swaps the `src` (or the preloaded element) and calls `play()` in the same tick, and React state only drives the UI.
 
+**Backgrounds:** each logged-in section can have its own background video (`src/content/backgrounds.js`). `PageBackground` shows the photo first, loads the video only after the page has loaded, uses a lighter file on phones, pauses in hidden tabs, and skips the video entirely with reduced motion, data saver or a slow connection. `scripts/encode-background.sh` prepares the files (ADR 0004).
+
 **Downloads:** beat catalogs are listen-only: beats are sold with a license, so their rows have no download button (`<TrackList allowDownload={false}>`) and the API refuses beat files anyway. Sample packs and loops keep downloads. B2 files are on another domain, so the browser ignores `<a download>`. `utils/download.js` asks the API for a signed B2 link (`/api/download/link`) that forces `Content-Disposition: attachment` with the track title and the real extension, and points the browser at it. The download starts within half a second, with the browser's own progress bar, and the file never passes through the API or memory. The button is disabled with a spinner while the link is prepared and shows a ✓ afterwards, so extra taps do nothing. If the link can't be generated it falls back to the old proxy (the whole file through the API as a blob). Downloads always deliver the original file, never the preview.
 
 ## Quality
@@ -93,6 +95,7 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 - [0001 — Stay on CRA for now](docs/decisions/0001-stay-on-cra-for-now.md) (superseded by 0002)
 - [0002 — Migrate to Vite](docs/decisions/0002-migrate-to-vite.md)
 - [0003 — Visual system: tokens, glass and motion](docs/decisions/0003-visual-system.md)
+- [0004 — Animated page backgrounds without hurting performance](docs/decisions/0004-animated-page-backgrounds.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 
