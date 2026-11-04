@@ -1,5 +1,5 @@
-/* Card de catálogo: vidrio + ecualizador (ver docs/decisions/0003-visual-system.md). */
-.card-playlist {
+/* Card de vidrio + ecualizador (catálogos y servicios) (ver docs/decisions/0003-visual-system.md). */
+.glass-card {
   position: relative;
   display: block;
   width: 200px;
@@ -94,66 +94,66 @@
   transform-origin: bottom;
 }
 
-.card-playlist:hover,
-.card-playlist:focus-visible {
+.glass-card:hover,
+.glass-card:focus-visible {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lift), var(--glow-accent);
 }
 
-.card-playlist:hover .card-blur,
-.card-playlist:focus-visible .card-blur {
+.glass-card:hover .card-blur,
+.glass-card:focus-visible .card-blur {
   opacity: 1;
 }
 
-.card-playlist:hover .card-cover,
-.card-playlist:focus-visible .card-cover {
+.glass-card:hover .card-cover,
+.glass-card:focus-visible .card-cover {
   transform: translateY(-6px) scale(1.04);
 }
 
-.card-playlist:hover .card-eq span,
-.card-playlist:focus-visible .card-eq span {
+.glass-card:hover .card-eq span,
+.glass-card:focus-visible .card-eq span {
   animation: card-eq 0.8s ease-in-out infinite;
 }
 
-.card-playlist:hover .card-eq span:nth-child(2),
-.card-playlist:focus-visible .card-eq span:nth-child(2) { animation-delay: -0.2s; }
-.card-playlist:hover .card-eq span:nth-child(3),
-.card-playlist:focus-visible .card-eq span:nth-child(3) { animation-delay: -0.4s; }
-.card-playlist:hover .card-eq span:nth-child(4),
-.card-playlist:focus-visible .card-eq span:nth-child(4) { animation-delay: -0.6s; }
+.glass-card:hover .card-eq span:nth-child(2),
+.glass-card:focus-visible .card-eq span:nth-child(2) { animation-delay: -0.2s; }
+.glass-card:hover .card-eq span:nth-child(3),
+.glass-card:focus-visible .card-eq span:nth-child(3) { animation-delay: -0.4s; }
+.glass-card:hover .card-eq span:nth-child(4),
+.glass-card:focus-visible .card-eq span:nth-child(4) { animation-delay: -0.6s; }
 
 @keyframes card-eq {
   0%, 100% { height: 25%; }
   50% { height: 100%; }
 }
 
-.card-playlist:focus-visible {
+.glass-card:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card-playlist,
+  .glass-card,
   .card-cover {
     transition: none;
   }
 
-  .card-playlist:hover,
-  .card-playlist:focus-visible,
-  .card-playlist:hover .card-cover,
-  .card-playlist:focus-visible .card-cover {
+  .glass-card:hover,
+  .glass-card:focus-visible,
+  .glass-card:hover .card-cover,
+  .glass-card:focus-visible .card-cover {
     transform: none;
   }
 
-  .card-playlist:hover .card-eq span,
-  .card-playlist:focus-visible .card-eq span {
+  .glass-card:hover .card-eq span,
+  .glass-card:focus-visible .card-eq span {
     animation: none;
     height: 70%;
   }
 }
 
 @media (max-width: 768px) {
-  .card-playlist {
+  .glass-card {
     width: 100%;
     max-width: 200px;
     height: 220px;
