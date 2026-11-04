@@ -1,6 +1,6 @@
 ---
 name: ui-component
-description: Build or restyle a visual component of the niv0web frontend in the site's own style (dark, green accent, glass, lift-and-glow hover) using the design tokens, with keyboard/focus, reduced-motion and i18n handled. Use when asked to create or redesign a card, section, page block or any UI element.
+description: Build or restyle a visual component of the niv0web frontend in the site's own style (dark, amber accent, glass, lift-and-glow hover) using the design tokens, with keyboard/focus, reduced-motion and i18n handled. Use when asked to create or redesign a card, section, page block or any UI element.
 ---
 
 # Building a UI component in niv0's style
@@ -8,7 +8,7 @@ description: Build or restyle a visual component of the niv0web frontend in the 
 Read `docs/decisions/0003-visual-system.md` first. It explains why things look the way they do.
 
 ## Rules
-1. **Tokens only.** Colors, radii, shadows, glass and timings come from `src/styles/tokens.css` (`var(--color-accent)`, `var(--glass-bg)`, `var(--radius-lg)`, `var(--dur-med)`...). If a value you need doesn't exist, add a token. Never add another raw `#bbf0be`.
+1. **Tokens only.** Colors, radii, shadows, glass and timings come from `src/styles/tokens.css` (`var(--color-accent)`, `var(--glass-bg)`, `var(--radius-lg)`, `var(--dur-med)`...). If a value you need doesn't exist, add a token. Never add a raw color like `#f5c26b`. The display font for console-style UI is `var(--font-display)`.
 2. **One stylesheet per component**, next to it (`Thing.jsx` + `Thing.css`), with class names prefixed by the component (`.license-card`, `.card-glass`...).
    - Watch out for page-level selectors like `.beats-section h3`. If they leak into your component, raise specificity with `.component .element`. Don't use `!important`.
 3. **Hover = lift + glow** (`translateY(-4px…-6px)`, `--shadow-lift`, `--glow-accent`). The same rule always lists `:focus-visible` too.

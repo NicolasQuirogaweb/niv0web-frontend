@@ -29,6 +29,7 @@ Run lint and tests before saying a change is done.
 - Public pages use global CSS per page (`Beats.css`...). The admin uses `admin.module.css`. Follow whichever the file you're in uses.
 - **Visual style:** new or redesigned components use the tokens in `src/styles/tokens.css` (never a raw `#bbf0be`), hover is lift + glow and always also `:focus-visible`, and every animation has a `prefers-reduced-motion` fallback. Follow the `ui-component` skill and `docs/decisions/0003-visual-system.md`.
 - **Backgrounds:** logged-in pages render `<PageBackground media={...} />` with data from `src/content/backgrounds.js` (or `catalogBackground()` for a catalog). Never put a background image or video in CSS or a raw `<video>` in a page: `PageBackground` handles poster-first, load after `window.load`, reduced motion, data saver, slow connections, mobile source and pausing hidden tabs (ADR 0004). Encode videos with `scripts/encode-background.sh`.
+- **Home menu:** both homes render `<ConsoleMenu />`; the sections and their order live in `src/content/sections.js`. Add or rename a section there and in both `es.json`/`en.json`, never as loose links in a home (ADR 0005).
 - Data a component displays that may later come from the API (license prices, features) lives in `src/content/`; texts live in i18n.
 - Navigation that looks like a button is `<Link className="back-to-catalogue-btn">`, never a `<button>` inside a `<Link>`.
 - New routes are lazy (`lazyNamed` in `src/routes/MyRoutes.js`).
