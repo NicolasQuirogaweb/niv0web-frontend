@@ -4,6 +4,8 @@ import { PageHeader } from "./common/PageHeader";
 import { GlassCard } from "./common/GlassCard";
 import { SEO } from "./common/SEO";
 import "./ProdMixMaster.css";
+import { PageBackground } from "./common/PageBackground";
+import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 const SPOTIFY_PLAYLIST_URL = "https://open.spotify.com/playlist/5bMePdSTs9zljOIbSWsteY?si=055aa9437a584ef0";
 const COVER_URL = "/images/prodmixmasters/img-sonido-png.png";
@@ -16,6 +18,7 @@ export const ProdMixMaster = () => {
   return (
     <>
       <SEO title={t("prodMix.seoTitle")} description={t("prodMix.seoDesc")} />
+      <PageBackground media={PAGE_BACKGROUNDS.prodMix} />
       <section className="prod-mix-master-section">
         <PageHeader
           className="prodmix-header"

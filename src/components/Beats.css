@@ -1,8 +1,8 @@
 .beats-section {
   min-height: 100vh;
-  background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75)),
-    url(https://f005.backblazeb2.com/file/niv0-audios/images/fotohomeloguedfr.webp) no-repeat center center fixed;
-  background-size: cover;
+  background: transparent; /* fondo: <PageBackground> (ADR 0004) */
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   position: relative;
   color: white;

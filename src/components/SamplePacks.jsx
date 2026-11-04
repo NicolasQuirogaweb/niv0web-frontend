@@ -7,6 +7,8 @@ import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
 import "./SamplePacks.css";
+import { PageBackground } from "./common/PageBackground";
+import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 export const SamplePacks = () => {
   const { t } = useTranslation();
@@ -20,6 +22,7 @@ export const SamplePacks = () => {
   return (
     <>
       <SEO title={t("samplePacks.seoTitle")} description={t("samplePacks.seoDesc")} />
+    <PageBackground media={PAGE_BACKGROUNDS.samplePacks} />
     <section className="samplepacks-section">
       <PageHeader className="samplepacks-info" />
       <div className="samplepacks-body">

@@ -6,6 +6,8 @@ import { useAuth, useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
 import "./HomeLogued.css";
+import { PageBackground } from "./common/PageBackground";
+import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 export const HomeLogued = () => {
   const { t } = useTranslation();
@@ -15,6 +17,7 @@ export const HomeLogued = () => {
   return (
     <>
       <SEO title={t("home.seoTitle")} description={t("home.seoDescLogged")} />
+    <PageBackground media={PAGE_BACKGROUNDS.homeLogued} />
     <section className="home-section-logued">
       <div>
         <div className="home-header-row">

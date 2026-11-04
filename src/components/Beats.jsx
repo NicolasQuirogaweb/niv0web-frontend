@@ -8,6 +8,8 @@ import { PageHeader } from "./common/PageHeader";
 import { LicenseCards } from "./common/LicenseCards";
 import { SEO } from "./common/SEO";
 import "./Beats.css";
+import { PageBackground } from "./common/PageBackground";
+import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 // Disposición elegida por niv0: encabezado, catálogos y al final las licencias
 // ("primero escuchás, después ves cómo comprar").
@@ -23,6 +25,7 @@ export const Beats = () => {
   return (
     <>
       <SEO title={t("beats.seoTitle")} description={t("beats.seoDesc")} />
+      <PageBackground media={PAGE_BACKGROUNDS.beats} />
       <section className="beats-section">
         <PageHeader className="beats-info" />
 
