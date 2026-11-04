@@ -1,6 +1,6 @@
 .about-page {
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 0%, #1b2a1d 0%, #0b0d0f 55%);
+  background: radial-gradient(circle at 20% 0%, rgb(var(--color-accent-rgb) / 0.12) 0%, var(--color-bg) 55%);
   color: #fff;
   font-family: Arial, sans-serif;
   padding: 0 0 60px;
@@ -14,7 +14,7 @@
 }
 
 .about-logo {
-  color: #bbf0be;
+  color: var(--color-accent);
   text-decoration: none;
   font-size: 22px;
   font-weight: bold;
@@ -58,7 +58,7 @@
 .about-discography h2 {
   font-size: 28px;
   margin: 0 0 24px;
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 /* ---------- Grilla de vinilos ---------- */
@@ -123,7 +123,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background:
-    radial-gradient(circle, #bbf0be 0 9%, #111 9.5% 12%, transparent 12.5%),
+    radial-gradient(circle, var(--color-accent) 0 9%, #111 9.5% 12%, transparent 12.5%),
     repeating-radial-gradient(circle, #0a0a0a 0 2px, #1c1c1c 2px 3px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   transition: transform 0.45s ease;
@@ -145,7 +145,7 @@
 }
 
 .vinyl:focus-visible {
-  outline: 2px solid #bbf0be;
+  outline: 2px solid var(--color-accent);
   outline-offset: 6px;
   border-radius: 6px;
 }
@@ -167,7 +167,7 @@
 }
 
 .vinyl--open .vinyl-name {
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 /* ---------- Reproductor de Spotify ---------- */
@@ -177,7 +177,7 @@
   border-radius: 12px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(187, 240, 190, 0.25);
+  border: 1px solid rgb(var(--color-accent-rgb) / 0.25);
 }
 
 .vinyl-player iframe {
@@ -193,7 +193,7 @@
 }
 
 .vinyl-player-actions a {
-  color: #bbf0be;
+  color: var(--color-accent);
 }
 
 .vinyl-player-actions button {

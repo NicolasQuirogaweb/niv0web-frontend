@@ -27,12 +27,12 @@
 }
 
 .audio-play-btn--playing {
-  background: #bbf0be;
+  background: var(--color-accent);
   color: #0d0d0d;
 }
 
 .audio-play-btn--playing:hover {
-  background: #d4f7d6;
+  background: var(--color-accent-strong);
 }
 
 .audio-progress[aria-disabled="true"] {
@@ -70,7 +70,7 @@
   left: 0;
   top: 50%;
   height: 4px;
-  background: #bbf0be;
+  background: var(--color-accent);
   border-radius: 2px;
   transform: translateY(-50%);
   pointer-events: none;

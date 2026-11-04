@@ -201,7 +201,7 @@
 }
 
 .prodmix-header h3 {
-  color: #bbf0be;
+  color: var(--color-accent);
   margin: 0;
   font-size: 22px;
 }

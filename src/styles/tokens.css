@@ -7,10 +7,12 @@
   /* Color */
   --color-bg: #0b0d0f;
   --color-surface: #14181b;
-  --color-accent: #bbf0be;
-  --color-accent-strong: #d4f7d6;
-  --color-accent-soft: rgba(187, 240, 190, 0.15);
-  --color-accent-line: rgba(187, 240, 190, 0.4);
+  /* Acento ámbar/dorado (elegido por niv0 en 2026-11; antes verde #bbf0be). */
+  --color-accent-rgb: 245 194 107;
+  --color-accent: rgb(var(--color-accent-rgb));
+  --color-accent-strong: #f8d595;
+  --color-accent-soft: rgb(var(--color-accent-rgb) / 0.15);
+  --color-accent-line: rgb(var(--color-accent-rgb) / 0.4);
   --color-text: #ffffff;
   --color-text-muted: rgba(255, 255, 255, 0.6);
   --color-text-faint: rgba(255, 255, 255, 0.35);
@@ -28,7 +30,7 @@
   --radius-pill: 999px;
   --shadow-card: 0 10px 24px rgba(0, 0, 0, 0.5);
   --shadow-lift: 0 14px 34px rgba(0, 0, 0, 0.55);
-  --glow-accent: 0 0 30px rgba(187, 240, 190, 0.18);
+  --glow-accent: 0 0 30px rgb(var(--color-accent-rgb) / 0.18);
 
   /* Movimiento (se anula con prefers-reduced-motion en cada componente) */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

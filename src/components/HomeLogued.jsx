@@ -33,7 +33,7 @@ export const HomeLogued = () => {
         <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
         {isAdmin && (
           <h6 className="admin-home" style={{ marginTop: 16 }}>
-            <Link to="/admin" style={{ color: "#4caf50", border: "1px solid #4caf50", padding: "4px 12px", borderRadius: 4, fontSize: 12 }}>
+            <Link to="/admin" style={{ color: "var(--color-accent)", border: "1px solid var(--color-accent)", padding: "4px 12px", borderRadius: 4, fontSize: 12 }}>
               {t("nav.adminPanel")}
             </Link>
           </h6>
