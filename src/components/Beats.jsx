@@ -5,9 +5,12 @@ import { beatsService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
+import { LicenseCards } from "./common/LicenseCards";
 import { SEO } from "./common/SEO";
 import "./Beats.css";
 
+// Disposición elegida por niv0: encabezado, catálogos y al final las licencias
+// ("primero escuchás, después ves cómo comprar").
 export const Beats = () => {
   const { t } = useTranslation();
   const { data, loading, error, run } = usePublicResource();
@@ -22,25 +25,35 @@ export const Beats = () => {
       <SEO title={t("beats.seoTitle")} description={t("beats.seoDesc")} />
       <section className="beats-section">
         <PageHeader className="beats-info" />
-        {loading ? (
-          <p>{t("beats.loading")}</p>
-        ) : error ? (
-          <p role="alert">{t("playlist.error")}{error.message || t("playlist.errorFallback")}</p>
-        ) : playlists.length === 0 ? (
-          <p>{t("beats.none")}</p>
-        ) : (
-          <div className="beats-list">
-            {playlists.map((playlist) => (
-              <CardPlaylist key={playlist._id} playlist={playlist} resourceType="beats" />
-            ))}
-          </div>
-        )}
-        <div className="beats-description">
-          <h2>{t("beats.licenses")}</h2>
-          <p>{t("beats.exclusiveStems")}</p>
-          <p>{t("beats.exclusiveWav")}</p>
-          <p>{t("beats.commonLease")}</p>
-        </div>
+
+        <header className="beats-hero">
+          <h1>{t("beatsPage.title")}</h1>
+          <p>{t("beatsPage.subtitle")}</p>
+        </header>
+
+        <section className="beats-block" aria-labelledby="beats-catalogs-title">
+          <h2 id="beats-catalogs-title" className="beats-block-title">{t("beatsPage.catalogs")}</h2>
+          {loading ? (
+            <p>{t("beats.loading")}</p>
+          ) : error ? (
+            <p role="alert">{t("playlist.error")}{error.message || t("playlist.errorFallback")}</p>
+          ) : playlists.length === 0 ? (
+            <p>{t("beats.none")}</p>
+          ) : (
+            <div className="beats-list">
+              {playlists.map((playlist) => (
+                <CardPlaylist key={playlist._id} playlist={playlist} resourceType="beats" />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="beats-block" aria-labelledby="beats-licenses-title">
+          <h2 id="beats-licenses-title" className="beats-block-title">{t("licenses.title")}</h2>
+          <p className="beats-block-subtitle">{t("licenses.subtitle")}</p>
+          <LicenseCards />
+        </section>
+
         <div className="back-to-catalogue">
           <Link to="/homelogued" className="back-to-catalogue-btn">{t("nav.backToHome")}</Link>
         </div>

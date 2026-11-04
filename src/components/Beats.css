@@ -56,13 +56,56 @@
 }
 
 .beats-list {
-  margin-top: 24px;
+  margin-top: 8px;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 120px);
+  grid-template-columns: repeat(auto-fill, 200px);
   justify-content: center;
-  gap: 16px;
+  gap: 24px;
   margin-bottom: 10px;
+}
+
+/* ---------- Encabezado y bloques (rediseño, ver ADR 0003) ---------- */
+
+.beats-hero {
+  max-width: 1000px;
+  margin: 28px auto 8px;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-accent-soft), rgba(255, 255, 255, 0.02));
+  border: var(--glass-border);
+}
+
+.beats-hero h1 {
+  margin: 0 0 6px;
+  font-size: 40px;
+  letter-spacing: 1px;
+}
+
+.beats-hero p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 16px;
+}
+
+.beats-block {
+  max-width: 1000px;
+  margin: 36px auto 0;
+  padding: 0 24px;
+}
+
+.beats-block-title {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.beats-block-subtitle {
+  margin: -8px 0 28px;
+  color: var(--color-text-muted);
 }
 
 .back-button-container {
@@ -207,5 +250,30 @@
     padding: 10px 24px;
     font-size: 14px;
     width: auto;
+  }
+}
+
+/* Rediseño en el celular: catálogos de a 2 y licencias apiladas (LicenseCards.css). */
+@media (max-width: 768px) {
+  .beats-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    justify-items: center;
+  }
+
+  .beats-hero {
+    margin: 16px 12px 0;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .beats-hero h1 {
+    font-size: 30px;
+  }
+
+  .beats-block {
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
 }
