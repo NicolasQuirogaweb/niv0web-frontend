@@ -45,6 +45,27 @@ describe("Playlist page", () => {
     expect(loopsService.getById).not.toHaveBeenCalled();
   });
 
+  it("beat catalogs are listen-only: no download button, and a note about licenses", async () => {
+    beatsService.getById.mockResolvedValue({
+      data: { _id: "p1", title: "Beats Vol. 1", beats: [{ _id: "b1", title: "Night Drive", audioFile: "https://x/a.mp3" }] },
+    });
+    renderAt("/beats/playlist/p1");
+
+    expect(await screen.findByText("Night Drive")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: new RegExp(i18n.t("playlist.download")) })).not.toBeInTheDocument();
+    expect(screen.getByText(i18n.t("playlist.beatsLicenseNote"))).toBeInTheDocument();
+  });
+
+  it("loop catalogs keep their download buttons", async () => {
+    loopsService.getById.mockResolvedValue({
+      data: { _id: "p2", title: "Loop Pack", loops: [{ _id: "l1", title: "Rhodes 90bpm", audioFile: "https://x/l.mp3" }] },
+    });
+    renderAt("/loops/playlist/p2");
+
+    expect(await screen.findByText("Rhodes 90bpm")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: new RegExp(i18n.t("playlist.download")) })).toBeInTheDocument();
+  });
+
   it("fetches a loops catalog through the loops service (it used to always ask for beats)", async () => {
     loopsService.getById.mockResolvedValue({
       data: { _id: "p2", title: "Loop Pack", loops: [{ _id: "l1", title: "Rhodes 90bpm", audioFile: "https://x/l.mp3" }] },

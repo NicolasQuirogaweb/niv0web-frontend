@@ -1,0 +1,244 @@
+.about-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 0%, #1b2a1d 0%, #0b0d0f 55%);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 0 0 60px;
+}
+
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px 0;
+}
+
+.about-logo {
+  color: #bbf0be;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.about-story {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.about-story h1 {
+  font-size: 44px;
+  margin: 0 0 16px;
+}
+
+.about-story p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+.about-photo {
+  width: 220px;
+  height: 220px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.about-discography {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.about-discography h2 {
+  font-size: 28px;
+  margin: 0 0 24px;
+  color: #bbf0be;
+}
+
+/* ---------- Grilla de vinilos ---------- */
+
+.vinyl-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 36px 28px;
+}
+
+.vinyl {
+  position: relative;
+  width: 100%;
+  padding: 0 0 0;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.vinyl-sleeve {
+  position: relative;
+  z-index: 1;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1d20;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+.vinyl-sleeve img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vinyl-nocover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+}
+
+/* El disco vive detrás de la funda y asoma al pasar, enfocar o abrir. */
+.vinyl-disc {
+  position: absolute;
+  z-index: 0;
+  top: 4%;
+  left: 4%;
+  width: 92%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #bbf0be 0 9%, #111 9.5% 12%, transparent 12.5%),
+    repeating-radial-gradient(circle, #0a0a0a 0 2px, #1c1c1c 2px 3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  transition: transform 0.45s ease;
+}
+
+.vinyl:hover .vinyl-disc,
+.vinyl:focus-visible .vinyl-disc,
+.vinyl--open .vinyl-disc {
+  transform: translateX(35%) rotate(180deg);
+}
+
+.vinyl--open .vinyl-disc {
+  animation: vinyl-spin 2.5s linear infinite;
+}
+
+@keyframes vinyl-spin {
+  from { transform: translateX(35%) rotate(0deg); }
+  to { transform: translateX(35%) rotate(360deg); }
+}
+
+.vinyl:focus-visible {
+  outline: 2px solid #bbf0be;
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.vinyl-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.vinyl-name {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.vinyl-year {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+}
+
+.vinyl--open .vinyl-name {
+  color: #bbf0be;
+}
+
+/* ---------- Reproductor de Spotify ---------- */
+
+.vinyl-player {
+  margin-top: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(187, 240, 190, 0.25);
+}
+
+.vinyl-player iframe {
+  display: block;
+  border: 0;
+}
+
+.vinyl-player-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+}
+
+.vinyl-player-actions a {
+  color: #bbf0be;
+}
+
+.vinyl-player-actions button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-disc {
+    transition: none;
+  }
+
+  .vinyl--open .vinyl-disc {
+    animation: none;
+    transform: translateX(35%);
+  }
+}
+
+@media (max-width: 768px) {
+  .about-header {
+    padding: 10px 20px 0;
+  }
+
+  .about-story {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 24px auto;
+  }
+
+  .about-story h1 {
+    font-size: 32px;
+  }
+
+  .about-photo {
+    width: 160px;
+    height: 160px;
+  }
+
+  .vinyl-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 20px;
+  }
+}

@@ -30,7 +30,8 @@ const DownloadIcon = ({ state }) => {
 // Lista de pistas dentro de una caja con scroll propio. El estado de
 // reproducción llega de usePlaylistPlayer (lo crea la página), así la página
 // puede poner el botón de "play general" al lado del título.
-export const TrackList = ({ tracks, player, fallbackName = "track", showArtist = false }) => {
+// allowDownload=false en los catálogos de beats: se escuchan, pero se compran con licencia.
+export const TrackList = ({ tracks, player, fallbackName = "track", showArtist = false, allowDownload = true }) => {
   const { t } = useTranslation();
   // { [trackId]: "preparing" | "started" | "error" }
   const [downloads, setDownloads] = useState({});
@@ -113,6 +114,7 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
                     onToggle={() => toggleTrack(i)}
                     onSeek={seek}
                   />
+                  {allowDownload && (
                   <button
                     type="button"
                     onClick={() => handleDownload(track)}
@@ -124,6 +126,7 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
                   >
                     <DownloadIcon state={state} />
                   </button>
+                  )}
                 </div>
               )}
             </li>

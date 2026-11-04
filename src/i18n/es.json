@@ -41,7 +41,8 @@
     "seoTitle": "Inicio",
     "seoDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master. Regístrate para acceder a beats exclusivos y sample packs.",
     "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master para usuarios registrados.",
-    "loops": "LOOPS"
+    "loops": "LOOPS",
+    "about": "NIV0"
   },
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
@@ -74,8 +75,8 @@
     "downloadError": "No se pudo descargar. Probá de nuevo en un rato.",
     "preparingDownload": "Preparando la descarga…",
     "downloadStarted": "La descarga arrancó",
-    "mp3Note": "La descarga gratis es en MP3. El WAV y las stems vienen con la licencia.",
-    "licenseRequired": "El WAV de este beat viene con la licencia. Escribime para conseguirlo."
+    "licenseRequired": "El WAV de este beat viene con la licencia. Escribime para conseguirlo.",
+    "beatsLicenseNote": "Los beats se compran con licencia (común, exclusiva o exclusiva + stems). Muy pronto vas a poder comprarlos acá; mientras tanto, escribime."
   },
   "samplePacks": {
     "loading": "Cargando sample packs...",
@@ -288,5 +289,22 @@
       "uploadingToB2": "Subiendo archivos a B2...",
       "creatingItems": "Creando {{name}}..."
     }
+  },
+  "about": {
+    "seoTitle": "niv0",
+    "seoDesc": "Niv0, artista y productor de Villa Mercedes (San Luis): su historia y su discografía.",
+    "title": "niv0",
+    "story": [
+      "Niv0 es un artista y productor musical de la ciudad de Villa Mercedes (San Luis). Sus influencias musicales y su sonido están sobre todo marcados por el rock, el trap y el hip hop alternativo.",
+      "Amante del beat making, la guitarra, la escritura, la composición, el arte y, sobre todo, de la música como puente.",
+      "Ha trabajado con artistas referentes tanto de la escena local de su provincia como de la escena emergente argentina actual de Buenos Aires, y sigue experimentando y buscando expresiones artísticas desafiantes en todos los niveles.",
+      "Es un artista que no busca ser encasillado ni ser parte de ninguna hegemonía de turno. Siempre está trabajando para romper sus métodos y repensarse para lograr expresiones más sinceras.",
+      "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR y luchar por un mundo mejor. El arte es el arma primera para abrir la mente y hacerle frente a un mundo que solo quiere encuadrarla y desalmarla, como históricamente ha acontecido. No ganarán."
+    ],
+    "discography": "Discografía",
+    "listenOnSpotify": "Abrir en Spotify",
+    "close": "Cerrar",
+    "noCover": "Sin tapa",
+    "photoAlt": "Foto de niv0"
   }
 }

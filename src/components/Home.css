@@ -23,7 +23,7 @@
 }
 
 .home-section .home-header-row h3 {
-  color: #f59999;
+  color: #bbf0be;
   margin: 0;
 }
 
@@ -45,10 +45,10 @@
 
 .home-section .home-header-row h4 a {
   text-decoration: none;
-  color: #f59999;
+  color: #bbf0be;
   font-size: 20px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#f59999, #f59999);
+  background-image: linear-gradient(#bbf0be, #bbf0be);
   background-repeat: no-repeat;
   background-position: 0% 100%;
   background-size: 0% 2px;
@@ -58,21 +58,21 @@
 .home-section .home-header-row h4 a:hover {
   font-size: 32px;
   letter-spacing: 1px;
-  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  text-shadow: 0 0 12px rgba(187, 240, 190, 0.6);
   background-size: 100% 2px;
 }
 
 .home-section .home-header-row h5 {
   margin: 0;
-  color: #f59999;
+  color: #bbf0be;
 }
 
 .home-section .home-header-row h5 a {
   text-decoration: none;
-  color: #f59999;
+  color: #bbf0be;
   font-size: 20px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#f59999, #f59999);
+  background-image: linear-gradient(#bbf0be, #bbf0be);
   background-repeat: no-repeat;
   background-position: 0% 100%;
   background-size: 0% 2px;
@@ -82,7 +82,7 @@
 .home-section .home-header-row h5 a:hover {
   font-size: 32px;
   letter-spacing: 1px;
-  text-shadow: 0 0 12px rgba(245, 153, 153, 0.6);
+  text-shadow: 0 0 12px rgba(187, 240, 190, 0.6);
   background-size: 100% 2px;
 }
 
@@ -101,11 +101,6 @@
   text-decoration: none;
   font-size: 32px;
   transition: all 0.3s ease;
-  background-image: linear-gradient(#f59999, #f59999);
-  background-repeat: no-repeat;
-  background-position: 0% 100%;
-  background-size: 0% 3px;
-  padding-bottom: 4px;
 }
 
 .home-section .beats-home a {
@@ -134,20 +129,19 @@
 .home-section .prodmixmaster-home a:hover {
   font-size: 36px;
   letter-spacing: 1px;
-  text-shadow: 0 0 15px rgba(245, 153, 153, 0.5);
-  background-size: 100% 3px;
+  text-shadow: 0 0 15px rgba(187, 240, 190, 0.5);
 }
 
 .icon-insta .instagram-icon {
   font-size: 20px;
   margin-top: 3px;
-  color: #f59999;
+  color: #bbf0be;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .icon-insta .instagram-icon:hover {
   transform: scale(1.2);
-  color: rgb(250, 64, 95);
+  color: #d4f7d6;
 }
 
 .home-section p {
