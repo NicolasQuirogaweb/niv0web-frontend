@@ -39,4 +39,6 @@
 
   /* Tipografía */
   --font-body: Arial, sans-serif;
+  /* Letra de consola: solo para el menú de los homes (ADR 0005). */
+  --font-display: "Orbitron", "Inter", sans-serif;
 }

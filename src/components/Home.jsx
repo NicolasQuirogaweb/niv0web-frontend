@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
+import { ConsoleMenu } from "./common/ConsoleMenu";
 import { useAuth } from "../hooks/useAuth";
 import "./Home.css";
 
@@ -26,12 +27,7 @@ export const Home = () => {
             )}
           </div>
         </div>
-        <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
-        <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
-        <h6 className="loops-home"><Link to="/loops">{t("home.loops")}</Link></h6>
-        {/* Mismo estilo que el link de loops; About es pública. */}
-        <h6 className="loops-home about-home"><Link to="/about">{t("home.about")}</Link></h6>
-        <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
+        <ConsoleMenu />
         <p>{t("home.cta")}</p>
       </div>
     </section>

@@ -28,3 +28,11 @@ describe("links to About", () => {
     expect(screen.getByRole("link", { name: i18n.t("home.about") })).toHaveAttribute("href", "/about");
   });
 });
+
+describe("the console menu", () => {
+  it.each([["public", <Home key="h" />], ["logged-in", <HomeLogued key="l" />]])("is on the %s home", (_label, page) => {
+    renderPage(page);
+    const nav = screen.getByRole("navigation", { name: i18n.t("home.menuLabel") });
+    expect(nav.querySelectorAll("a")).toHaveLength(5);
+  });
+});
