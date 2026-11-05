@@ -1,0 +1,296 @@
+/* Catálogos con el lenguaje del menú del home (ADR 0010). */
+.catalog-console {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
+  padding: 70px 40px 40px;
+}
+
+/* ---- Vinilo con la tapa del catálogo elegido ---- */
+.catalog-record {
+  --ring-r: 172px;
+  --ticks-out: -64px;
+  position: relative;
+  flex: 0 0 280px;
+  height: 280px;
+  margin-bottom: 60px;
+}
+
+.catalog-record-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, #0a0a0a 0 2px, #1d1d1d 2px 3px);
+  box-shadow: 0 0 70px rgb(var(--color-accent-rgb) / 0.3), 0 0 0 2px rgb(var(--color-accent-rgb) / 0.35);
+  animation: catalog-spin 6s linear infinite;
+}
+
+.catalog-record-label {
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: var(--color-accent) center / cover;
+  box-shadow: 0 0 0 4px #111, 0 0 0 6px rgb(var(--color-accent-rgb) / 0.6);
+  animation: catalog-label-in 0.35s var(--ease-out) both;
+}
+
+.catalog-record-hole {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background: var(--color-bg);
+}
+
+.catalog-record-caption {
+  position: absolute;
+  left: -40px;
+  right: -40px;
+  top: calc(100% + 76px);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.catalog-record-name {
+  font: 400 30px var(--font-display);
+  letter-spacing: 3px;
+  color: var(--color-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.catalog-record-count {
+  font: 500 12px var(--font-body);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.65);
+}
+
+@keyframes catalog-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes catalog-label-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- Lista de catálogos en 3D, con scroll propio si son muchos ---- */
+.catalog-nav {
+  flex: 0 1 470px;
+  max-height: 470px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  perspective: 700px;
+  scrollbar-width: none;
+  mask: linear-gradient(transparent, #000 8%, #000 92%, transparent);
+}
+
+.catalog-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.catalog-list {
+  list-style: none;
+  margin: 0;
+  padding: 52px 44px 52px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: rotateY(-22deg);
+  transform-style: preserve-3d;
+}
+
+.catalog-item,
+.catalog-link {
+  transform-style: preserve-3d;
+}
+
+.catalog-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  outline: none;
+}
+
+.catalog-dot {
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgb(var(--color-accent-rgb) / 0.7);
+  background: radial-gradient(circle, rgb(var(--color-accent-rgb) / 0.25), transparent 70%);
+  transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.catalog-blade {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 20px;
+  color: var(--color-accent);
+  border: 1px solid rgb(var(--color-accent-rgb) / 0.55);
+  background: rgb(var(--color-accent-rgb) / 0.06);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  opacity: 0.55;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
+    transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.catalog-blade-title {
+  font: 400 24px var(--font-display);
+  letter-spacing: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catalog-blade-count {
+  flex-shrink: 0;
+  font: 500 11px var(--font-body);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Brillo que cruza la barra cada vez que se elige. */
+.catalog-blade::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  transform: skewX(-20deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.catalog-link[data-active="true"] .catalog-blade {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  box-shadow: 0 0 30px rgb(var(--color-accent-rgb) / 0.6);
+  opacity: 1;
+  transform: translateZ(50px) translateX(22px);
+}
+
+.catalog-link[data-active="true"] .catalog-blade::after {
+  animation: catalog-shine 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.catalog-link[data-active="true"] .catalog-dot {
+  background: var(--color-accent);
+  box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8);
+}
+
+.catalog-link:focus-visible .catalog-blade {
+  box-shadow: 0 0 0 2px var(--color-accent-strong), 0 0 24px rgb(var(--color-accent-rgb) / 0.5);
+}
+
+@keyframes catalog-shine {
+  0% { left: -60%; opacity: 1; }
+  100% { left: 130%; opacity: 0; }
+}
+
+/* ---- Pantallas medianas ---- */
+@media (max-width: 1100px) and (min-width: 769px) {
+  .catalog-console {
+    gap: 90px;
+  }
+
+  .catalog-record {
+    --ring-r: 116px;
+    --ticks-out: -44px;
+    flex-basis: 180px;
+    height: 180px;
+  }
+
+  .catalog-record-caption {
+    top: calc(100% + 54px);
+  }
+}
+
+/* ---- Celular: vinilo arriba, lista derecha abajo ---- */
+@media (max-width: 768px) {
+  .catalog-console {
+    flex-direction: column;
+    gap: 70px;
+    padding: 50px 16px 20px;
+  }
+
+  .catalog-record {
+    --ring-r: 94px;
+    --ticks-out: -36px;
+    flex: 0 0 150px;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 30px;
+  }
+
+  .catalog-record-caption {
+    top: calc(100% + 44px);
+  }
+
+  .catalog-record-name {
+    font-size: 24px;
+  }
+
+  .catalog-nav {
+    flex: none;
+    width: 100%;
+    max-width: 380px;
+    max-height: none;
+    overflow: visible;
+    mask: none;
+  }
+
+  .catalog-list {
+    transform: none;
+    padding: 0;
+    gap: 10px;
+  }
+
+  .catalog-dot {
+    flex-basis: 22px;
+    height: 22px;
+  }
+
+  .catalog-blade-title {
+    font-size: 19px;
+  }
+
+  .catalog-link[data-active="true"] .catalog-blade {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-record-disc,
+  .catalog-record-label,
+  .catalog-link[data-active="true"] .catalog-blade::after {
+    animation: none;
+  }
+
+  .catalog-blade {
+    transition: none;
+  }
+
+  .catalog-link[data-active="true"] .catalog-blade {
+    transform: none;
+  }
+}

@@ -356,5 +356,8 @@
     "title": "Beats",
     "subtitle": "Escuchá los catálogos y elegí tu licencia.",
     "catalogs": "Catálogos"
+  },
+  "catalog": {
+    "listLabel": "Catálogos"
   }
 }

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { beatsService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
-import { CardPlaylist } from "./CardPlaylist";
+import { CatalogConsole } from "./common/CatalogConsole";
 import { PageHeader } from "./common/PageHeader";
 import { LicenseCards } from "./common/LicenseCards";
 import { SEO } from "./common/SEO";
@@ -45,11 +45,7 @@ export const Beats = () => {
           ) : playlists.length === 0 ? (
             <p>{t("beats.none")}</p>
           ) : (
-            <div className="beats-list">
-              {playlists.map((playlist) => (
-                <CardPlaylist key={playlist._id} playlist={playlist} resourceType="beats" />
-              ))}
-            </div>
+            <CatalogConsole items={playlists} resourceType="beats" />
           )}
         </section>
 

@@ -1,0 +1,59 @@
+/* Anillo y escala alrededor de un círculo (ADR 0010). El contenedor es position: relative
+   y define --ring-r (radio del anillo) y --ticks-out (cuánto sobresale la escala). */
+.orb-ticks {
+  position: absolute;
+  inset: var(--ticks-out, -60px);
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgb(var(--color-accent-rgb) / 0.55) 0deg 0.6deg, transparent 0.6deg 6deg);
+  mask: radial-gradient(circle closest-side, transparent 95%, #000 95.5%, #000 99.5%, transparent 100%);
+  animation: orb-spin 40s linear infinite;
+  pointer-events: none;
+}
+
+.orb-ticks--major {
+  background: repeating-conic-gradient(rgb(var(--color-accent-rgb) / 0.9) 0deg 1deg, transparent 1deg 30deg);
+  mask: radial-gradient(circle closest-side, transparent 91%, #000 91.5%, #000 99.5%, transparent 100%);
+}
+
+.orb-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orb-ring > i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 11px;
+  margin: -5.5px 0 0 -1.5px;
+  opacity: 0.45;
+  transform: rotate(var(--angle)) translateY(calc(-1 * var(--ring-r, 160px)));
+}
+
+.orb-ring > i > b {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: rgb(var(--color-accent-rgb) / 0.85);
+  transform-origin: 50% 100%;
+  animation: orb-eq var(--duration) ease-in-out var(--delay) infinite;
+}
+
+@keyframes orb-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orb-eq {
+  0%, 100% { transform: scaleY(0.45); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-ticks,
+  .orb-ring > i > b {
+    animation: none;
+  }
+}
