@@ -4,6 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import i18n from "../i18n/config";
 import { About } from "./About";
 import { discographyService } from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 
 vi.mock("../services/api", () => ({
   discographyService: { getAll: vi.fn() },
@@ -50,5 +51,27 @@ describe("About page", () => {
     renderAbout();
     expect(await screen.findByText(i18n.t("about.story", { returnObjects: true })[0])).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: i18n.t("about.discography") })).not.toBeInTheDocument();
+  });
+
+  it("the logo goes to the public home for visitors", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    renderAbout();
+    expect(screen.getByRole("link", { name: i18n.t("nav.niv0Beats") })).toHaveAttribute("href", "/home");
+    await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
+  });
+
+  it("the logo goes to the logged-in home when there is a session", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    render(
+      <HelmetProvider>
+        <AuthContext.Provider value={{ isAuthenticated: true }}>
+          <MemoryRouter>
+            <About />
+          </MemoryRouter>
+        </AuthContext.Provider>
+      </HelmetProvider>
+    );
+    expect(screen.getByRole("link", { name: i18n.t("nav.niv0Beats") })).toHaveAttribute("href", "/homelogued");
+    await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
   });
 });

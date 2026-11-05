@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth, useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
+import { ConsoleMenu } from "./common/ConsoleMenu";
 import "./HomeLogued.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -28,12 +29,7 @@ export const HomeLogued = () => {
             <h5><button onClick={handleLogout} aria-label={t("nav.logOut")}>{t("nav.logOut")}</button></h5>
           </div>
         </div>
-        <h6 className="beats-home"><Link to="/beats">{t("home.beats")}</Link></h6>
-        <h6 className="samplepacks-home"><Link to="/samplepacks">{t("home.samplePacks")}</Link></h6>
-        <h6 className="loops-home"><Link to="/loops">{t("home.loops")}</Link></h6>
-        {/* Mismo estilo que el link de loops; About es pública. */}
-        <h6 className="loops-home about-home"><Link to="/about">{t("home.about")}</Link></h6>
-        <h6 className="prodmixmaster-home"><Link to="/prodmixmaster">{t("home.prodMixMaster")}</Link></h6>
+        <ConsoleMenu />
         {isAdmin && (
           <h6 className="admin-home" style={{ marginTop: 16 }}>
             <Link to="/admin" style={{ color: "var(--color-accent)", border: "1px solid var(--color-accent)", padding: "4px 12px", borderRadius: 4, fontSize: 12 }}>

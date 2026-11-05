@@ -37,6 +37,8 @@
   --dur-fast: 0.2s;
   --dur-med: 0.4s;
 
-  /* Tipografía */
-  --font-body: Arial, sans-serif;
+  /* Tipografía (ADR 0006): consola para marca e interfaz, Inter para leer. */
+  --font-body: "Inter", Arial, sans-serif;
+  /* "Red Hat Mono" trae solo el 0 con barra (ver index.html); el resto de las letras es Bebas Neue. */
+  --font-display: "Red Hat Mono", "Bebas Neue", "Oswald", "Arial Narrow", sans-serif;
 }

@@ -20,3 +20,10 @@ export const useLogout = (redirectTo = "/") => {
     navigate(redirectTo, { replace: true });
   }, [clearAuth, navigate, redirectTo]);
 };
+
+// El home que corresponde a quien mira. A diferencia de useAuth, funciona sin
+// AuthProvider (páginas públicas como About): sin sesión, el home público.
+export const useHomePath = () => {
+  const context = useContext(AuthContext);
+  return context?.isAuthenticated ? "/homelogued" : "/home";
+};

@@ -45,7 +45,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 | `/home` | public | Landing |
 | `/login` | public | Google Sign-In. The first login creates the account. |
 | `/about` | public | My story and my discography as a vinyl grid. Releases come from Spotify (`/api/discography`) and play in Spotify's embedded player, so the plays count on Spotify. |
-| `/homelogued` | logged in | Home with links to each section |
+| `/homelogued` | logged in | Home with the console-style section menu |
 | `/beats` | logged in | Heading, catalog cards (glass + equalizer) and the three license cards |
 | `/loops` | logged in | Loop catalog cards |
 | `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
@@ -96,6 +96,8 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 - [0002 — Migrate to Vite](docs/decisions/0002-migrate-to-vite.md)
 - [0003 — Visual system: tokens, glass and motion](docs/decisions/0003-visual-system.md)
 - [0004 — Animated page backgrounds without hurting performance](docs/decisions/0004-animated-page-backgrounds.md)
+- [0005 — Console-style section menu on both homes](docs/decisions/0005-console-style-home-menu.md)
+- [0006 — Two typefaces: console for interface, Inter for reading](docs/decisions/0006-typography.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 
