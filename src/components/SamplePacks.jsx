@@ -6,6 +6,7 @@ import { usePublicResource } from "../hooks/usePublicResource";
 import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./SamplePacks.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -13,6 +14,7 @@ import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 export const SamplePacks = () => {
   const { t } = useTranslation();
   const { data, loading, error, run } = usePublicResource();
+  useConsoleNav({ back: "/homelogued" });
   const packs = data || [];
 
   useEffect(() => {

@@ -9,11 +9,13 @@ import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
 import { PageBackground } from "./common/PageBackground";
 import { catalogBackground } from "../content/backgrounds";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Playlist.css";
 
 export const Samples = () => {
   const { t } = useTranslation();
   const { samplepackId } = useParams();
+  useConsoleNav({ back: "/samplepacks" });
   const { data: packData, loading, error, run, setLoading } = usePublicResource();
 
   useEffect(() => {

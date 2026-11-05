@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import i18n from "../i18n/config";
@@ -29,5 +29,26 @@ describe("Samples page", () => {
 
     expect(await screen.findByText("Kick 01")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: i18n.t("player.playAll") })).not.toBeInTheDocument();
+  });
+
+  it("moves through the samples with the arrows and Esc goes back to the packs", async () => {
+    samplePacksService.getSamples.mockResolvedValue({
+      data: { _id: "sp1", title: "Drum Kit", samples: [{ _id: "s1", title: "Kick 01", audioFile: "https://x/k.wav" }] },
+    });
+    render(
+      <HelmetProvider>
+        <MemoryRouter initialEntries={["/samples/samplepack/sp1"]}>
+          <Routes>
+            <Route path="/samples/samplepack/:samplepackId" element={<Samples />} />
+            <Route path="/samplepacks" element={<p>packs page</p>} />
+          </Routes>
+        </MemoryRouter>
+      </HelmetProvider>
+    );
+    await screen.findByText("Kick 01");
+    fireEvent.keyDown(document.body, { key: "ArrowDown" });
+    expect(screen.getByText("Kick 01").closest("li")).toHaveAttribute("data-nav-active", "true");
+    fireEvent.keyDown(document.activeElement, { key: "Escape" });
+    expect(screen.getByText("packs page")).toBeInTheDocument();
   });
 });
