@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PageHeader } from "./common/PageHeader";
 import { GlassCard } from "./common/GlassCard";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./ProdMixMaster.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -14,6 +15,7 @@ const COVER_URL = "/images/prodmixmasters/img-sonido-png.png";
 // catálogos, pero lleva a la playlist de Spotify con los trabajos.
 export const ProdMixMaster = () => {
   const { t } = useTranslation();
+  useConsoleNav({ back: "/homelogued" });
 
   return (
     <>

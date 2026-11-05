@@ -43,4 +43,11 @@ describe("LicenseCards", () => {
       expect(a).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
+
+  it("each license can be picked with the arrows and Enter presses its button", () => {
+    render(<LicenseCards />);
+    const card = tier(i18n.t("licenses.exclusive.name"));
+    expect(card).toHaveAttribute("data-nav-item");
+    expect(card.querySelector(card.dataset.navPress)).toHaveAttribute("href", CONTACT_URL);
+  });
 });

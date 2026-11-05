@@ -7,6 +7,7 @@ import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
 import { LicenseCards } from "./common/LicenseCards";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Beats.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -17,6 +18,7 @@ export const Beats = () => {
   const { t } = useTranslation();
   const { data, loading, error, run } = usePublicResource();
   const playlists = data || [];
+  useConsoleNav({ back: "/homelogued" });
 
   useEffect(() => {
     run(beatsService.getAll());

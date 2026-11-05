@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { VinylGrid } from "./common/VinylGrid";
 import { SEO } from "./common/SEO";
 import { ABOUT_PHOTO_URL } from "../content/about";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./About.css";
 
 // Página pública (sin login): no usa PageHeader ni nada que dependa de la sesión.
@@ -13,6 +14,7 @@ export const About = () => {
   const { t } = useTranslation();
   const [albums, setAlbums] = useState([]);
   const story = t("about.story", { returnObjects: true });
+  useConsoleNav({ back: "/home" });
 
   useEffect(() => {
     let active = true;

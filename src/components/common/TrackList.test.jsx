@@ -96,4 +96,11 @@ describe("fileExtension", () => {
     expect(fileExtension("https://x/a/b.mp3?x=1")).toBe(".mp3");
     expect(fileExtension("https://x/a/b")).toBe("");
   });
+
+  it("each track can be picked with the arrows and Enter presses its play button", () => {
+    render(<TrackList tracks={TRACKS} player={player} />);
+    const row = screen.getByText("Night Drive").closest("li");
+    expect(row).toHaveAttribute("data-nav-item");
+    expect(row.querySelector(row.dataset.navPress)).toBe(screen.getByRole("button", { name: i18n.t("player.play") }));
+  });
 });

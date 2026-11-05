@@ -87,6 +87,8 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
               ref={(el) => (rowRefs.current[i] = el)}
               className={`beat-card${active ? " beat-card--active" : ""}`}
               aria-current={active ? "true" : undefined}
+              data-nav-item=""
+              data-nav-press=".audio-play-btn"
             >
               <div className="beat-card-left">
                 <span className="beat-number">

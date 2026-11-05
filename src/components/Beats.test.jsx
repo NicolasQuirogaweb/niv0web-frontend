@@ -1,5 +1,5 @@
-import { render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen, within, fireEvent } from "@testing-library/react";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import i18n from "../i18n/config";
 import { Beats } from "./Beats";
@@ -45,5 +45,22 @@ describe("Beats page", () => {
     renderBeats();
     expect(await screen.findByText(i18n.t("beats.none"))).toBeInTheDocument();
     expect(screen.getByRole("region", { name: i18n.t("licenses.title") })).toBeInTheDocument();
+  });
+
+  it("Esc goes back to the home", async () => {
+    beatsService.getAll.mockResolvedValue({ data: [] });
+    render(
+      <HelmetProvider>
+        <MemoryRouter initialEntries={["/beats"]}>
+          <Routes>
+            <Route path="/beats" element={<Beats />} />
+            <Route path="/homelogued" element={<p>logged home</p>} />
+          </Routes>
+        </MemoryRouter>
+      </HelmetProvider>
+    );
+    await screen.findByText(i18n.t("beats.none"));
+    fireEvent.keyDown(document.body, { key: "Escape" });
+    expect(screen.getByText("logged home")).toBeInTheDocument();
   });
 });
