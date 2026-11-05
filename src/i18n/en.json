@@ -296,13 +296,26 @@
       "A lover of beat making, guitar, writing, composing, art and, above all, music as a bridge.",
       "He has worked with leading artists from his province's local scene and from today's emerging Argentine scene in Buenos Aires, and he keeps experimenting and looking for challenging artistic expression on every level.",
       "He doesn't want to be pigeonholed or to be part of whatever the hegemony of the moment is. He is always working to break his own methods and rethink himself to reach more honest expression.",
-      "For him, music is made with the heart, not the head: it is all about getting something across and, above all, about INSPIRING and fighting for a better world. Art is the first weapon to open the mind and stand up to a world that only wants to box it in and strip it of its soul, as has happened throughout history. They won't win."
+      "For him, music is made with the heart, not the head: it is all about getting something across and, above all, about INSPIRING."
     ],
     "discography": "Discography",
     "listenOnSpotify": "Open in Spotify",
-    "close": "Close",
     "noCover": "No cover",
-    "photoAlt": "Photo of niv0"
+    "photoAlt": "Photo of niv0",
+    "kicker": "Artist and producer · Villa Mercedes, San Luis",
+    "quote": {
+      "before": "Music is made with the",
+      "highlight": "heart",
+      "after": "not the head"
+    },
+    "turntable": "Turntable",
+    "pickRecord": "Pick a record from the crate",
+    "upcoming": {
+      "kicker": "New album",
+      "inMonth": "Out in {{month}}",
+      "onDate": "Out on {{date}}",
+      "presave": "Pre-save"
+    }
   },
   "card": {
     "items_beats_one": "{{count}} beat",

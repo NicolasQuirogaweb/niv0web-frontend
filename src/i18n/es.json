@@ -296,13 +296,26 @@
       "Amante del beat making, la guitarra, la escritura, la composición, el arte y, sobre todo, de la música como puente.",
       "Ha trabajado con artistas referentes tanto de la escena local de su provincia como de la escena emergente argentina actual de Buenos Aires, y sigue experimentando y buscando expresiones artísticas desafiantes en todos los niveles.",
       "Es un artista que no busca ser encasillado ni ser parte de ninguna hegemonía de turno. Siempre está trabajando para romper sus métodos y repensarse para lograr expresiones más sinceras.",
-      "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR y luchar por un mundo mejor. El arte es el arma primera para abrir la mente y hacerle frente a un mundo que solo quiere encuadrarla y desalmarla, como históricamente ha acontecido. No ganarán."
+      "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR."
     ],
     "discography": "Discografía",
     "listenOnSpotify": "Abrir en Spotify",
-    "close": "Cerrar",
     "noCover": "Sin tapa",
-    "photoAlt": "Foto de niv0"
+    "photoAlt": "Foto de niv0",
+    "kicker": "Artista y productor · Villa Mercedes, San Luis",
+    "quote": {
+      "before": "La música se hace con el",
+      "highlight": "corazón",
+      "after": "y no con la cabeza"
+    },
+    "turntable": "Tocadiscos",
+    "pickRecord": "Elegí un disco del cajón",
+    "upcoming": {
+      "kicker": "Nuevo álbum",
+      "inMonth": "Sale en {{month}}",
+      "onDate": "Sale el {{date}}",
+      "presave": "Pre-save"
+    }
   },
   "card": {
     "items_beats_one": "{{count}} beat",

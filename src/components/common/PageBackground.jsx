@@ -29,14 +29,15 @@ const usePageLoaded = () => {
 };
 
 /**
- * Fondo de las páginas logueadas (ADR 0004). `media` viene de
+ * Fondo de las páginas logueadas (ADR 0004). Con `contained` llena solo su sección
+ * (el encabezado de NIVØ) en vez de toda la pantalla. `media` viene de
  * src/content/backgrounds.js o del catálogo: { poster, video?, videoMobile? }.
  *
  * - La imagen (`poster`) se ve al instante y queda si no hay video o no conviene.
  * - El video se carga recién con la página lista, en versión liviana en celular,
  *   sin sonido y en loop, y se pausa cuando la pestaña no se ve.
  */
-export const PageBackground = ({ media }) => {
+export const PageBackground = ({ media, contained = false }) => {
   const videoRef = useRef(null);
   const pageLoaded = usePageLoaded();
   const [allowed] = useState(canPlayBackgroundVideo);
@@ -71,7 +72,7 @@ export const PageBackground = ({ media }) => {
 
   return (
     <div
-      className="page-bg"
+      className={`page-bg${contained ? " page-bg--contained" : ""}`}
       style={poster ? { backgroundImage: `url(${poster})` } : undefined}
       aria-hidden="true"
     >

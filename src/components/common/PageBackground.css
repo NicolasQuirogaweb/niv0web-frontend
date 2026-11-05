@@ -23,3 +23,12 @@
   inset: 0;
   background: linear-gradient(rgba(5, 7, 11, 0.75), rgba(5, 7, 12, 0.75));
 }
+
+/* Solo dentro de su sección (encabezado de NIVØ): se funde con el fondo de la página abajo. */
+.page-bg--contained {
+  position: absolute;
+}
+
+.page-bg--contained .page-bg-shade {
+  background: linear-gradient(180deg, rgb(11 12 14 / 0.2) 0%, rgb(11 12 14 / 0.4) 45%, var(--color-bg) 100%);
+}

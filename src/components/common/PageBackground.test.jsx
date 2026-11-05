@@ -42,6 +42,12 @@ describe("PageBackground", () => {
     expect(video(container)).toHaveAttribute("poster", POSTER);
   });
 
+  it("can fill only its section instead of the whole screen (the About hero)", () => {
+    const { container } = render(<PageBackground media={{ poster: POSTER, video: VIDEO }} contained />);
+    expect(container.firstChild).toHaveClass("page-bg", "page-bg--contained");
+    expect(video(container)).toHaveAttribute("src", VIDEO);
+  });
+
   it("is only an image when the section has no video", () => {
     const { container } = render(<PageBackground media={{ poster: POSTER }} />);
     expect(video(container)).toBeNull();
