@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 ## [Unreleased]
 
 ### Added
+- Every section moves with the keyboard like the home menu: the arrows pick catalogs, licenses, tracks and records (to the nearest one in that direction), Enter opens or plays, Esc goes back. ADR 0008.
 - Background videos per section, ready to plug in: `PageBackground` (poster first, video after page load, 480p on phones, paused in hidden tabs, no video with reduced motion / data saver / slow connections) and `scripts/encode-background.sh`. Catalog background videos get the same treatment. ADR 0004.
 - Background videos for home, Beats, Loops, Sample packs and Prod mix master (720p desktop, 480p phone, poster), served from B2 `backgrounds/` with hashed names and a one-year immutable cache.
 - Background videos are muted and started explicitly, so autoplay no longer stalls on a frozen poster.
