@@ -15,7 +15,8 @@ The menu was picked from a mockup with three orbs (the name NIV0, a spinning vin
   - Desktop: amber orb with pulsing sound bars on the left; on the right, five bars with cut corners, each with a small dot joined to the orb by a thin line. The bars follow a gentle curve around the orb.
   - Phones (`max-width: 768px`): smaller orb on top, full-width list below, no curve or lines.
 - **Always one section selected**, like on a console. It starts on the first one. The mouse, keyboard focus or the ↑ ↓ arrows move the selection, the arrows wrap around, and Enter opens the section. The selected bar fills with amber. The state is exposed as `data-active` so tests check it without reading CSS.
-- **Motion:** the orb breathes, its bars pulse and a ring turns around it. With `prefers-reduced-motion` both stop and the selected bar doesn't shift.
+- **Depth:** on desktop the list is turned in perspective (`rotateY(-22deg)`), like the console. The selected bar comes toward the viewer (`translateZ`), the others stay back at 55% opacity, and a light sweep crosses the bar each time it's selected. Nicolás picked this (option B) over slanted bars and a travelling selector. Phones keep the list flat, because a turned list doesn't fit the width.
+- **Motion:** the orb breathes, its bars pulse and a ring turns around it. With `prefers-reduced-motion` all of that stops, there is no light sweep, and the selected bar doesn't move.
 - **Accessibility:** the menu is a `<nav>` named by `home.menuLabel` and the sections are a list of real links. The orb and the dots are `aria-hidden`.
 - **Type:** Orbitron (Google Fonts, weights 600 and 800, loaded in the same request as Inter) through the `--font-display` token. It's used only in this menu.
 - **No sound.** We asked and kept it silent.
