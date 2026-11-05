@@ -17,11 +17,11 @@ The home menu moves with the arrows and opens with Enter, like a console (ADR 00
 - **Keys**
   - The arrows work as soon as the page opens. The first press picks the first item; after that each arrow goes to the **nearest item in that direction** (measured on screen, so it works in grids of any width and from the catalogs down to the licenses). At an edge it stays put.
   - Enter presses the picked item. If the item already has focus, the browser does it, so it never fires twice.
-  - Esc goes back: Beats, Loops and Prod mix master → logged-in home; a catalog → its list; About → home. On About, if a record is open, Esc closes it and stays (the record calls `preventDefault`, and the hook respects it).
+  - Esc goes back: Beats, Loops, Sample packs and Prod mix master → logged-in home; a pack → the packs; a catalog → its list; About → home. On About, if a record is open, Esc closes it and stays (the record calls `preventDefault`, and the hook respects it).
   - The mouse and focus also pick, so Enter opens the last thing you pointed at, and the highlight stays on it, like on the home.
   - Left alone: text fields, the seek bar (`role="slider"`), and anything with Alt, Ctrl or ⌘ (Alt + ← is the browser's back).
 - **Look:** the picked item gets `data-nav-active="true"` and the same styles as hover/focus (lift and amber glow on cards, the record slides out of its sleeve, an amber edge on tracks).
-- **Sample packs** get it with the new pack showcase and browser (sample packs plan), not on the page that's about to be replaced.
+- **Sample packs** have it on today's pages too (cards and sample list). The new showcase and browser from the sample packs plan must keep it.
 
 ## Consequences
 
