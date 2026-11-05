@@ -77,8 +77,12 @@ export const ConsoleMenu = () => {
     root.classList.remove("is-kick");
     void root.offsetWidth;
     root.classList.add("is-kick");
+    // Se vuelven a medir las líneas por si algo de la página se movió después de cargar.
+    measureRef.current?.();
     if (!prefersReducedMotion()) sparkAlong(index);
   };
+
+  const measureRef = useRef(null);
 
   // El listener de la página usa siempre la versión actual de select.
   const selectRef = useRef(select);
@@ -128,7 +132,9 @@ export const ConsoleMenu = () => {
   }, []);
 
   useLayoutEffect(() => {
+    measureRef.current = measureLines;
     measureLines();
+    const late = setTimeout(measureLines, 1000);
     // La tipografía y el fondo cambian el tamaño de las barras después del primer render.
     document.fonts?.ready.then(measureLines);
     document.fonts?.addEventListener?.("loadingdone", measureLines);
@@ -137,6 +143,7 @@ export const ConsoleMenu = () => {
     observer?.observe(rootRef.current);
     observer?.observe(navRef.current);
     return () => {
+      clearTimeout(late);
       observer?.disconnect();
       document.fonts?.removeEventListener?.("loadingdone", measureLines);
       window.removeEventListener("load", measureLines);
@@ -186,7 +193,9 @@ export const ConsoleMenu = () => {
                 onFocus={() => select(index)}
               >
                 <span className="console-dot" aria-hidden="true" ref={(el) => (dotRefs.current[index] = el)} />
-                <span className="console-blade">{t(labelKey)}</span>
+                <span className="console-blade">
+                  <span className="console-blade-text">{t(labelKey)}</span>
+                </span>
               </Link>
             </li>
           ))}

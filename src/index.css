@@ -1,4 +1,9 @@
 @import "./styles/tokens.css";
+html {
+  /* Bebas Neue tiene un solo peso: sin negrita ni cursiva falsas. */
+  font-synthesis: none;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -14,12 +19,19 @@ code {
     monospace;
 }
 
-/* Tipografía (ADR 0006): títulos, botones y textos de interfaz con la letra de
-   consola; el texto que se lee de corrido queda en Inter (el body). */
+/* Tipografía (ADR 0006): títulos, botones y textos de interfaz con letra de serigrafía
+   de equipo vintage; el texto que se lee de corrido queda en Inter (el body). */
 h1, h2, h3, h4, h5, h6,
 button,
 .font-display {
   font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Los títulos grandes llevan la tinta un poco gastada. */
+h1 {
+  filter: url(#ink-worn);
 }
 
 input, select, textarea {

@@ -39,5 +39,6 @@
 
   /* Tipografía (ADR 0006): consola para marca e interfaz, Inter para leer. */
   --font-body: "Inter", Arial, sans-serif;
-  --font-display: "Orbitron", "Inter", sans-serif;
+  /* "Red Hat Mono" trae solo el 0 con barra (ver index.html); el resto de las letras es Bebas Neue. */
+  --font-display: "Red Hat Mono", "Bebas Neue", "Oswald", "Arial Narrow", sans-serif;
 }

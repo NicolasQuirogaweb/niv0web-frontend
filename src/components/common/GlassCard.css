@@ -58,8 +58,9 @@
 .card-title {
   display: block;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 19px;
+  letter-spacing: 1.5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

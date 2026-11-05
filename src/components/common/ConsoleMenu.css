@@ -172,8 +172,8 @@
   flex: 0 0 300px;
   padding: 10px 20px;
   text-align: left;
-  font: 600 18px var(--font-display);
-  letter-spacing: 3px;
+  font: 400 25px var(--font-display);
+  letter-spacing: 4px;
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--color-accent);
@@ -184,6 +184,11 @@
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
     transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow var(--dur-fast) var(--ease-out),
     opacity var(--dur-fast) var(--ease-out);
+}
+
+/* Las barras no elegidas, con la tinta un poco gastada como serigrafía. */
+.console-link:not([data-active="true"]) .console-blade-text {
+  filter: url(#ink-worn-soft);
 }
 
 /* Brillo que cruza la barra cada vez que se elige. */
@@ -387,8 +392,8 @@
   .console-blade {
     flex: 1;
     padding: 9px 14px;
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-size: 19px;
+    letter-spacing: 3px;
   }
 
   .console-link[data-active="true"] .console-blade {

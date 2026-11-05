@@ -10,10 +10,25 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <!-- Solo el "0" con barra (Red Hat Mono, subset text=0): en Bebas Neue el cero y la O son iguales y "niv0" se leía "nivo". -->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@700&text=0&display=swap" rel="stylesheet">
     <title>niv0 prod</title>
   </head>
   <body>
+    <!-- Tinta gastada de los títulos, como serigrafía de un equipo vintage (ADR 0006). -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <filter id="ink-worn">
+        <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" xChannelSelector="R" yChannelSelector="G" result="shifted" />
+        <feComponentTransfer in="noise" result="specks"><feFuncA type="discrete" tableValues="1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1" /></feComponentTransfer>
+        <feComposite in="shifted" in2="specks" operator="in" />
+      </filter>
+      <filter id="ink-worn-soft">
+        <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" seed="5" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.9" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>

@@ -107,8 +107,8 @@
 
 .home-section p {
   font-family: var(--font-display);
-  letter-spacing: 1px;
-  font-size: 14px;
+  letter-spacing: 2px;
+  font-size: 19px;
   margin: 2px 0 10px;
 }
 
