@@ -4,6 +4,7 @@ import "./GlassCard.css";
 // Card de vidrio + ecualizador (ADR 0003): tapa desenfocada de fondo, tapa nítida
 // al frente y un panel de vidrio abajo. Toda la card es un único link: interno
 // con `to` (catálogos) o externo con `href` (abre en otra pestaña, ej. Spotify).
+// Se elige con las flechas en las páginas que usan useConsoleNav (ADR 0008).
 export const GlassCard = ({ to, href, imageUrl, title, meta, className = "" }) => {
   const cover = imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined;
   const body = (
@@ -27,8 +28,10 @@ export const GlassCard = ({ to, href, imageUrl, title, meta, className = "" }) =
   const classes = `glass-card ${className}`.trim();
 
   return to ? (
-    <Link to={to} className={classes}>{body}</Link>
+    <Link to={to} className={classes} data-nav-item="">{body}</Link>
   ) : (
-    <a href={href} className={classes} target="_blank" rel="noopener noreferrer">{body}</a>
+    <a href={href} className={classes} target="_blank" rel="noopener noreferrer" data-nav-item="">
+      {body}
+    </a>
   );
 };

@@ -23,7 +23,8 @@
 }
 
 .license-card:hover,
-.license-card:focus-within {
+.license-card:focus-within,
+.license-card[data-nav-active="true"] {
   transform: translateY(-6px);
   border-color: var(--color-accent-line);
   box-shadow: var(--shadow-lift);
@@ -132,7 +133,8 @@
   }
 
   .license-card:hover,
-  .license-card:focus-within {
+  .license-card:focus-within,
+  .license-card[data-nav-active="true"] {
     transform: none;
   }
 }

@@ -20,6 +20,8 @@ export const LicenseCards = () => {
             key={license.id}
             className={`license-card${license.featured ? " license-card--featured" : ""}`}
             aria-label={name}
+            data-nav-item=""
+            data-nav-press=".license-cta"
           >
             {license.featured && <span className="license-badge">{t("licenses.featured")}</span>}
             <h3 className="license-name">{name}</h3>

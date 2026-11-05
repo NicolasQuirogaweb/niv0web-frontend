@@ -6,6 +6,7 @@ import { usePublicResource } from "../hooks/usePublicResource";
 import { CardPlaylist } from "./CardPlaylist";
 import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Beats.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -16,6 +17,7 @@ export const Loops = () => {
   const { t } = useTranslation();
   const { data, loading, error, run } = usePublicResource();
   const catalogs = data || [];
+  useConsoleNav({ back: "/homelogued" });
 
   useEffect(() => {
     run(loopsService.getAll());

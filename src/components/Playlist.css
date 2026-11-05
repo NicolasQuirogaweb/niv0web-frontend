@@ -92,8 +92,14 @@
   transition: background 0.2s;
 }
 
-.beat-card:hover {
+.beat-card:hover,
+.beat-card[data-nav-active="true"] {
   background: rgba(255, 255, 255, 0.14);
+}
+
+/* El tema elegido con las flechas (ADR 0008): mismo fondo que el hover y un borde ámbar. */
+.beat-card[data-nav-active="true"] {
+  box-shadow: inset 0 0 0 1px var(--color-accent-line);
 }
 
 .beat-card-left {
