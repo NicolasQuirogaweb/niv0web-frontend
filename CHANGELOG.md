@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 ## [Unreleased]
 
 ### Added
+- The NIVØ page as a documentary: background video with the name huge, the quote in big letters, the story in two columns that fades in, an announcement for the album Sentimientos restringidos (fills in with date, countdown, cover and pre-save as they exist) and the records in a crate that drop on a turntable. Picking a record starts it on Spotify. ADR 0009.
 - Every section moves with the keyboard like the home menu: the arrows pick catalogs, licenses, tracks and records (to the nearest one in that direction), Enter opens or plays, Esc goes back. ADR 0008.
 
 ### Changed
