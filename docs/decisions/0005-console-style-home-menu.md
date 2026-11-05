@@ -21,11 +21,11 @@ The menu was picked from a mockup with three orbs (the name NIV0, a spinning vin
 - **The orb reacts to the menu:** when the selection changes, a spark runs along that section's line to its dot, the orb flashes, its bars jump, a wave leaves the orb, the ring lights up for a moment and the scale gives a tug. Nicolás picked the quiet version of a mix of two mockups (visualizer ring + reaction) over 3D orbits.
 - **Motion:** the orb breathes, its bars pulse, the ring's bars pulse and the scale turns. With `prefers-reduced-motion` all of that stops: no light sweep, no spark or flash, and the selected bar doesn't move.
 - **Accessibility:** the menu is a `<nav>` named by `home.menuLabel` and the sections are a list of real links. The orb and the dots are `aria-hidden`.
-- **Type:** Orbitron (Google Fonts, weights 600 and 800, loaded in the same request as Inter) through the `--font-display` token. It's used only in this menu.
+- **Type:** the site's display font through `--font-display` (ADR 0006). It started as Orbitron and is now Bebas Neue; the bars that aren't selected carry the soft worn-ink filter.
 - **No sound.** We asked and kept it silent.
 
 ## Consequences
 
 - The homes' old per-link CSS (fixed margins and hover sizes) is gone. The header, Instagram link, admin button, call to action and backgrounds don't change.
-- Orbitron draws the zero with a slash, so the NIV0 bar reads "NIVØ". That's the font's console look. If it bothers, the orb can use another font.
+- The NIV0 bar reads "NIVØ": the zero comes with a slash on purpose so it isn't read as an O (ADR 0006).
 - When niv0 has a logo, it can go inside the orb without touching the menu.
