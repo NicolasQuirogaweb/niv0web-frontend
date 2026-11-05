@@ -22,7 +22,7 @@ From three mockups (documentary, cinematic, LP back cover) he chose **documentar
   - After the date (or the end of the month without a date) the block hides itself; the album then shows up in the discography from Spotify.
 - **Records:** `RecordCrate` replaces `VinylGrid`. The records stand in a crate like in a record shop; the one you point at (mouse, focus or the arrows from ADR 0008) lifts out and faces you. Picking it drops it on a turntable: the record falls, the arm comes down, it spins and plays.
 - **Playback:** `SpotifyPlayer` uses Spotify's iFrame API (`src/utils/spotifyEmbed.js`) to load the album and call `play()`, so picking a record starts it. Plays still count on Spotify. Limits that don't depend on us: a browser may block sound the first time (then you press play once), and without a Spotify session Spotify plays 30-second previews. If the API script can't load (blockers), the standard embed is shown.
-- **Video:** until Nicolás sends his own, the hero uses the home video (`ABOUT_BACKGROUND`). To swap it: `scripts/encode-background.sh`, upload to B2 `backgrounds/`, paste the URLs.
+- **Video:** Nicolás’s own (a dark corridor, 20 s in a loop), encoded with `scripts/encode-background.sh` (720p ~0.8 MB, 480p ~0.3 MB, poster) and served from B2 `backgrounds/about-*` (`ABOUT_BACKGROUND`). To swap it: encode, upload, paste the URLs.
 - **Keyboard:** records are `data-nav-item`; Esc goes back home (there is no open record to close any more).
 - Reduced motion: no rise, no fade-ups, no spinning, no arm movement.
 

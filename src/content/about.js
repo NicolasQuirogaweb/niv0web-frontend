@@ -2,14 +2,14 @@
 // null hasta que Nicolás pase la suya: la página se ve bien sin foto.
 export const ABOUT_PHOTO_URL = null;
 
-// Video de fondo del encabezado de NIVØ (ADR 0004/0009). Mientras no esté el video
-// propio de Nicolás, usa el del home. Para cambiarlo: scripts/encode-background.sh,
-// subir los tres archivos a B2 backgrounds/ y pegar las URLs acá.
+// Video de fondo del encabezado de NIVØ (ADR 0004/0009): el pasillo, 20 s en loop.
+// Para cambiarlo: scripts/encode-background.sh, subir los tres archivos a B2
+// backgrounds/ y pegar las URLs acá.
 const BG = "https://s3.us-east-005.backblazeb2.com/niv0-audios/backgrounds";
 export const ABOUT_BACKGROUND = {
-  poster: `${BG}/home-poster-a51b63fc.webp`,
-  video: `${BG}/home-720-7b49aad9.mp4`,
-  videoMobile: `${BG}/home-480-793a41ad.mp4`,
+  poster: `${BG}/about-poster-defcc054.webp`,
+  video: `${BG}/about-720-364c5225.mp4`,
+  videoMobile: `${BG}/about-480-2bfa759f.mp4`,
 };
 
 // Próximo disco (ADR 0009). Se completa a medida que haya datos:
