@@ -78,9 +78,10 @@
   to { transform: rotate(360deg); }
 }
 
-/* ---- Lista de barras, en curva alrededor del círculo ---- */
+/* ---- Lista de barras, en curva y girada en perspectiva (como la consola) ---- */
 .console-nav {
   flex: 0 1 440px;
+  perspective: 700px;
 }
 
 .console-list {
@@ -90,6 +91,14 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transform: rotateY(-22deg);
+  transform-style: preserve-3d;
+}
+
+/* La profundidad tiene que llegar hasta la barra para que la elegida "salga" hacia adelante. */
+.console-item,
+.console-link {
+  transform-style: preserve-3d;
 }
 
 .console-item:nth-child(2),
@@ -126,6 +135,8 @@
 }
 
 .console-blade {
+  position: relative;
+  overflow: hidden;
   flex: 0 0 300px;
   padding: 10px 20px;
   text-align: left;
@@ -137,16 +148,43 @@
   border: 1px solid rgb(var(--color-accent-rgb) / 0.55);
   background: rgb(var(--color-accent-rgb) / 0.06);
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  opacity: 0.55;
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+    transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
 }
 
-/* La sección elegida (mouse, foco o flechas) se llena de ámbar. */
+/* Brillo que cruza la barra cada vez que se elige. */
+.console-blade::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  transform: skewX(-20deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* La sección elegida (mouse, foco o flechas) se llena de ámbar y viene hacia adelante;
+   las demás quedan atrás, más apagadas. */
 .console-link[data-active="true"] .console-blade {
   background: var(--color-accent);
   color: var(--color-on-accent);
-  box-shadow: 0 0 24px rgb(var(--color-accent-rgb) / 0.5);
-  transform: translateX(8px);
+  box-shadow: 0 0 30px rgb(var(--color-accent-rgb) / 0.6);
+  opacity: 1;
+  transform: translateZ(60px) translateX(26px);
+}
+
+.console-link[data-active="true"] .console-blade::after {
+  animation: console-shine 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes console-shine {
+  0% { left: -60%; opacity: 1; }
+  100% { left: 130%; opacity: 0; }
 }
 
 .console-link[data-active="true"] .console-dot {
@@ -191,6 +229,11 @@
     max-width: 340px;
   }
 
+  /* En el celular la lista va derecha: girada no entra a lo ancho. */
+  .console-list {
+    transform: none;
+  }
+
   .console-list {
     gap: 10px;
   }
@@ -223,8 +266,13 @@
 @media (prefers-reduced-motion: reduce) {
   .console-orb,
   .console-orb::before,
-  .console-orb-bar {
+  .console-orb-bar,
+  .console-link[data-active="true"] .console-blade::after {
     animation: none;
+  }
+
+  .console-blade {
+    transition: none;
   }
 
   .console-link[data-active="true"] .console-blade {
