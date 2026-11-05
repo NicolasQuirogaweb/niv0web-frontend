@@ -97,8 +97,8 @@ describe("ConsoleMenu", () => {
   it("rings the orb with 64 small bars and a scale, all hidden from screen readers", () => {
     const { container } = renderMenu();
     const orb = container.querySelector(".console-orb");
-    expect(orb.querySelectorAll(".console-orb-ring > i")).toHaveLength(64);
-    expect(orb.querySelectorAll(".console-orb-ticks")).toHaveLength(2);
+    expect(orb.querySelectorAll(".orb-ring > i")).toHaveLength(64);
+    expect(orb.querySelectorAll(".orb-ticks")).toHaveLength(2);
   });
 
   it("joins each section to the orb with a line and lights the selected one", () => {

@@ -55,16 +55,6 @@
   align-items: center;
 }
 
-.beats-list {
-  margin-top: 8px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 10px;
-}
-
 /* ---------- Encabezado y bloques (rediseño, ver ADR 0003) ---------- */
 
 .beats-hero {
@@ -237,11 +227,6 @@
     font-size: 16px;
   }
 
-  .beats-list {
-    grid-template-columns: repeat(auto-fit, 70px);
-    gap: 12px;
-  }
-
   .back-to-catalogue {
     margin-top: 20px;
   }
@@ -253,14 +238,8 @@
   }
 }
 
-/* Rediseño en el celular: catálogos de a 2 y licencias apiladas (LicenseCards.css). */
+/* Celular: licencias apiladas (LicenseCards.css); los catálogos, CatalogConsole.css. */
 @media (max-width: 768px) {
-  .beats-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    justify-items: center;
-  }
-
   .beats-hero {
     margin: 16px 12px 0;
     padding: 20px 16px;

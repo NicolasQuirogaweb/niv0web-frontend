@@ -2,17 +2,11 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { HOME_SECTIONS } from "../../content/sections";
+import { OrbRing } from "./OrbRing";
 import "./ConsoleMenu.css";
 
 const KEY_STEP = { ArrowDown: 1, ArrowUp: -1 };
 const ORB_BARS = [0, 1, 2, 3, 4, 5, 6];
-
-// Anillo de barritas alrededor de la esfera: cada una con su ritmo, fijo para que no cambie entre renders.
-const RING_BARS = Array.from({ length: 64 }, (_, k) => ({
-  angle: (k * 360) / 64,
-  delay: -((Math.sin(k * 1.7) * 0.5 + 0.5) * 1.2).toFixed(2),
-  duration: (0.7 + ((k * 37) % 10) / 14).toFixed(2),
-}));
 
 // Distancia entre el borde de la esfera y el arranque de las líneas: afuera del anillo y la escala.
 const LINE_GAP = 52;
@@ -163,15 +157,7 @@ export const ConsoleMenu = () => {
         ))}
       </svg>
       <div className="console-orb" aria-hidden="true" ref={orbRef}>
-        <div className="console-orb-ticks" />
-        <div className="console-orb-ticks console-orb-ticks--major" />
-        <div className="console-orb-ring">
-          {RING_BARS.map(({ angle, delay, duration }) => (
-            <i key={angle} style={{ "--angle": `${angle}deg`, "--delay": `${delay}s`, "--duration": `${duration}s` }}>
-              <b />
-            </i>
-          ))}
-        </div>
+        <OrbRing />
         <div className="console-orb-core" />
         <div className="console-orb-shock" />
         <div className="console-orb-bars">
