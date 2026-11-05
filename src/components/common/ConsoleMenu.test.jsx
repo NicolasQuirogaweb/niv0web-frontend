@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 import i18n from "../../i18n/config";
 import { ConsoleMenu } from "./ConsoleMenu";
 
@@ -54,6 +54,44 @@ describe("ConsoleMenu", () => {
     expect(links()[4]).toHaveFocus();
     fireEvent.keyDown(links()[4], { key: "ArrowDown" });
     expect(links()[0]).toHaveFocus();
+  });
+
+  it("moves with the arrows as soon as the page opens, without clicking the menu first", () => {
+    renderMenu();
+    fireEvent.keyDown(document.body, { key: "ArrowDown" });
+    expect(links()[1]).toHaveAttribute("data-active", "true");
+    expect(links()[1]).toHaveFocus();
+    fireEvent.keyDown(document.activeElement, { key: "ArrowUp" });
+    fireEvent.keyDown(document.activeElement, { key: "ArrowUp" });
+    expect(links()[4]).toHaveAttribute("data-active", "true");
+  });
+
+  it("Enter opens the section picked with the mouse even when nothing has focus", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Routes>
+          <Route path="/" element={<ConsoleMenu />} />
+          <Route path="/loops" element={<p>loops page</p>} />
+        </Routes>
+      </MemoryRouter>
+    );
+    fireEvent.mouseEnter(links()[2]);
+    fireEvent.keyDown(document.body, { key: "Enter" });
+    expect(screen.getByText("loops page")).toBeInTheDocument();
+  });
+
+  it("leaves the arrows alone while typing in a field", () => {
+    render(
+      <MemoryRouter>
+        <input aria-label="search" />
+        <ConsoleMenu />
+      </MemoryRouter>
+    );
+    const field = screen.getByLabelText("search");
+    field.focus();
+    fireEvent.keyDown(field, { key: "ArrowDown" });
+    expect(links()[0]).toHaveAttribute("data-active", "true");
+    expect(field).toHaveFocus();
   });
 
   it("fills the orb with sound bars, hidden from screen readers", () => {
