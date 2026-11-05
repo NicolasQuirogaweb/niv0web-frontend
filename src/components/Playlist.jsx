@@ -9,6 +9,7 @@ import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
 import { PageBackground } from "./common/PageBackground";
 import { catalogBackground } from "../content/backgrounds";
 import { SEO } from "./common/SEO";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Playlist.css";
 
 // Sirve para /beats/playlist/:id y /loops/playlist/:id. La respuesta trae los
@@ -16,6 +17,7 @@ import "./Playlist.css";
 export const Playlist = () => {
   const { t } = useTranslation();
   const { resourceType, playlistId } = useParams();
+  useConsoleNav({ back: `/${resourceType}` });
   const service = playlistServices[resourceType];
   const { data: playlistData, loading, error, run, setLoading } = usePublicResource();
 

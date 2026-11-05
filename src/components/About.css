@@ -132,6 +132,7 @@
 
 .vinyl:hover .vinyl-disc,
 .vinyl:focus-visible .vinyl-disc,
+.vinyl[data-nav-active="true"] .vinyl-disc,
 .vinyl--open .vinyl-disc {
   transform: translateX(35%) rotate(180deg);
 }

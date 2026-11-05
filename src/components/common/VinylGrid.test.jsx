@@ -76,4 +76,13 @@ describe("VinylGrid", () => {
     expect(within(nightDrive).queryByRole("img")).not.toBeInTheDocument();
     expect(within(nightDrive).getByText(i18n.t("about.noCover"))).toBeInTheDocument();
   });
+
+  it("each record can be picked with the arrows, and Esc closes the open one without leaving the page", () => {
+    render(<VinylGrid albums={ALBUMS} />);
+    expect(screen.getByRole("button", { name: /Archetype/ })).toHaveAttribute("data-nav-item");
+    fireEvent.click(screen.getByRole("button", { name: /Archetype/ }));
+    const escape = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.dispatchEvent(escape);
+    expect(escape.defaultPrevented).toBe(true);
+  });
 });

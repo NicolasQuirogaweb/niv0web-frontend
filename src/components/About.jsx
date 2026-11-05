@@ -7,6 +7,7 @@ import { VinylGrid } from "./common/VinylGrid";
 import { SEO } from "./common/SEO";
 import { ABOUT_PHOTO_URL } from "../content/about";
 import { useHomePath } from "../hooks/useAuth";
+import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./About.css";
 
 // Página pública (sin login): no usa PageHeader ni nada que exija sesión. El logo
@@ -16,6 +17,7 @@ export const About = () => {
   const homePath = useHomePath();
   const [albums, setAlbums] = useState([]);
   const story = t("about.story", { returnObjects: true });
+  useConsoleNav({ back: homePath });
 
   useEffect(() => {
     let active = true;

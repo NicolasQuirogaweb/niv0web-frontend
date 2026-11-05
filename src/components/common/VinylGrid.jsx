@@ -13,7 +13,10 @@ export const VinylGrid = ({ albums }) => {
   useEffect(() => {
     if (!openId) return undefined;
     const onKey = (e) => {
-      if (e.key === "Escape") setOpenId(null);
+      if (e.key !== "Escape") return;
+      // Esc cierra el vinilo; preventDefault para que la página no vuelva atrás también.
+      e.preventDefault();
+      setOpenId(null);
     };
     document.addEventListener("keydown", onKey);
     playerRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
@@ -32,6 +35,7 @@ export const VinylGrid = ({ albums }) => {
                 className={`vinyl${isOpen ? " vinyl--open" : ""}`}
                 onClick={() => setOpenId(isOpen ? null : album.spotifyId)}
                 aria-expanded={isOpen}
+                data-nav-item=""
               >
                 <span className="vinyl-disc" aria-hidden="true" />
                 <span className="vinyl-sleeve">
