@@ -94,6 +94,33 @@ describe("ConsoleMenu", () => {
     expect(field).toHaveFocus();
   });
 
+  it("rings the orb with 64 small bars and a scale, all hidden from screen readers", () => {
+    const { container } = renderMenu();
+    const orb = container.querySelector(".console-orb");
+    expect(orb.querySelectorAll(".console-orb-ring > i")).toHaveLength(64);
+    expect(orb.querySelectorAll(".console-orb-ticks")).toHaveLength(2);
+  });
+
+  it("joins each section to the orb with a line and lights the selected one", () => {
+    const { container } = renderMenu();
+    const lines = container.querySelectorAll(".console-lines path");
+    expect(lines).toHaveLength(5);
+    expect(container.querySelector(".console-lines")).toHaveAttribute("aria-hidden", "true");
+    expect(lines[0]).toHaveAttribute("data-active", "true");
+    fireEvent.mouseEnter(links()[3]);
+    expect(lines[3]).toHaveAttribute("data-active", "true");
+    expect(lines[0]).toHaveAttribute("data-active", "false");
+  });
+
+  it("the orb reacts when the selection changes, not when it stays the same", () => {
+    const { container } = renderMenu();
+    const menu = container.querySelector(".console-menu");
+    fireEvent.mouseEnter(links()[0]);
+    expect(menu).not.toHaveClass("is-kick");
+    fireEvent.mouseEnter(links()[2]);
+    expect(menu).toHaveClass("is-kick");
+  });
+
   it("fills the orb with sound bars, hidden from screen readers", () => {
     const { container } = renderMenu();
     const orb = container.querySelector(".console-orb");
