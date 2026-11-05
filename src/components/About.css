@@ -1,16 +1,29 @@
+/* NIVØ en formato documental (ADR 0009). */
 .about-page {
   min-height: 100vh;
-  background: radial-gradient(circle at 20% 0%, rgb(var(--color-accent-rgb) / 0.12) 0%, var(--color-bg) 55%);
+  background: var(--color-bg);
   color: #fff;
   font-family: var(--font-body);
-  padding: 0 0 60px;
+  overflow-x: hidden;
 }
 
-.about-header {
+/* ---- Encabezado: video, nombre enorme y de dónde es ---- */
+.about-hero {
+  position: relative;
+  min-height: min(88vh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.about-topbar {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 40px 0;
+  padding: 16px 40px 0;
 }
 
 .about-logo {
@@ -18,229 +31,556 @@
   color: var(--color-accent);
   text-decoration: none;
   font-size: 28px;
-  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.about-hero-text {
+  position: relative;
+  z-index: 1;
+  padding: 0 48px 48px;
+  text-align: left;
+  animation: about-rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.about-kicker {
+  margin: 0;
+  text-align: left;
+  font: 500 13px var(--font-body);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.about-title {
+  margin: 6px 0 0;
+  font-size: clamp(110px, 22vw, 240px);
+  line-height: 0.82;
+  letter-spacing: 8px;
+  color: var(--color-accent);
+  text-shadow: 0 0 60px rgb(var(--color-accent-rgb) / 0.25);
+}
+
+@keyframes about-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- Frase y historia ---- */
+.about-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
+
+.about-quote {
+  margin: 70px auto 40px;
+  max-width: 900px;
+}
+
+.about-quote blockquote {
+  margin: 0;
+  text-align: center;
+  font: 400 clamp(40px, 6vw, 68px) / 1 var(--font-display);
+  letter-spacing: 2px;
+  color: #f3ead8;
+}
+
+.about-quote blockquote::before { content: "“"; }
+.about-quote blockquote::after { content: "”"; }
+
+.about-quote em {
+  font-style: normal;
+  color: var(--color-accent);
 }
 
 .about-story {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-  display: flex;
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.about-story h1 {
-  font-size: 44px;
-  margin: 0 0 16px;
+  columns: 2;
+  column-gap: 56px;
+  margin-bottom: 70px;
 }
 
 .about-story p {
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  font-size: 17px;
+  break-inside: avoid;
+  margin: 0 0 24px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgb(255 255 255 / 0.82);
+}
+
+/* Capitular, como en una revista. */
+.about-story p:first-of-type::first-letter {
+  float: left;
+  margin: 6px 10px 0 0;
+  font: 400 76px / 0.8 var(--font-display);
+  color: var(--color-accent);
 }
 
 .about-photo {
+  display: block;
+  width: 100%;
+  margin-bottom: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: var(--shadow-lift);
+}
+
+/* Aparecer al bajar: solo si hay IntersectionObserver (la página agrega .reveal-on). */
+.reveal-on .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-on .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Próximo disco ---- */
+.upcoming {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
+  align-items: center;
+  margin: 0 0 80px;
+  padding: 36px 40px;
+  border: 1px solid var(--color-accent-line);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgb(var(--color-accent-rgb) / 0.12), transparent 60%),
+    rgb(255 255 255 / 0.02);
+}
+
+.upcoming-art {
+  position: relative;
   width: 220px;
   height: 220px;
-  border-radius: 12px;
-  object-fit: cover;
-  flex-shrink: 0;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-.about-discography {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.about-discography h2 {
-  font-size: 28px;
-  margin: 0 0 24px;
-  color: var(--color-accent);
-}
-
-/* ---------- Grilla de vinilos ---------- */
-
-.vinyl-grid {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 36px 28px;
-}
-
-.vinyl {
-  position: relative;
-  width: 100%;
-  padding: 0 0 0;
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-}
-
-.vinyl-sleeve {
+.upcoming-art img,
+.upcoming-shadow {
   position: relative;
   z-index: 1;
   display: block;
-  aspect-ratio: 1;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #1a1d20;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
-}
-
-.vinyl-sleeve img {
   width: 100%;
   height: 100%;
+  border-radius: 3px;
   object-fit: cover;
-  display: block;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.6);
 }
 
-.vinyl-nocover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
-  text-align: center;
-  padding: 10px;
-}
-
-/* El disco vive detrás de la funda y asoma al pasar, enfocar o abrir. */
-.vinyl-disc {
-  position: absolute;
-  z-index: 0;
-  top: 4%;
-  left: 4%;
-  width: 92%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+/* Sin tapa todavía: una funda en sombra con el brillo ámbar. */
+.upcoming-shadow {
   background:
-    radial-gradient(circle, var(--color-accent) 0 9%, #111 9.5% 12%, transparent 12.5%),
-    repeating-radial-gradient(circle, #0a0a0a 0 2px, #1c1c1c 2px 3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-  transition: transform 0.45s ease;
-}
-
-.vinyl:hover .vinyl-disc,
-.vinyl:focus-visible .vinyl-disc,
-.vinyl[data-nav-active="true"] .vinyl-disc,
-.vinyl--open .vinyl-disc {
-  transform: translateX(35%) rotate(180deg);
-}
-
-.vinyl--open .vinyl-disc {
-  animation: vinyl-spin 2.5s linear infinite;
-}
-
-@keyframes vinyl-spin {
-  from { transform: translateX(35%) rotate(0deg); }
-  to { transform: translateX(35%) rotate(360deg); }
-}
-
-.vinyl:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 6px;
-  border-radius: 6px;
-}
-
-.vinyl-info {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-.vinyl-name {
-  font-weight: bold;
-  font-size: 15px;
-}
-
-.vinyl-year {
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 13px;
-}
-
-.vinyl--open .vinyl-name {
-  color: var(--color-accent);
-}
-
-/* ---------- Reproductor de Spotify ---------- */
-
-.vinyl-player {
-  margin-top: 32px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
+    radial-gradient(circle at 50% 45%, rgb(var(--color-accent-rgb) / 0.35), transparent 55%),
+    linear-gradient(145deg, #1f1b16, #0c0b09);
   border: 1px solid rgb(var(--color-accent-rgb) / 0.25);
 }
 
-.vinyl-player iframe {
-  display: block;
-  border: 0;
+.upcoming-disc {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--color-accent) 0 9%, #111 9.5% 12%, transparent 12.5%),
+    repeating-radial-gradient(circle, #0a0a0a 0 2px, #1d1d1d 2px 3px);
+  transform: translateX(34%);
+  animation: about-spin-out 6s linear infinite;
 }
 
-.vinyl-player-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
+@keyframes about-spin-out {
+  from { transform: translateX(34%) rotate(0deg); }
+  to { transform: translateX(34%) rotate(360deg); }
 }
 
-.vinyl-player-actions a {
+.upcoming-info {
+  padding-left: 60px;
+  text-align: left;
+}
+
+.upcoming-kicker {
+  margin: 0;
+  text-align: left;
+  font: 500 12px var(--font-body);
+  letter-spacing: 4px;
+  text-transform: uppercase;
   color: var(--color-accent);
 }
 
-.vinyl-player-actions button {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.upcoming-title {
+  margin: 6px 0 4px;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 0.95;
+  color: #f3ead8;
+}
+
+.upcoming-when {
+  margin: 0;
+  text-align: left;
+  font: 400 24px var(--font-display);
+  letter-spacing: 3px;
+  color: var(--color-accent);
+}
+
+.upcoming-countdown {
+  display: flex;
+  gap: 18px;
+  margin: 14px 0 0;
+  font: 400 18px var(--font-display);
+  letter-spacing: 2px;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.upcoming-countdown b {
+  font-weight: 400;
+  font-size: 38px;
   color: #fff;
-  border-radius: 6px;
-  padding: 6px 14px;
+}
+
+.upcoming-presave {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 24px;
+  font: 400 20px var(--font-display);
+  letter-spacing: 3px;
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  text-decoration: none;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.upcoming-presave:hover,
+.upcoming-presave:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-accent);
+}
+
+/* ---- Discografía: cajón de discos y tocadiscos ---- */
+.about-section-title {
+  margin: 0;
+  font-size: 46px;
+  letter-spacing: 4px;
+  color: var(--color-accent);
+}
+
+.crate {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 60px 8px 56px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  perspective: 900px;
+  scrollbar-width: none;
+}
+
+.crate::-webkit-scrollbar {
+  display: none;
+}
+
+.crate-slot {
+  flex: 0 0 auto;
+  margin-right: -72px;
+}
+
+.crate-record {
+  position: relative;
+  display: block;
+  width: 176px;
+  height: 176px;
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
+  transform: rotateY(28deg);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .vinyl-disc {
-    transition: none;
-  }
-
-  .vinyl--open .vinyl-disc {
-    animation: none;
-    transform: translateX(35%);
-  }
+.crate-record img,
+.crate-nocover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: -10px 0 24px rgb(0 0 0 / 0.7);
 }
 
+.crate-nocover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(145deg, #1f1b16, #0c0b09);
+  color: var(--color-accent);
+  font: 400 18px var(--font-display);
+  letter-spacing: 2px;
+}
+
+.crate-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 10px);
+  font: 400 18px var(--font-display);
+  letter-spacing: 2px;
+  color: var(--color-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+/* El disco que tocás se levanta del cajón y queda de frente. */
+.crate-record:hover,
+.crate-record:focus-visible,
+.crate-record[data-nav-active="true"],
+.crate-record--selected {
+  transform: rotateY(0deg) translateY(-26px);
+  margin: 0 76px 0 76px;
+  z-index: 2;
+  outline: none;
+}
+
+.crate-record:hover .crate-name,
+.crate-record:focus-visible .crate-name,
+.crate-record[data-nav-active="true"] .crate-name,
+.crate-record--selected .crate-name {
+  opacity: 1;
+}
+
+.crate-record:focus-visible img,
+.crate-record[data-nav-active="true"] img,
+.crate-record--selected img {
+  box-shadow: 0 0 0 2px var(--color-accent), 0 20px 40px rgb(0 0 0 / 0.7);
+}
+
+/* Tocadiscos */
+.deck {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+.turntable {
+  position: relative;
+  width: 300px;
+  height: 250px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #2a2622, #141210);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 20px 40px rgb(0 0 0 / 0.6);
+}
+
+.turntable-platter {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+  width: 206px;
+  height: 206px;
+  border-radius: 50%;
+  background: #0d0d0d;
+  box-shadow: 0 0 0 4px #222;
+}
+
+/* El disco cae desde arriba y empieza a girar. */
+.turntable-disc {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 18%, #0a0a0a 18.5%),
+    repeating-radial-gradient(circle, #0a0a0a 0 2px, #1d1d1d 2px 3px);
+  animation:
+    turntable-drop 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+    turntable-spin 1.8s linear 0.7s infinite;
+}
+
+.turntable-label {
+  position: absolute;
+  inset: 31%;
+  border-radius: 50%;
+  background: var(--color-accent) center / cover;
+  box-shadow: 0 0 0 3px #111;
+}
+
+@keyframes turntable-drop {
+  from { transform: translateY(-140%); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@keyframes turntable-spin {
+  to { transform: rotate(360deg); }
+}
+
+.turntable-arm-base {
+  position: absolute;
+  right: 18px;
+  top: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #999, #444);
+}
+
+.turntable-arm {
+  position: absolute;
+  right: 26px;
+  top: 18px;
+  width: 12px;
+  height: 150px;
+  transform-origin: 6px 6px;
+  transform: rotate(-8deg);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s;
+}
+
+.turntable-arm::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 6px;
+  height: 140px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #bbb, #777);
+}
+
+.turntable-arm::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  bottom: 0;
+  width: 16px;
+  height: 22px;
+  border-radius: 3px;
+  background: #333;
+}
+
+/* Con un disco puesto, el brazo baja. */
+.turntable--on .turntable-arm {
+  transform: rotate(24deg);
+}
+
+.deck-year {
+  margin: 0;
+  text-align: left;
+  font: 500 13px var(--font-body);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.deck-name {
+  margin: 2px 0 12px;
+  font-size: 46px;
+  letter-spacing: 3px;
+  color: var(--color-accent);
+}
+
+.spotify-player {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+.deck-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--color-accent);
+  font: 400 18px var(--font-display);
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+.deck-link:hover,
+.deck-link:focus-visible {
+  text-decoration: underline;
+}
+
+/* ---- Celular ---- */
 @media (max-width: 768px) {
-  .about-header {
-    padding: 10px 20px 0;
+  .about-topbar {
+    padding: 12px 16px 0;
+  }
+
+  .about-hero {
+    min-height: 70vh;
+  }
+
+  .about-hero-text {
+    padding: 0 16px 32px;
+  }
+
+  .about-title {
+    letter-spacing: 4px;
+  }
+
+  .about-main {
+    padding: 0 16px 60px;
+  }
+
+  .about-quote {
+    margin: 48px auto 28px;
   }
 
   .about-story {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 24px auto;
+    columns: 1;
   }
 
-  .about-story h1 {
-    font-size: 32px;
+  .upcoming {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 20px;
   }
 
-  .about-photo {
+  .upcoming-art {
     width: 160px;
     height: 160px;
   }
 
-  .vinyl-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px 20px;
+  .upcoming-info {
+    padding-left: 0;
+  }
+
+  .crate-slot {
+    margin-right: -60px;
+  }
+
+  .crate-record {
+    width: 140px;
+    height: 140px;
+  }
+
+  .deck {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .deck-info {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-hero-text,
+  .upcoming-disc,
+  .turntable-disc {
+    animation: none;
+  }
+
+  .crate-record,
+  .turntable-arm,
+  .reveal-on .reveal {
+    transition: none;
+  }
+
+  .reveal-on .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

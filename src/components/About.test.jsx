@@ -21,6 +21,8 @@ const renderAbout = () =>
   );
 
 describe("About page", () => {
+  beforeEach(() => i18n.changeLanguage("es"));
+
   it("shows the title and the story without a logged-in user", async () => {
     discographyService.getAll.mockResolvedValue({ data: [] });
     renderAbout();
@@ -37,7 +39,36 @@ describe("About page", () => {
     expect(screen.queryByRole("heading", { name: i18n.t("about.discography") })).not.toBeInTheDocument();
   });
 
-  it("shows the vinyl grid when there are releases", async () => {
+  it("opens with the name over the video and where niv0 is from, without the genres", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    const { container } = renderAbout();
+    const hero = screen.getByRole("banner", { name: i18n.t("about.title") });
+    expect(hero).toContainElement(screen.getByRole("heading", { level: 1 }));
+    expect(hero).toHaveTextContent(i18n.t("about.kicker"));
+    expect(hero).not.toHaveTextContent(/hip hop alternativo/i);
+    expect(container.querySelector(".page-bg--contained")).toBeInTheDocument();
+    await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
+  });
+
+  it("the story ends at INSPIRAR, with the quote in big letters", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    renderAbout();
+    const story = i18n.t("about.story", { returnObjects: true });
+    expect(story[story.length - 1]).toBe(
+      "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR."
+    );
+    expect(await screen.findByText(story[story.length - 1])).toBeInTheDocument();
+    expect(screen.getByRole("figure", { name: /corazón/ })).toBeInTheDocument();
+  });
+
+  it("announces the new album Sentimientos restringidos", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    renderAbout();
+    expect(screen.getByRole("heading", { name: "Sentimientos restringidos" })).toBeInTheDocument();
+    await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
+  });
+
+  it("shows the record crate when there are releases", async () => {
     discographyService.getAll.mockResolvedValue({
       data: [{ spotifyId: "alb1", name: "Archetype", type: "album", releaseDate: "2025-08-01", imageUrl: null, spotifyUrl: "x", totalTracks: 9 }],
     });
