@@ -34,6 +34,12 @@ describe("AdminZipPanel", () => {
     expect(screen.getByRole("link")).toHaveAttribute("href", ready.url);
   });
 
+  it("omits the date instead of showing Invalid Date when builtAt is missing", () => {
+    renderPanel({ ...ready, builtAt: null });
+    expect(screen.queryByText(/invalid date/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/50 MB/)).toBeInTheDocument();
+  });
+
   it("warns when the ZIP is stale", () => {
     renderPanel({ ...ready, stale: true });
     expect(screen.getByText(/hay cambios: volvé a armar el zip/i)).toBeInTheDocument();

@@ -8,9 +8,6 @@ import { isAbortError } from "../../utils/isAbortError";
 import { packErrorText } from "./packErrors";
 import styles from "./admin.module.css";
 
-const INPUT_ERROR = { border: "1px solid #c62828" };
-const ERROR_TEXT = { color: "#c62828", fontSize: 12, margin: "4px 0 0" };
-
 const EMPTY = { title: "", description: "", imageUrl: "", free: true, priceArs: "", priceUsd: "", published: false };
 
 const isPrice = (v) => v !== "" && Number.isFinite(Number(v)) && Number(v) >= 0;
@@ -107,15 +104,14 @@ export const AdminSamplePackForm = () => {
       <form onSubmit={handleSubmit} className={styles.formStack}>
         <div>
           <label htmlFor="pack-title" className={styles.label}>{t("admin.common.titleRequired")}</label>
-          <input id="pack-title" name="title" value={form.title} onChange={handleChange} className={styles.input}
-            style={errors.title ? INPUT_ERROR : undefined} />
-          {errors.title && <p style={ERROR_TEXT}>{errors.title}</p>}
+          <input id="pack-title" name="title" value={form.title} onChange={handleChange} className={`${styles.input} ${errors.title ? styles.inputError : ""}`} />
+          {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
         </div>
         <div>
           <label htmlFor="pack-description" className={styles.label}>{t("admin.common.descriptionRequired")}</label>
           <textarea id="pack-description" name="description" value={form.description} onChange={handleChange}
-            className={styles.textareaLg} style={errors.description ? INPUT_ERROR : undefined} />
-          {errors.description && <p style={ERROR_TEXT}>{errors.description}</p>}
+            className={`${styles.textareaLg} ${errors.description ? styles.inputError : ""}`} />
+          {errors.description && <p className={styles.fieldError}>{errors.description}</p>}
         </div>
         <div>
           <label className={styles.label}>{t("admin.samplePacks.form.coverOptional")}</label>
@@ -133,14 +129,14 @@ export const AdminSamplePackForm = () => {
             <div>
               <label htmlFor="pack-price-ars" className={styles.label}>{t("admin.samplePacks.form.priceArs")}</label>
               <input id="pack-price-ars" name="priceArs" type="number" min="0" step="any" value={form.priceArs}
-                onChange={handleChange} className={styles.input} style={errors.priceArs ? INPUT_ERROR : undefined} />
-              {errors.priceArs && <p style={ERROR_TEXT}>{errors.priceArs}</p>}
+                onChange={handleChange} className={`${styles.input} ${errors.priceArs ? styles.inputError : ""}`} />
+              {errors.priceArs && <p className={styles.fieldError}>{errors.priceArs}</p>}
             </div>
             <div>
               <label htmlFor="pack-price-usd" className={styles.label}>{t("admin.samplePacks.form.priceUsd")}</label>
               <input id="pack-price-usd" name="priceUsd" type="number" min="0" step="any" value={form.priceUsd}
-                onChange={handleChange} className={styles.input} style={errors.priceUsd ? INPUT_ERROR : undefined} />
-              {errors.priceUsd && <p style={ERROR_TEXT}>{errors.priceUsd}</p>}
+                onChange={handleChange} className={`${styles.input} ${errors.priceUsd ? styles.inputError : ""}`} />
+              {errors.priceUsd && <p className={styles.fieldError}>{errors.priceUsd}</p>}
             </div>
           </>
         )}

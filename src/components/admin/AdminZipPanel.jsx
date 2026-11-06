@@ -41,8 +41,8 @@ export const AdminZipPanel = ({ pack, onRefresh }) => {
       <h3 className={styles.formTitle}>{t("admin.samplePacks.zip.title")}</h3>
       {zip.url ? (
         <p>
-          {t("admin.samplePacks.zip.built", { date: new Date(zip.builtAt).toLocaleDateString(i18n.language) })}
-          {" · "}{formatBytes(zip.bytes)}{" · "}
+          {zip.builtAt && <>{t("admin.samplePacks.zip.built", { date: new Date(zip.builtAt).toLocaleDateString(i18n.language) })}{" · "}</>}
+          {formatBytes(zip.bytes)}{" · "}
           <a href={zip.url} target="_blank" rel="noopener noreferrer">{t("admin.samplePacks.zip.download")}</a>
         </p>
       ) : (

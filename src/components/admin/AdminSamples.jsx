@@ -84,19 +84,25 @@ export const AdminSamples = () => {
   const folders = useMemo(() => pack?.folders || [], [pack]);
   const onlyFolder = folders.length === 1 ? folders[0] : "";
 
-  // Con una sola carpeta no hay nada que elegir: se preselecciona.
+  // Una carpeta renombrada o borrada deja de valer: se limpia y, si queda una sola, se preselecciona.
   useEffect(() => {
-    if (onlyFolder && !form.folder) setForm((f) => ({ ...f, folder: onlyFolder }));
-  }, [onlyFolder, form.folder, showForm, setForm]);
-  useEffect(() => {
-    if (onlyFolder && !batchFolder) setBatchFolder(onlyFolder);
-  }, [onlyFolder, batchFolder, batchMode]);
+    const valid = (v) => (folders.includes(v) ? v : onlyFolder);
+    setForm((f) => (valid(f.folder) === f.folder ? f : { ...f, folder: valid(f.folder) }));
+    setBatchFolder((v) => valid(v));
+    setFolderFilter((v) => (folders.includes(v) ? v : ""));
+  }, [folders, onlyFolder, showForm, batchMode, setForm]);
 
   const samplesByFolder = useMemo(() => {
     const map = {};
     samples.forEach((s) => { (map[s.folder] ||= []).push(s); });
     return map;
   }, [samples]);
+
+  // Guarda antes de subir a B2: una carpeta que ya no existe dejaría archivos huérfanos.
+  const uploadBatch = () => {
+    if (!folders.includes(batchFolder)) return;
+    handleBatchUpload();
+  };
 
   const visibleSamples = folderFilter ? samples.filter((s) => s.folder === folderFilter) : samples;
 
@@ -211,7 +217,7 @@ export const AdminSamples = () => {
                 ))}
               </div>
               <div className={styles.formActions}>
-                <button onClick={handleBatchUpload} disabled={!batchFolder} className={styles.btnPrimary}>
+                <button onClick={uploadBatch} disabled={!folders.includes(batchFolder)} className={styles.btnPrimary}>
                   <Icons.Upload size={16} /> {t("admin.samples.uploadCount", { count: batchFiles.length })}
                 </button>
                 <button onClick={cancelBatch} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
