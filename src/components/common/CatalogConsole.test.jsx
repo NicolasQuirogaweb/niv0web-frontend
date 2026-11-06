@@ -63,4 +63,22 @@ describe("CatalogConsole", () => {
     expect(container.querySelectorAll(".catalog-record .orb-ring > i")).toHaveLength(64);
     expect(container.querySelectorAll(".catalog-record .orb-ticks")).toHaveLength(2);
   });
+
+  it("takes getHref, getMeta, getBadge and renderLabelFallback from the caller", () => {
+    const { container } = renderConsole({
+      getHref: (i) => `/x/${i._id}`,
+      getMeta: (i) => `meta ${i.title}`,
+      getBadge: (i) => (i._id === "p1" ? "FREE" : null),
+      renderLabelFallback: (i) => <span className="fb">{i.title}</span>,
+    });
+    expect(links().map((a) => a.getAttribute("href"))).toEqual(["/x/p1", "/x/p2", "/x/p3"]);
+    expect(links()[0]).toHaveTextContent("meta Archetype");
+    expect(links()[0]).toHaveTextContent("FREE");
+    expect(links()[1]).not.toHaveTextContent("FREE");
+    expect(caption(container)).toHaveTextContent("FREE");
+    expect(container.querySelector(".fb")).toBeNull();
+    fireEvent.focus(links()[2]);
+    expect(label(container).querySelector(".fb")).toHaveTextContent("Rambo");
+    expect(caption(container)).toHaveTextContent("meta Rambo");
+  });
 });

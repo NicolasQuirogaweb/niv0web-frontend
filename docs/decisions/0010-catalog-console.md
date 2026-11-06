@@ -17,7 +17,7 @@ All beat catalogs currently share the same generic speaker image, which also fav
   - With many catalogs the list scrolls inside its own box, faded at the edges; the arrows bring the selected one into view. The list doesn't jump to follow the mouse, so hovering never makes it run away.
   - Medium screens: smaller record. Phones: record on top, flat list below. Reduced motion: no spinning, no sweep, nothing moves forward.
 - **`OrbRing`** (`src/components/common/OrbRing.jsx`) is the ring and scale, shared by the home menu and the catalogs. Each container sets `--ring-r` and `--ticks-out`.
-- **Sample packs** will use the same component for the pack showcase (with each pack's own cover on the record) when the sample packs plan is built; its pack card task follows this ADR instead of glass cards.
+- **Sample packs** use the same component for the pack showcase. `CatalogConsole` takes optional `getHref`, `getMeta`, `getBadge` and `renderLabelFallback` (defaults keep Beats and Loops as they were): packs link to `/samplepacks/:slug`, show folders and samples as meta, a GRATIS or price tag in each bar and under the record, and a generated round cover on the label when the pack has no image.
 
 ## Consequences
 

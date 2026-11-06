@@ -78,6 +78,8 @@
   "samplePacks": {
     "loading": "Loading sample packs...",
     "none": "No sample packs found.",
+    "free": "FREE",
+    "meta": "{{folders}} folders · {{samples}} samples",
     "seoTitle": "Sample Packs",
     "seoDesc": "Download exclusive sample packs from Niv0. Includes drums, synths, bass, and more."
   },
