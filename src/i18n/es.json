@@ -83,7 +83,11 @@
     "browserIdle": "Tocá un sample para escucharlo",
     "meta": "{{folders}} carpetas · {{samples}} samples",
     "seoTitle": "Sample Packs",
-    "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más."
+    "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más.",
+    "downloadZip": "DESCARGAR ZIP",
+    "zipPending": "ZIP en preparación",
+    "comingSoon": "Próximamente",
+    "notFound": "Este pack no existe o no está disponible."
   },
   "samples": {
     "error": "Error: ",

@@ -15,7 +15,7 @@ const Login = lazyNamed(() => import("../components/Login"), "Login");
 const Beats = lazyNamed(() => import("../components/Beats"), "Beats");
 const Playlist = lazyNamed(() => import("../components/Playlist"), "Playlist");
 const SamplePacks = lazyNamed(() => import("../components/SamplePacks"), "SamplePacks");
-const Samples = lazyNamed(() => import("../components/Samples"), "Samples");
+const SamplePackPage = lazyNamed(() => import("../components/samplepacks/SamplePackPage"), "SamplePackPage");
 const About = lazyNamed(() => import("../components/About"), "About");
 const Loops = lazyNamed(() => import("../components/Loops"), "Loops");
 const ProdMixMaster = lazyNamed(() => import("../components/ProdMixMaster"), "ProdMixMaster");
@@ -73,13 +73,15 @@ export const MyRoutes = () => {
                 }
               />
               <Route
-                path="/samples"
+                path="/samplepacks/:slug"
                 element={
                   <PrivateRoute>
-                    <Samples />
+                    <SamplePackPage />
                   </PrivateRoute>
                 }
               />
+              {/* Rutas viejas de samples: ahora todo vive en /samplepacks. */}
+              <Route path="/samples" element={<Navigate to="/samplepacks" replace />} />
               <Route
                 path="/:resourceType/playlist/:playlistId"
                 element={
@@ -88,14 +90,7 @@ export const MyRoutes = () => {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/samples/samplepack/:samplepackId"
-                element={
-                  <PrivateRoute>
-                    <Samples />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/samples/samplepack/:samplepackId" element={<Navigate to="/samplepacks" replace />} />
               <Route
                 path="/loops"
                 element={

@@ -1,0 +1,62 @@
+.pack-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.pack-page-head {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.pack-page-cover {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: none;
+}
+
+.pack-page-info {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.pack-page-title {
+  font: 400 clamp(28px, 5vw, 44px) / 1 var(--font-display);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.pack-page-description {
+  margin: 0 0 16px;
+  opacity: 0.85;
+}
+
+.pack-zip-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pack-zip-btn:hover:not(:disabled),
+.pack-zip-btn:focus-visible {
+  background: var(--color-accent-strong);
+}
+
+.pack-zip-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

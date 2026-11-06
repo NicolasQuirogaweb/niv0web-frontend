@@ -49,7 +49,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 | `/beats` | logged in | Heading, catalog cards (glass + equalizer) and the three license cards |
 | `/loops` | logged in | Loop catalog cards |
 | `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
-| `/samplepacks`, `/samples/samplepack/:id` | logged in | Sample packs |
+| `/samplepacks`, `/samplepacks/:slug` | logged in | Sample packs and pack page |
 | `/prodmixmaster` | logged in | Production and mixing services |
 | `/admin/*` | admin | Dashboard, beat and loop catalogs, sample packs, users |
 
@@ -59,7 +59,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 
 ```
 src/
-  components/         public pages (Beats, Playlist, Samples...) and their CSS
+  components/         public pages (Beats, Playlist, SamplePacks...) and their CSS
     common/           PageHeader, TrackList, AudioPlayer, SEO, ErrorBoundary
     admin/            admin panel (CSS modules)
   context/            AuthContext: who's logged in, from GET /verify-token
