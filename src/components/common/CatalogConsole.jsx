@@ -13,11 +13,16 @@ const COUNT_KEY = { beats: "card.items_beats", loops: "card.items_loops" };
  * entrar); lo eligen el mouse, el foco o las flechas (useConsoleNav de la página).
  * La lista se desplaza sola cuando hay muchos.
  */
-export const CatalogConsole = ({ items, resourceType }) => {
+export const CatalogConsole = ({ items, resourceType, getHref, getMeta, getBadge, renderLabelFallback }) => {
   const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const current = items[active] ?? items[0];
   const countKey = COUNT_KEY[resourceType] ?? COUNT_KEY.beats;
+  const hrefOf = getHref ?? ((item) => `/${resourceType}/playlist/${item._id}`);
+  const metaOf = getMeta ?? ((item) => t(countKey, { count: item?.itemsCount ?? 0 }));
+  const badgeOf = getBadge ?? (() => null);
+  const currentBadge = current ? badgeOf(current) : null;
+  const labelFallback = current && !current.imageUrl && renderLabelFallback ? renderLabelFallback(current) : null;
 
   return (
     <div className="catalog-console">
@@ -28,12 +33,15 @@ export const CatalogConsole = ({ items, resourceType }) => {
             key={current?._id}
             className="catalog-record-label"
             style={current?.imageUrl ? { backgroundImage: `url(${current.imageUrl})` } : undefined}
-          />
+          >
+            {labelFallback}
+          </div>
           <div className="catalog-record-hole" />
         </div>
         <p className="catalog-record-caption">
           <span className="catalog-record-name">{current?.title}</span>
-          <span className="catalog-record-count">{t(countKey, { count: current?.itemsCount ?? 0 })}</span>
+          {currentBadge && <span className="catalog-record-badge">{currentBadge}</span>}
+          <span className="catalog-record-count">{current ? metaOf(current) : t(countKey, { count: 0 })}</span>
         </p>
       </div>
 
@@ -42,7 +50,7 @@ export const CatalogConsole = ({ items, resourceType }) => {
           {items.map((item, index) => (
             <li key={item._id} className="catalog-item">
               <Link
-                to={`/${resourceType}/playlist/${item._id}`}
+                to={hrefOf(item)}
                 className="catalog-link"
                 data-active={String(index === active)}
                 data-nav-item=""
@@ -52,7 +60,8 @@ export const CatalogConsole = ({ items, resourceType }) => {
                 <span className="catalog-dot" aria-hidden="true" />
                 <span className="catalog-blade">
                   <span className="catalog-blade-title">{item.title}</span>
-                  <span className="catalog-blade-count">{t(countKey, { count: item.itemsCount ?? 0 })}</span>
+                  {badgeOf(item) && <span className="catalog-blade-badge">{badgeOf(item)}</span>}
+                  <span className="catalog-blade-count">{metaOf(item)}</span>
                 </span>
               </Link>
             </li>

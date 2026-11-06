@@ -167,6 +167,26 @@
   text-transform: uppercase;
 }
 
+/* Etiqueta chica (precio / GRATIS) en cada barra y bajo el vinilo. */
+.catalog-blade-badge {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 1px 8px;
+  border: 1px solid currentColor;
+  font: 500 11px var(--font-body);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.catalog-record-badge {
+  font: 500 11px var(--font-body);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 1px 8px;
+  border: 1px solid rgb(var(--color-accent-rgb) / 0.6);
+  color: var(--color-accent);
+}
+
 /* Brillo que cruza la barra cada vez que se elige. */
 .catalog-blade::after {
   content: "";

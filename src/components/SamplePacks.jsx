@@ -3,7 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { samplePacksService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
-import { CardPlaylist } from "./CardPlaylist";
+import { CatalogConsole } from "./common/CatalogConsole";
+import { PackCover } from "./samplepacks/PackCover";
+import { formatPackPrice } from "../utils/formatPrice";
 import { PageHeader } from "./common/PageHeader";
 import { SEO } from "./common/SEO";
 import { useConsoleNav } from "../hooks/useConsoleNav";
@@ -12,7 +14,8 @@ import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
 
 export const SamplePacks = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language?.startsWith("en") ? "en" : "es";
   const { data, loading, error, run } = usePublicResource();
   useConsoleNav({ back: "/homelogued" });
   const packs = data || [];
@@ -35,11 +38,14 @@ export const SamplePacks = () => {
         ) : packs.length === 0 ? (
           <p>{t("samplePacks.none")}</p>
         ) : (
-          <div className="beats-list-samplepacks">
-            {packs.map((pack) => (
-              <CardPlaylist key={pack._id} playlist={pack} resourceType="samples" />
-            ))}
-          </div>
+          <CatalogConsole
+            items={packs}
+            resourceType="samplepacks"
+            getHref={(pack) => `/samplepacks/${pack.slug}`}
+            getMeta={(pack) => t("samplePacks.meta", { folders: pack.folderCount, samples: pack.itemsCount })}
+            getBadge={(pack) => (pack.isFree ? t("samplePacks.free") : formatPackPrice(pack, lang))}
+            renderLabelFallback={(pack) => <PackCover title={pack.title} imageUrl={null} />}
+          />
         )}
       </div>
       <div className="back-to-catalogue">

@@ -20,6 +20,7 @@ The home menu moves with the arrows and opens with Enter, like a console (ADR 00
   - Esc goes back: Beats, Loops, Sample packs and Prod mix master → logged-in home; a pack → the packs; a catalog → its list; About → home. On About, if a record is open, Esc closes it and stays (the record calls `preventDefault`, and the hook respects it).
   - The mouse and focus also pick, so Enter opens the last thing you pointed at, and the highlight stays on it, like on the home.
   - Left alone: text fields, the seek bar (`role="slider"`), and anything with Alt, Ctrl or ⌘ (Alt + ← is the browser's back).
+- **Nested widgets:** `useConsoleNav` ignores arrows, Enter and Esc that are already `defaultPrevented`, so a widget with keys of its own (like the sample pack tree) can own them while it has focus.
 - **Look:** the picked item gets `data-nav-active="true"` and the same styles as hover/focus (lift and amber glow on cards, the record slides out of its sleeve, an amber edge on tracks).
 - **Sample packs** have it on today's pages too (cards and sample list). The new showcase and browser from the sample packs plan must keep it.
 

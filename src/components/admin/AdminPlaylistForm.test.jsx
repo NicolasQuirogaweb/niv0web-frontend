@@ -8,7 +8,6 @@ import { adminService } from "../../services/api";
 vi.mock("../../services/api", () => ({
   adminService: {
     playlists: { list: vi.fn(), update: vi.fn(), create: vi.fn() },
-    samplepacks: { list: vi.fn(), update: vi.fn(), create: vi.fn() },
     upload: { file: vi.fn() },
   },
 }));
@@ -27,18 +26,6 @@ const renderEdit = (path, routePath, type) =>
 describe("AdminPlaylistForm in edit mode", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("loads a sample pack from the sample packs endpoint (it used to come up empty)", async () => {
-    adminService.samplepacks.list.mockResolvedValue({
-      data: [{ _id: "sp1", title: "Drum Kit Vol. 1", description: "Kicks and snares", imageUrl: "https://x/img.png" }],
-    });
-
-    renderEdit("/admin/samplepacks/sp1/edit", "/admin/samplepacks/:id/edit", "samples");
-
-    expect(await screen.findByDisplayValue("Drum Kit Vol. 1")).toBeInTheDocument();
-    expect(adminService.samplepacks.list).toHaveBeenCalledTimes(1);
-    expect(adminService.playlists.list).not.toHaveBeenCalled();
-  });
-
   it("loads a beats catalog from the playlists endpoint", async () => {
     adminService.playlists.list.mockResolvedValue({
       data: [{ _id: "pl1", title: "Summer 2k25", description: "desc", imageUrl: "a", backgroundVideo: "b", type: "beats" }],
@@ -47,7 +34,6 @@ describe("AdminPlaylistForm in edit mode", () => {
     renderEdit("/admin/playlists/pl1/edit", "/admin/playlists/:id/edit", "beats");
 
     expect(await screen.findByDisplayValue("Summer 2k25")).toBeInTheDocument();
-    expect(adminService.samplepacks.list).not.toHaveBeenCalled();
   });
 
   it("ties labels to their inputs", async () => {

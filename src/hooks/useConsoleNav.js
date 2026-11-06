@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 // - Las flechas andan apenas se abre la página y van al item más cercano en esa dirección.
 // - Lo elegido lleva `data-nav-active="true"` (lo usa el CSS para el brillo ámbar).
 // - Enter aprieta lo elegido; Esc vuelve a `back`.
+// - Si un widget de adentro ya usó la tecla (`preventDefault`), la página no la toca.
 // - Campos de texto, sliders y atajos del navegador (Alt/Ctrl/⌘) quedan como están.
 
 const ITEM = "[data-nav-item]";
@@ -63,6 +64,8 @@ export const useConsoleNav = ({ back } = {}) => {
     const onKeyDown = (event) => {
       if (event.altKey || event.ctrlKey || event.metaKey) return;
       if (document.activeElement?.closest?.(OWN_KEYS)) return;
+      // Un widget con teclas propias (el árbol de samples) ya usó esta tecla.
+      if (event.defaultPrevented) return;
 
       const direction = DIRECTIONS[event.key];
       if (direction) {
@@ -87,7 +90,7 @@ export const useConsoleNav = ({ back } = {}) => {
         return;
       }
 
-      if (event.key === "Escape" && back && !event.defaultPrevented) {
+      if (event.key === "Escape" && back) {
         event.preventDefault();
         navigate(back);
       }

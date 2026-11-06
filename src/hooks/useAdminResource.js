@@ -11,7 +11,7 @@ import { isAbortError } from "../utils/isAbortError";
  * fetch/create/update/delete calls (bound to whatever parent id it needs)
  * and keeps its own JSX, since the form fields differ per entity.
  */
-export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, emptyForm, labelKey, batch }) => {
+export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, emptyForm, labelKey, batch, extraValidate }) => {
   const { t } = useTranslation();
   const toast = useToast();
   const confirm = useConfirm();
@@ -68,6 +68,7 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     const errs = {};
     if (!form.title.trim()) errs.title = t("admin.validation.titleRequired");
     if (!form.audioFile) errs.audioFile = t("admin.validation.audioRequired");
+    Object.assign(errs, extraValidate?.(form, t));
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -160,6 +161,7 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
   return {
     items,
     parent,
+    reload: load,
     loading,
     label,
     showForm,

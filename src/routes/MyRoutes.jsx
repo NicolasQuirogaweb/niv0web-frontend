@@ -15,7 +15,7 @@ const Login = lazyNamed(() => import("../components/Login"), "Login");
 const Beats = lazyNamed(() => import("../components/Beats"), "Beats");
 const Playlist = lazyNamed(() => import("../components/Playlist"), "Playlist");
 const SamplePacks = lazyNamed(() => import("../components/SamplePacks"), "SamplePacks");
-const Samples = lazyNamed(() => import("../components/Samples"), "Samples");
+const SamplePackPage = lazyNamed(() => import("../components/samplepacks/SamplePackPage"), "SamplePackPage");
 const About = lazyNamed(() => import("../components/About"), "About");
 const Loops = lazyNamed(() => import("../components/Loops"), "Loops");
 const ProdMixMaster = lazyNamed(() => import("../components/ProdMixMaster"), "ProdMixMaster");
@@ -26,6 +26,7 @@ const AdminPlaylists = lazyNamed(() => import("../components/admin/AdminPlaylist
 const AdminPlaylistForm = lazyNamed(() => import("../components/admin/AdminPlaylistForm"), "AdminPlaylistForm");
 const AdminBeats = lazyNamed(() => import("../components/admin/AdminBeats"), "AdminBeats");
 const AdminLoops = lazyNamed(() => import("../components/admin/AdminLoops"), "AdminLoops");
+const AdminSamplePackForm = lazyNamed(() => import("../components/admin/AdminSamplePackForm"), "AdminSamplePackForm");
 const AdminSamplePacks = lazyNamed(() => import("../components/admin/AdminSamplePacks"), "AdminSamplePacks");
 const AdminSamples = lazyNamed(() => import("../components/admin/AdminSamples"), "AdminSamples");
 const AdminUsers = lazyNamed(() => import("../components/admin/AdminUsers"), "AdminUsers");
@@ -73,13 +74,15 @@ export const MyRoutes = () => {
                 }
               />
               <Route
-                path="/samples"
+                path="/samplepacks/:slug"
                 element={
                   <PrivateRoute>
-                    <Samples />
+                    <SamplePackPage />
                   </PrivateRoute>
                 }
               />
+              {/* Rutas viejas de samples: ahora todo vive en /samplepacks. */}
+              <Route path="/samples" element={<Navigate to="/samplepacks" replace />} />
               <Route
                 path="/:resourceType/playlist/:playlistId"
                 element={
@@ -88,14 +91,7 @@ export const MyRoutes = () => {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/samples/samplepack/:samplepackId"
-                element={
-                  <PrivateRoute>
-                    <Samples />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/samples/samplepack/:samplepackId" element={<Navigate to="/samplepacks" replace />} />
               <Route
                 path="/loops"
                 element={
@@ -130,8 +126,8 @@ export const MyRoutes = () => {
                 <Route path="loops/:id/edit" element={<AdminPlaylistForm type="loops" />} />
                 <Route path="loops/:id/loops" element={<AdminLoops />} />
                 <Route path="samplepacks" element={<AdminSamplePacks />} />
-                <Route path="samplepacks/new" element={<AdminPlaylistForm type="samples" />} />
-                <Route path="samplepacks/:id/edit" element={<AdminPlaylistForm type="samples" />} />
+                <Route path="samplepacks/new" element={<AdminSamplePackForm />} />
+                <Route path="samplepacks/:id/edit" element={<AdminSamplePackForm />} />
                 <Route path="samplepacks/:id/samples" element={<AdminSamples />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>

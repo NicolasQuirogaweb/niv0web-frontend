@@ -78,8 +78,16 @@
   "samplePacks": {
     "loading": "Cargando sample packs...",
     "none": "No se encontraron sample packs.",
+    "free": "GRATIS",
+    "browserLabel": "Contenido del pack",
+    "browserIdle": "Tocá un sample para escucharlo",
+    "meta": "{{folders}} carpetas · {{samples}} samples",
     "seoTitle": "Sample Packs",
-    "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más."
+    "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más.",
+    "downloadZip": "DESCARGAR ZIP",
+    "zipPending": "ZIP en preparación",
+    "comingSoon": "Próximamente",
+    "notFound": "Este pack no existe o no está disponible."
   },
   "samples": {
     "error": "Error: ",
@@ -253,7 +261,14 @@
       "uploadCount_plural": "Subir {{count}} samples",
       "editTitle": "Editar Sample",
       "newTitle": "Nuevo Sample",
-      "sampleLabel": "Sample"
+      "sampleLabel": "Sample",
+      "folder": "Carpeta",
+      "folderRequired": "Elegí una carpeta",
+      "chooseFolder": "Elegí una carpeta…",
+      "allFolders": "Todas las carpetas",
+      "batchFolder": "Carpeta de destino",
+      "noFolders": "Creá una carpeta en el pack antes de subir samples",
+      "moveTo": "Mover a carpeta"
     },
     "samplePacks": {
       "title": "Sample Packs",
@@ -261,7 +276,61 @@
       "search": "Buscar sample packs...",
       "none": "No hay sample packs.",
       "samplesCount": "{{count}} samples",
-      "packLabel": "Sample Pack"
+      "packLabel": "Sample Pack",
+      "published": "Publicado",
+      "draft": "Borrador",
+      "free": "Gratis",
+      "form": {
+        "newTitle": "Nuevo Sample Pack",
+        "editTitle": "Editar Sample Pack",
+        "free": "Gratis",
+        "priceArs": "Precio en ARS",
+        "priceUsd": "Precio en USD (opcional)",
+        "published": "Publicado",
+        "publishedHint": "Los packs pagos se publican cuando esté la tienda",
+        "create": "Crear pack",
+        "coverOptional": "Portada (opcional)"
+      },
+      "validation": {
+        "priceArs": "Ingresá el precio en ARS (número mayor o igual a 0)",
+        "priceUsd": "El precio en USD debe ser un número mayor o igual a 0"
+      },
+      "errors": {
+        "PACK_EMPTY": "Subí al menos un sample antes de publicar",
+        "PACK_PAID_NOT_SELLABLE": "Los packs pagos se publican cuando esté la tienda",
+        "FOLDER_EXISTS": "Ya existe una carpeta con ese nombre",
+        "FOLDER_NOT_EMPTY": "La carpeta tiene samples: movelos o eliminalos primero",
+        "FOLDER_NOT_FOUND": "Carpeta no encontrada",
+        "UNKNOWN_FOLDER": "Esa carpeta no existe en este pack",
+        "ZIP_BUILDING": "Ya se está armando el ZIP de este pack"
+      },
+      "folders": {
+        "title": "Carpetas",
+        "none": "Todavía no hay carpetas",
+        "count": "{{count}} samples",
+        "add": "Agregar",
+        "newPlaceholder": "Nombre de la carpeta",
+        "rename": "Renombrar",
+        "up": "Subir",
+        "down": "Bajar",
+        "delete": "Eliminar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "added": "Carpeta creada",
+        "renamed": "Carpeta renombrada",
+        "deleted": "Carpeta eliminada"
+      },
+      "zip": {
+        "title": "ZIP del pack",
+        "none": "Todavía no hay ZIP",
+        "built": "Armado el {{date}}",
+        "download": "Descargar",
+        "stale": "Hay cambios: volvé a armar el ZIP",
+        "building": "Armando ZIP…",
+        "build": "Armar ZIP",
+        "started": "Armando el ZIP en segundo plano",
+        "failed": "Falló el armado: {{error}}"
+      }
     },
     "users": {
       "title": "Usuarios",

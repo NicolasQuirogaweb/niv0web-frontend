@@ -84,6 +84,7 @@ export const beatsService = {
 
 export const samplePacksService = {
   getAll: () => api.get("/api/resources/samplepacks"),
+  getBySlug: (slug) => api.get(`/api/resources/samplepacks/${encodeURIComponent(slug)}`),
   getSamples: (id) => api.get(`/api/resources/samples/playlist/${id}`),
 };
 
@@ -139,6 +140,11 @@ export const adminService = {
     update: (id, data) => api.put(`/api/admin/samplepacks/${id}`, data),
     delete: (id) => api.delete(`/api/admin/samplepacks/${id}`),
     duplicate: (id) => api.post(`/api/admin/samplepacks/${id}/duplicate`),
+    addFolder: (id, name) => api.post(`/api/admin/samplepacks/${id}/folders`, { name }),
+    renameFolder: (id, from, to) => api.put(`/api/admin/samplepacks/${id}/folders`, { from, to }),
+    reorderFolders: (id, folders) => api.put(`/api/admin/samplepacks/${id}/folders/order`, { folders }),
+    deleteFolder: (id, name) => api.delete(`/api/admin/samplepacks/${id}/folders/${encodeURIComponent(name)}`),
+    buildZip: (id) => api.post(`/api/admin/samplepacks/${id}/zip`),
   },
   samples: {
     list: (packId, signal) => api.get(`/api/admin/samplepacks/${packId}/samples`, { signal }),

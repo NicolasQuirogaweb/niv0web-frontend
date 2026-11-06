@@ -1,0 +1,149 @@
+/* Browser de samples estilo FL Studio: grises de FL, carpetas ámbar, samples naranja. */
+.sample-browser {
+  --sb-bg: #2d3238;
+  --sb-bg-deep: #23272c;
+  --sb-line: rgb(255 255 255 / 0.08);
+  --sb-hover: rgb(255 255 255 / 0.06);
+  --sb-folder: var(--color-accent);
+  --sb-sample: #e8833a;
+  --sb-playing-edge: var(--color-accent);
+  --sb-row-h: 28px;
+
+  width: 100%;
+  max-width: 560px;
+  background: var(--sb-bg);
+  border: 1px solid var(--sb-line);
+  border-radius: 6px;
+  overflow: hidden;
+  color: #d8dce0;
+}
+
+.sample-browser-now {
+  background: var(--sb-bg-deep);
+  padding: 10px 14px 0;
+  border-bottom: 1px solid var(--sb-line);
+}
+
+.sample-browser-now-title,
+.sample-browser-now-idle {
+  display: block;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  font-size: 1.05rem;
+  padding-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sample-browser-now-title {
+  color: var(--color-accent);
+}
+
+.sample-browser-now-idle {
+  opacity: 0.6;
+}
+
+.sample-browser-progress {
+  height: 3px;
+  background: var(--sb-line);
+}
+
+.sample-browser-progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+}
+
+.sample-browser-tree,
+.sample-browser-group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sample-browser-tree {
+  padding: 6px 0;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.sample-browser-group {
+  padding-left: 18px;
+}
+
+.sample-browser-folder,
+.sample-browser-sample {
+  outline: none;
+}
+
+.sample-browser-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--sb-row-h);
+  padding: 0 12px;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sample-browser-row:hover {
+  background: var(--sb-hover);
+}
+
+.sample-browser-folder:focus-visible > .sample-browser-row,
+.sample-browser-sample:focus-visible > .sample-browser-row {
+  background: var(--sb-hover);
+  box-shadow: inset 0 0 0 1px var(--color-accent-line);
+}
+
+.sample-browser-sample[aria-selected="true"] > .sample-browser-row {
+  border-left-color: var(--sb-playing-edge);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.sample-browser-icon {
+  flex: none;
+  width: 14px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+.sample-browser-icon-folder {
+  background: var(--sb-folder);
+}
+
+.sample-browser-icon-sample {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sb-sample);
+}
+
+.sample-browser-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sample-browser-duration {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+  font-size: 0.85em;
+}
+
+@media (max-width: 768px) {
+  .sample-browser {
+    max-width: none;
+    --sb-row-h: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sample-browser-progress-fill {
+    transition: width 0.2s linear;
+  }
+}

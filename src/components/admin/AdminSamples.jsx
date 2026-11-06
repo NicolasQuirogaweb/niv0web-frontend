@@ -1,18 +1,26 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useAdminResource } from "../../hooks/useAdminResource";
+import { useToast } from "../../hooks/useToast";
+import { packErrorText } from "./packErrors";
+import { AdminPackFolders } from "./AdminPackFolders";
+import { AdminZipPanel } from "./AdminZipPanel";
 import { AdminUploader } from "./AdminUploader";
 import { Icons } from "./icons";
 import { Spinner, SkeletonCard, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
 
-const EMPTY_FORM = { title: "", description: "", audioFile: "" };
+const EMPTY_FORM = { title: "", description: "", audioFile: "", folder: "" };
+const requireFolder = (form, t) => (form.folder ? {} : { folder: t("admin.samples.folderRequired") });
 
 export const AdminSamples = () => {
   const { id } = useParams();
   const { t } = useTranslation();
+  const toast = useToast();
+  const [batchFolder, setBatchFolder] = useState("");
+  const [folderFilter, setFolderFilter] = useState("");
 
   const fetchData = useCallback(
     (signal) =>
@@ -28,6 +36,7 @@ export const AdminSamples = () => {
   const {
     items: samples,
     parent: pack,
+    reload,
     loading,
     showForm,
     setShowForm,
@@ -55,6 +64,7 @@ export const AdminSamples = () => {
   } = useAdminResource({
     emptyForm: EMPTY_FORM,
     labelKey: "admin.samples.sampleLabel",
+    extraValidate: requireFolder,
     fetchData,
     createFn: (form) => adminService.samples.create(id, form),
     updateFn: (sampleId, form) => adminService.samples.update(sampleId, form),
@@ -65,10 +75,45 @@ export const AdminSamples = () => {
         title: item.originalName.replace(/\.[^/.]+$/, ""),
         description: "",
         audioFile: item.url,
+        folder: batchFolder,
       }),
       batchFn: (samplesData) => adminService.samples.batch(id, samplesData),
     },
   });
+
+  const folders = useMemo(() => pack?.folders || [], [pack]);
+  const onlyFolder = folders.length === 1 ? folders[0] : "";
+
+  // Una carpeta renombrada o borrada deja de valer: se limpia y, si queda una sola, se preselecciona.
+  useEffect(() => {
+    const valid = (v) => (folders.includes(v) ? v : onlyFolder);
+    setForm((f) => (valid(f.folder) === f.folder ? f : { ...f, folder: valid(f.folder) }));
+    setBatchFolder((v) => valid(v));
+    setFolderFilter((v) => (folders.includes(v) ? v : ""));
+  }, [folders, onlyFolder, showForm, batchMode, setForm]);
+
+  const samplesByFolder = useMemo(() => {
+    const map = {};
+    samples.forEach((s) => { (map[s.folder] ||= []).push(s); });
+    return map;
+  }, [samples]);
+
+  // Guarda antes de subir a B2: una carpeta que ya no existe dejaría archivos huérfanos.
+  const uploadBatch = () => {
+    if (!folders.includes(batchFolder)) return;
+    handleBatchUpload();
+  };
+
+  const visibleSamples = folderFilter ? samples.filter((s) => s.folder === folderFilter) : samples;
+
+  const moveSample = async (sample, folder) => {
+    try {
+      await adminService.samples.update(sample._id, { folder });
+      reload();
+    } catch (err) {
+      toast.error(packErrorText(t, err, "admin.toast.errorSaving"));
+    }
+  };
 
   return (
     <div>
@@ -80,7 +125,10 @@ export const AdminSamples = () => {
         <h2 className={styles.pageTitleTop}>{pack?.title || t("admin.samples.title")}</h2>
       </div>
 
-      <div className={styles.actionRow}>
+      {pack && <AdminPackFolders pack={pack} samplesByFolder={samplesByFolder} onChange={reload} />}
+      {pack && <AdminZipPanel pack={pack} onRefresh={reload} />}
+
+      <div className={styles.actionRow} style={{ marginTop: 16 }}>
         <button onClick={() => { resetForm(); setShowForm(true); }} className={styles.btnPrimary}>
           <Icons.Add size={16} /> {t("admin.samples.new")}
         </button>
@@ -100,6 +148,15 @@ export const AdminSamples = () => {
             {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
           </div>
           <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
+          <div className={styles.mt16}>
+            <label htmlFor="sample-folder" className={styles.labelPlain}>{t("admin.samples.folder")}</label>
+            <select id="sample-folder" value={form.folder} onChange={(e) => { setForm({ ...form, folder: e.target.value }); setErrors({ ...errors, folder: "" }); }}
+              className={`${styles.input} ${errors.folder ? styles.inputError : ""}`}>
+              <option value="">{t("admin.samples.chooseFolder")}</option>
+              {folders.map((f) => <option key={f} value={f}>{f}</option>)}
+            </select>
+            {errors.folder && <p className={styles.fieldError}>{errors.folder}</p>}
+          </div>
           <div className={styles.mt16}>
             <label className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
             {form.audioFile ? (
@@ -127,6 +184,12 @@ export const AdminSamples = () => {
             <Icons.Upload size={16} className={styles.batchTitleIcon} /> {t("admin.samples.batchTitle")}
           </h3>
           <p className={styles.batchHint}>{t("admin.samples.batchHint")}</p>
+          <label htmlFor="batch-folder" className={styles.labelPlain}>{t("admin.samples.batchFolder")}</label>
+          <select id="batch-folder" value={batchFolder} onChange={(e) => setBatchFolder(e.target.value)} className={styles.input} style={{ maxWidth: 320, marginBottom: 12 }}>
+            <option value="">{t("admin.samples.chooseFolder")}</option>
+            {folders.map((f) => <option key={f} value={f}>{f}</option>)}
+          </select>
+          {folders.length === 0 && <p className={styles.fieldErrorBlock}>{t("admin.samples.noFolders")}</p>}
           <div onDrop={handleDrop} onDragOver={handleDragOver}
             onClick={() => document.getElementById("batch-input-samples")?.click()}
             className={styles.batchDrop}>
@@ -154,7 +217,7 @@ export const AdminSamples = () => {
                 ))}
               </div>
               <div className={styles.formActions}>
-                <button onClick={handleBatchUpload} className={styles.btnPrimary}>
+                <button onClick={uploadBatch} disabled={!folders.includes(batchFolder)} className={styles.btnPrimary}>
                   <Icons.Upload size={16} /> {t("admin.samples.uploadCount", { count: batchFiles.length })}
                 </button>
                 <button onClick={cancelBatch} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
@@ -164,17 +227,30 @@ export const AdminSamples = () => {
         </div>
       )}
 
+      {folders.length > 0 && (
+        <select aria-label={t("admin.samples.allFolders")} value={folderFilter} onChange={(e) => setFolderFilter(e.target.value)}
+          className={styles.input} style={{ maxWidth: 260, marginTop: 16 }}>
+          <option value="">{t("admin.samples.allFolders")}</option>
+          {folders.map((f) => <option key={f} value={f}>{f}</option>)}
+        </select>
+      )}
+
       <div className={styles.gridItems + " " + styles.mt16}>
         {loading ? (
           <><SkeletonCard /><SkeletonCard /></>
-        ) : samples.length === 0 ? (
+        ) : visibleSamples.length === 0 ? (
           <p className={styles.emptyText}>{t("admin.samples.none")}</p>
-        ) : samples.map((sample) => (
+        ) : visibleSamples.map((sample) => (
           <div key={sample._id} className={styles.itemCard}>
             <div className={styles.itemContent}>
               <p className={styles.itemTitle}>{sample.title}</p>
               <p className={styles.itemDesc}>{sample.description || t("admin.common.noDescription")}</p>
             </div>
+            <select aria-label={`${t("admin.samples.moveTo")}: ${sample.title}`} value={folders.includes(sample.folder) ? sample.folder : ""}
+              onChange={(e) => moveSample(sample, e.target.value)} className={styles.input} style={{ maxWidth: 160 }}>
+              {!folders.includes(sample.folder) && <option value="">{t("admin.samples.chooseFolder")}</option>}
+              {folders.map((f) => <option key={f} value={f}>{f}</option>)}
+            </select>
             <button onClick={() => handleEdit(sample)} className={styles.btnSmall}><Icons.Edit size={13} /> {t("admin.common.edit")}</button>
             <button onClick={() => handleDelete(sample._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
           </div>
