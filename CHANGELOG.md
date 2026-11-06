@@ -12,12 +12,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - The NIVØ page as a documentary: background video with the name huge, the quote in big letters, the story in two columns that fades in, an announcement for the album Sentimientos restringidos (fills in with date, countdown, cover and pre-save as they exist) and the records in a crate that drop on a turntable. Picking a record starts it on Spotify. ADR 0009.
 - Every section moves with the keyboard like the home menu: the arrows pick catalogs, licenses, tracks and records (to the nearest one in that direction), Enter opens or plays, Esc goes back. ADR 0008.
 - FL Studio-style sample browser component: folders and samples as a keyboard-navigable tree (arrows, Home/End, Enter/Space) with a now-playing bar, no download control. Used by the sample pack page.
+- Sample pack browser redesigned as an "FL PRO" window: title bar with lights and folders · samples · ZIP size, a screen with the path (pack / folder / sample), the selected name big, its sample count or duration and format, and a waveform per sample that fills amber while it plays; a search box (accent and case insensitive, Esc clears it without leaving the page); folder rows with chevron, folder icon and count, numbered sample rows with hover mini-waveform, zebra stripes and an EQ on the one playing; keyboard hints in the footer. ADR 0007.
+- Optional English description for sample packs ("Descripción (inglés)" in the admin form, sent as `descriptionEn`); the pack page and its SEO description use it in English and fall back to the Spanish one.
 
 ### Changed
 - Both homes show the sections as a console-style menu: amber orb with pulsing sound bars that breathes, selectable bars with cut corners in a 3D perspective where the selected one comes forward with a light sweep, a ring of small bars and a turning scale around the orb, lines from the orb to each section with a spark and a flash when the selection changes, keyboard arrows and Enter from the moment the page opens, reduced-motion aware, stacked on phones. ADR 0005.
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Sample pack browser: picking a folder (click or keyboard) now updates the screen, not only samples. Durations read "2.4 s" under 10 seconds and "0:23" from there, instead of "0:02" for every one-shot.
+- Sample pack page: the "niv0 beats" header looks the same as on the showcase instead of a raw link, and the cover, info and browser are centered in one 800px column.
+- Admin batch upload of samples says "Subir 5 samples" (the plural used the `_plural` suffix that i18next no longer reads).
+- Sample packs texts reviewed in both languages: voseo in Spanish ("Descargá", "Arrastrá", "Podés", "Buscá"), new SEO description, "Pick a sample to hear it" and other English fixes.
 - The sample pack page drew underneath the fixed page background, so the browser, the names and the ZIP button were hidden. It now sits above it, with left-aligned text, the Bebas ZIP button and a stacked header on phones.
 - Sample packs: a pack without a cover is saved with `imageUrl: null`; the ZIP panel explains an interrupted build when the failure has no message; "1 carpeta · 1 sample" (and "1 folder") read singular; the unused `getSamples` call to the removed `/api/resources/samples/playlist/:id` route and the `card.items_samples` strings are gone.
 - On the About page the "niv0 beats" logo takes a logged-in visitor to the logged-in home instead of the public one.
