@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 ## [Unreleased]
 
 ### Added
+- Admin for sample packs: form with free or ARS/USD price and published switch, folders panel (add, rename, reorder, delete), required folder on every sample (single and batch) with move and filter by folder, and a ZIP panel to build the pack ZIP with stale and failure notices. Paid packs stay unpublished until the store exists. ADR 0007.
 - Sample pack page at `/samplepacks/:slug`: cover, description, ZIP download (disabled with a notice when the pack has no ZIP yet or is paid) and the folder browser. `/samples` and `/samples/samplepack/:id` redirect to `/samplepacks`.
 - Sample packs showcase uses the catalog console with a GRATIS or price tag, folders and samples count, and a generated cover on the record when a pack has no image.
 - Beats and Loops show their catalogs like the home menu: a spinning record with the selected catalog on the label, the ring and scale around it, and the catalogs as 3D bars. ADR 0010.

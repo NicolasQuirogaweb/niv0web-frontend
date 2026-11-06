@@ -51,7 +51,7 @@ The app needs the [API](https://github.com/NicolasQuirogaweb/niv0web-backend) ru
 | `/:type/playlist/:id` | logged in | A catalog played like an album: play-all button, auto-advance, download (`type` = `beats` or `loops`) |
 | `/samplepacks`, `/samplepacks/:slug` | logged in | Sample packs and pack page |
 | `/prodmixmaster` | logged in | Production and mixing services |
-| `/admin/*` | admin | Dashboard, beat and loop catalogs, sample packs, users |
+| `/admin/*` | admin | Dashboard, beat and loop catalogs, users, and sample packs (`/admin/samplepacks`: list with published and price badges, `/new` and `/:id/edit` form, `/:id/samples` for folders, samples and the ZIP build) |
 
 `PrivateRoute` and `AdminRoute` only hide pages in the UI. The real permission checks happen in the API.
 
