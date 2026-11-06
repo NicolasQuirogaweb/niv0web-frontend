@@ -9,6 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - Beats and Loops show their catalogs like the home menu: a spinning record with the selected catalog on the label, the ring and scale around it, and the catalogs as 3D bars. ADR 0010.
 - The NIVØ page as a documentary: background video with the name huge, the quote in big letters, the story in two columns that fades in, an announcement for the album Sentimientos restringidos (fills in with date, countdown, cover and pre-save as they exist) and the records in a crate that drop on a turntable. Picking a record starts it on Spotify. ADR 0009.
 - Every section moves with the keyboard like the home menu: the arrows pick catalogs, licenses, tracks and records (to the nearest one in that direction), Enter opens or plays, Esc goes back. ADR 0008.
+- FL Studio-style sample browser component: folders and samples as a keyboard-navigable tree (arrows, Home/End, Enter/Space) with a now-playing bar, no download control. Not wired into a page yet.
 
 ### Changed
 - Both homes show the sections as a console-style menu: amber orb with pulsing sound bars that breathes, selectable bars with cut corners in a 3D perspective where the selected one comes forward with a light sweep, a ring of small bars and a turning scale around the orb, lines from the orb to each section with a spark and a flash when the selection changes, keyboard arrows and Enter from the moment the page opens, reduced-motion aware, stacked on phones. ADR 0005.

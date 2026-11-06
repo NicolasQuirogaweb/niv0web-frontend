@@ -79,6 +79,8 @@
     "loading": "Cargando sample packs...",
     "none": "No se encontraron sample packs.",
     "free": "GRATIS",
+    "browserLabel": "Contenido del pack",
+    "browserIdle": "Tocá un sample para escucharlo",
     "meta": "{{folders}} carpetas · {{samples}} samples",
     "seoTitle": "Sample Packs",
     "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más."

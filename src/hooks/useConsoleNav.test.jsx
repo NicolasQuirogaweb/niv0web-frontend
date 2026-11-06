@@ -123,6 +123,16 @@ describe("useConsoleNav", () => {
     expect(screen.queryByText("home page")).not.toBeInTheDocument();
   });
 
+  it("arrows and Enter leave the page alone when a widget already used the key", () => {
+    renderGrid();
+    const own = (e) => e.preventDefault();
+    document.addEventListener("keydown", own);
+    key("ArrowDown");
+    key("Enter");
+    document.removeEventListener("keydown", own);
+    expect(activeText()).toBeUndefined();
+  });
+
   it("leaves the keys to text fields and sliders", () => {
     renderGrid();
     screen.getByLabelText("search").focus();
