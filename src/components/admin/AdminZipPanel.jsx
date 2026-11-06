@@ -50,7 +50,7 @@ export const AdminZipPanel = ({ pack, onRefresh }) => {
       )}
       {zip.url && zip.stale && <p className={styles.fieldErrorBlock}>{t("admin.samplePacks.zip.stale")}</p>}
       {building && <p>{t("admin.samplePacks.zip.building")}</p>}
-      {status === "failed" && <p className={styles.fieldErrorBlock}>{t("admin.samplePacks.zip.failed", { error: zip.build?.error || "" })}</p>}
+      {status === "failed" && <p className={styles.fieldErrorBlock}>{zip.build?.error ? t("admin.samplePacks.zip.failed", { error: zip.build.error }) : t("admin.samplePacks.zip.interrupted")}</p>}
       <div className={styles.formActions}>
         <button type="button" onClick={handleBuild} disabled={building || starting} className={styles.btnPrimary}>
           {t("admin.samplePacks.zip.build")}

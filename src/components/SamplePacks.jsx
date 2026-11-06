@@ -42,7 +42,10 @@ export const SamplePacks = () => {
             items={packs}
             resourceType="samplepacks"
             getHref={(pack) => `/samplepacks/${pack.slug}`}
-            getMeta={(pack) => t("samplePacks.meta", { folders: pack.folderCount, samples: pack.itemsCount })}
+            getMeta={(pack) => t("samplePacks.meta", {
+              folders: t("samplePacks.folderCount", { count: pack.folderCount }),
+              samples: t("samplePacks.sampleCount", { count: pack.itemsCount }),
+            })}
             getBadge={(pack) => (pack.isFree ? t("samplePacks.free") : formatPackPrice(pack, lang))}
             renderLabelFallback={(pack) => <PackCover title={pack.title} imageUrl={null} />}
           />

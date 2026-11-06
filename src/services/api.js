@@ -85,7 +85,6 @@ export const beatsService = {
 export const samplePacksService = {
   getAll: () => api.get("/api/resources/samplepacks"),
   getBySlug: (slug) => api.get(`/api/resources/samplepacks/${encodeURIComponent(slug)}`),
-  getSamples: (id) => api.get(`/api/resources/samples/playlist/${id}`),
 };
 
 export const loopsService = {

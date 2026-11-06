@@ -74,7 +74,8 @@ export const AdminSamplePackForm = () => {
     const data = {
       title: form.title,
       description: form.description,
-      imageUrl: form.imageUrl,
+      // Sin portada se manda null (el backend lo guarda asi y permite quitarla).
+      imageUrl: form.imageUrl || null,
       priceArs: form.free ? null : Number(form.priceArs),
       priceUsd: form.free || form.priceUsd === "" ? null : Number(form.priceUsd),
     };

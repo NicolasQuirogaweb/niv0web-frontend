@@ -1,5 +1,5 @@
 import { render, screen, act, fireEvent } from "@testing-library/react";
-import "../../i18n/config";
+import i18n from "../../i18n/config";
 import { AdminZipPanel } from "./AdminZipPanel";
 import { ToastProvider } from "../../hooks/useToast";
 import { adminService } from "../../services/api";
@@ -48,6 +48,15 @@ describe("AdminZipPanel", () => {
   it("shows the build error when it failed", () => {
     renderPanel({ ...ready, build: { status: "failed", error: "B2 timeout" } });
     expect(screen.getByText(/B2 timeout/)).toBeInTheDocument();
+  });
+
+  it("shows a fallback text when the build failed without an error message", () => {
+    renderPanel({ ...ready, build: { status: "failed", error: null } });
+    expect(screen.getByText("El armado se interrumpió. Volvé a intentar.")).toBeInTheDocument();
+  });
+
+  it("has the English fallback text for an interrupted build", () => {
+    expect(i18n.t("admin.samplePacks.zip.interrupted", { lng: "en" })).toBe("The build was interrupted. Try again.");
   });
 
   it("shows building and disables the button", () => {

@@ -22,7 +22,7 @@ The home menu moves with the arrows and opens with Enter, like a console (ADR 00
   - Left alone: text fields, the seek bar (`role="slider"`), and anything with Alt, Ctrl or ⌘ (Alt + ← is the browser's back).
 - **Nested widgets:** `useConsoleNav` ignores arrows, Enter and Esc that are already `defaultPrevented`, so a widget with keys of its own (like the sample pack tree) can own them while it has focus.
 - **Look:** the picked item gets `data-nav-active="true"` and the same styles as hover/focus (lift and amber glow on cards, the record slides out of its sleeve, an amber edge on tracks).
-- **Sample packs** have it on today's pages too (cards and sample list). The new showcase and browser from the sample packs plan must keep it.
+- **Sample packs** have it on the showcase (catalog console) and on the pack page, where the folder tree owns the arrows while it has focus (see Nested widgets) and Esc goes back to the packs.
 
 ## Consequences
 
