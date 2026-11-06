@@ -1,82 +1,94 @@
-/* Encima del fondo fijo (PageBackground tiene z-index 0, ADR 0004). */
-.pack-page {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
+/* El encabezado, el fondo y el botón de volver vienen de SamplePacks.css (.samplepacks-section),
+   igual que en la vitrina. Acá solo va el contenido del pack, centrado y al ancho del browser. */
+.pack-page-main {
+  flex: 1;
+  width: 100%;
+  max-width: 832px; /* 800px de browser + el margen */
   margin: 0 auto;
-  padding: 16px;
+  padding: 28px 16px 0;
 }
 
 .pack-page-head {
   display: flex;
-  gap: 24px;
+  gap: 28px;
   align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .pack-page-cover {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 172px;
+  height: 172px;
   border-radius: 50%;
   overflow: hidden;
   flex: none;
+  box-shadow: var(--shadow-card), 0 0 0 1px rgb(var(--color-accent-rgb) / 0.25), var(--glow-accent);
 }
 
 .pack-page-info {
-  flex: 1 1 260px;
+  flex: 1;
   min-width: 0;
   text-align: left;
 }
 
 .pack-page-title {
-  font: 400 clamp(28px, 5vw, 44px) / 1 var(--font-display);
+  font: 400 clamp(36px, 6vw, 60px) / 0.95 var(--font-display);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-accent);
-  margin: 0 0 8px;
+  margin: 0 0 10px;
 }
 
+/* Las reglas globales centran los párrafos; acá van alineados a la izquierda. */
 .pack-page-description {
-  margin: 0 0 16px;
-  opacity: 0.85;
+  max-width: 52ch;
+  margin: 0 0 18px;
+  text-align: left;
+  color: var(--color-text-muted);
+  line-height: 1.5;
 }
 
 .pack-zip-btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 11px 22px 9px;
   border: 0;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: var(--color-accent);
   color: var(--color-on-accent);
   font: 400 20px / 1 var(--font-display);
-  letter-spacing: 2px;
+  letter-spacing: 0.1em;
   text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgb(var(--color-accent-rgb) / 0.25);
 }
 
 .pack-zip-btn:hover:not(:disabled),
-.pack-zip-btn:focus-visible {
+.pack-zip-btn:focus-visible,
+.pack-zip-btn[data-nav-active="true"] {
   background: var(--color-accent-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgb(var(--color-accent-rgb) / 0.4);
+  outline: none;
 }
 
 .pack-zip-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Las reglas globales centran los textos; acá van alineados a la izquierda. */
-.pack-page-description,
-.pack-page .sample-browser {
-  text-align: left;
-}
-
-.pack-page .back-button {
-  margin-top: 28px;
+@media (prefers-reduced-motion: no-preference) {
+  .pack-zip-btn {
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast), background-color var(--dur-fast);
+  }
 }
 
 /* Celular: portada arriba y más chica, el resto debajo a lo ancho. */
 @media (max-width: 600px) {
+  .pack-page-main {
+    padding: 16px 12px 0;
+  }
+
   .pack-page-head {
     flex-direction: column;
     align-items: flex-start;
@@ -89,7 +101,6 @@
   }
 
   .pack-page-info {
-    flex: none;
     width: 100%;
   }
 }

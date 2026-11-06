@@ -12,7 +12,11 @@ import { PAGE_BACKGROUNDS } from "../../content/backgrounds";
 import { formatBytes, formatPackPrice } from "../../utils/formatPrice";
 import { PackCover } from "./PackCover";
 import { SampleBrowser, flattenFolders } from "./SampleBrowser";
+import "../SamplePacks.css";
 import "./SamplePackPage.css";
+
+// La descripción en inglés es opcional: si falta, se muestra la de español.
+const packDescription = (pack, lang) => (lang === "en" && pack?.descriptionEn) || pack?.description || "";
 
 const ZipControl = ({ pack, lang }) => {
   const { t } = useTranslation();
@@ -57,40 +61,44 @@ export const SamplePackPage = () => {
   });
 
   const notFound = error?.response?.status === 404;
+  const description = packDescription(pack, lang);
 
   return (
     <>
-      <SEO title={pack?.title || t("samplePacks.seoTitle")} description={pack?.description || t("samplePacks.seoDesc")} />
+      <SEO title={pack?.title || t("samplePacks.seoTitle")} description={description || t("samplePacks.seoDesc")} />
       <PageBackground media={PAGE_BACKGROUNDS.samplePacks} />
-      <div className="pack-page">
-        <PageHeader className="samplepacks-info" titleAs="h2" />
-        {loading ? (
-          <p>{t("samplePacks.loading")}</p>
-        ) : notFound ? (
-          <p role="alert">{t("samplePacks.notFound")}</p>
-        ) : error ? (
-          <p role="alert">{t("samples.error")}{error.message || t("samples.errorFallback")}</p>
-        ) : pack ? (
-          <div className="pack-page-content">
-            <div className="pack-page-head">
-              <div className="pack-page-cover">
-                <PackCover title={pack.title} imageUrl={pack.imageUrl} />
+      {/* Mismo encabezado y botón de volver que la vitrina (SamplePacks.css). */}
+      <section className="samplepacks-section pack-page">
+        <PageHeader className="samplepacks-info" />
+        <div className="pack-page-main">
+          {loading ? (
+            <p>{t("samplePacks.loading")}</p>
+          ) : notFound ? (
+            <p role="alert">{t("samplePacks.notFound")}</p>
+          ) : error ? (
+            <p role="alert">{t("samples.error")}{error.message || t("samples.errorFallback")}</p>
+          ) : pack ? (
+            <div className="pack-page-content">
+              <div className="pack-page-head">
+                <div className="pack-page-cover">
+                  <PackCover title={pack.title} imageUrl={pack.imageUrl} />
+                </div>
+                <div className="pack-page-info">
+                  <h1 className="pack-page-title">{pack.title}</h1>
+                  {description && <p className="pack-page-description">{description}</p>}
+                  <ZipControl pack={pack} lang={lang} />
+                </div>
               </div>
-              <div className="pack-page-info">
-                <h1 className="pack-page-title">{pack.title}</h1>
-                {pack.description && <p className="pack-page-description">{pack.description}</p>}
-                <ZipControl pack={pack} lang={lang} />
-              </div>
+              <SampleBrowser folders={folders} player={player} packTitle={pack.title} zipBytes={pack.zip?.bytes ?? null} />
             </div>
-            <SampleBrowser folders={folders} player={player} />
-          </div>
-        ) : null}
-        <div className="back-button">
+          ) : null}
+        </div>
+        <div className="back-to-catalogue">
           <Link to="/samplepacks" className="back-to-catalogue-btn">
             {t("nav.backToPacksShort")}
           </Link>
         </div>
-      </div>
+      </section>
     </>
   );
 };

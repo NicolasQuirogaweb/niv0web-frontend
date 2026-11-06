@@ -8,7 +8,7 @@ import { isAbortError } from "../../utils/isAbortError";
 import { packErrorText } from "./packErrors";
 import styles from "./admin.module.css";
 
-const EMPTY = { title: "", description: "", imageUrl: "", free: true, priceArs: "", priceUsd: "", published: false };
+const EMPTY = { title: "", description: "", descriptionEn: "", imageUrl: "", free: true, priceArs: "", priceUsd: "", published: false };
 
 const isPrice = (v) => v !== "" && Number.isFinite(Number(v)) && Number(v) >= 0;
 
@@ -33,6 +33,7 @@ export const AdminSamplePackForm = () => {
         setForm({
           title: item.title,
           description: item.description,
+          descriptionEn: item.descriptionEn || "",
           imageUrl: item.imageUrl || "",
           free: item.priceArs == null,
           priceArs: item.priceArs ?? "",
@@ -59,6 +60,7 @@ export const AdminSamplePackForm = () => {
     else if (form.title.length > 100) errs.title = t("admin.validation.max100");
     if (!form.description.trim()) errs.description = t("admin.validation.descriptionRequired");
     else if (form.description.length > 300) errs.description = t("admin.validation.max300");
+    if (form.descriptionEn.length > 300) errs.descriptionEn = t("admin.validation.max300");
     if (!form.free) {
       if (!isPrice(form.priceArs)) errs.priceArs = t("admin.samplePacks.validation.priceArs");
       if (form.priceUsd !== "" && !isPrice(form.priceUsd)) errs.priceUsd = t("admin.samplePacks.validation.priceUsd");
@@ -74,6 +76,8 @@ export const AdminSamplePackForm = () => {
     const data = {
       title: form.title,
       description: form.description,
+      // Opcional: vacía, la página muestra la descripción en español también en inglés.
+      descriptionEn: form.descriptionEn.trim(),
       // Sin portada se manda null (el backend lo guarda asi y permite quitarla).
       imageUrl: form.imageUrl || null,
       priceArs: form.free ? null : Number(form.priceArs),
@@ -113,6 +117,14 @@ export const AdminSamplePackForm = () => {
           <textarea id="pack-description" name="description" value={form.description} onChange={handleChange}
             className={`${styles.textareaLg} ${errors.description ? styles.inputError : ""}`} />
           {errors.description && <p className={styles.fieldError}>{errors.description}</p>}
+        </div>
+        <div>
+          <label htmlFor="pack-description-en" className={styles.label}>{t("admin.samplePacks.form.descriptionEn")}</label>
+          <textarea id="pack-description-en" name="descriptionEn" value={form.descriptionEn} onChange={handleChange}
+            aria-describedby="pack-description-en-hint"
+            className={`${styles.textareaLg} ${errors.descriptionEn ? styles.inputError : ""}`} />
+          <p id="pack-description-en-hint" className={styles.itemMeta}>{t("admin.samplePacks.form.descriptionEnHint")}</p>
+          {errors.descriptionEn && <p className={styles.fieldError}>{errors.descriptionEn}</p>}
         </div>
         <div>
           <label className={styles.label}>{t("admin.samplePacks.form.coverOptional")}</label>

@@ -75,6 +75,38 @@ describe("AdminSamplePackForm", () => {
     expect(adminService.samplepacks.update.mock.calls[0][1].imageUrl).toBe("https://b2/cover.jpg");
   });
 
+  it("loads and sends the English description", async () => {
+    adminService.samplepacks.list.mockResolvedValue({ data: [{ ...pack, descriptionEn: "Drums, in English" }] });
+    adminService.samplepacks.update.mockResolvedValue({ data: pack });
+    renderEdit();
+    const field = await screen.findByLabelText("Descripción (inglés)");
+    expect(field).toHaveValue("Drums, in English");
+    await userEvent.clear(field);
+    await userEvent.type(field, "Free drums");
+    await userEvent.click(screen.getByRole("button", { name: /actualizar/i }));
+    await waitFor(() => expect(adminService.samplepacks.update).toHaveBeenCalled());
+    expect(adminService.samplepacks.update.mock.calls[0][1].descriptionEn).toBe("Free drums");
+  });
+
+  it("sends an empty English description when there is none", async () => {
+    adminService.samplepacks.update.mockResolvedValue({ data: pack });
+    renderEdit();
+    await screen.findByDisplayValue("Mastermind");
+    await userEvent.click(screen.getByRole("button", { name: /actualizar/i }));
+    await waitFor(() => expect(adminService.samplepacks.update).toHaveBeenCalled());
+    expect(adminService.samplepacks.update.mock.calls[0][1].descriptionEn).toBe("");
+  });
+
+  it("limits the English description to 300 characters", async () => {
+    renderEdit();
+    const field = await screen.findByLabelText("Descripción (inglés)");
+    await userEvent.click(field);
+    await userEvent.paste("x".repeat(301));
+    await userEvent.click(screen.getByRole("button", { name: /actualizar/i }));
+    expect(await screen.findByText("Máximo 300 caracteres")).toBeInTheDocument();
+    expect(adminService.samplepacks.update).not.toHaveBeenCalled();
+  });
+
   it("shows the Spanish message for PACK_PAID_NOT_SELLABLE", async () => {
     adminService.samplepacks.update.mockRejectedValue({
       response: { status: 409, data: { code: "PACK_PAID_NOT_SELLABLE", message: "x" } },
