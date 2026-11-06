@@ -1,4 +1,7 @@
+/* Encima del fondo fijo (PageBackground tiene z-index 0, ADR 0004). */
 .pack-page {
+  position: relative;
+  z-index: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 16px;
@@ -24,11 +27,13 @@
 .pack-page-info {
   flex: 1 1 260px;
   min-width: 0;
+  text-align: left;
 }
 
 .pack-page-title {
   font: 400 clamp(28px, 5vw, 44px) / 1 var(--font-display);
   text-transform: uppercase;
+  color: var(--color-accent);
   margin: 0 0 8px;
 }
 
@@ -44,9 +49,8 @@
   border-radius: 4px;
   background: var(--color-accent);
   color: var(--color-on-accent);
-  font: inherit;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font: 400 20px / 1 var(--font-display);
+  letter-spacing: 2px;
   text-decoration: none;
   cursor: pointer;
 }
@@ -59,4 +63,33 @@
 .pack-zip-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Las reglas globales centran los textos; acá van alineados a la izquierda. */
+.pack-page-description,
+.pack-page .sample-browser {
+  text-align: left;
+}
+
+.pack-page .back-button {
+  margin-top: 28px;
+}
+
+/* Celular: portada arriba y más chica, el resto debajo a lo ancho. */
+@media (max-width: 600px) {
+  .pack-page-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .pack-page-cover {
+    width: 120px;
+    height: 120px;
+  }
+
+  .pack-page-info {
+    flex: none;
+    width: 100%;
+  }
 }
