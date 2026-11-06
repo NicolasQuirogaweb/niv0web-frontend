@@ -74,6 +74,32 @@ describe("SamplePackPage", () => {
     expect(screen.getByText(/5\.000/)).toBeInTheDocument();
   });
 
+  it("shows the English description in English and falls back to the Spanish one", async () => {
+    await i18n.changeLanguage("en");
+    samplePacksService.getBySlug.mockResolvedValue({ data: pack({ descriptionEn: "A pack" }) });
+    const { unmount } = renderPage();
+    expect(await screen.findByText("A pack")).toBeInTheDocument();
+    expect(screen.queryByText("Un pack")).toBeNull();
+    unmount();
+
+    samplePacksService.getBySlug.mockResolvedValue({ data: pack({ descriptionEn: null }) });
+    renderPage();
+    expect(await screen.findByText("Un pack")).toBeInTheDocument();
+  });
+
+  it("keeps the Spanish description in Spanish", async () => {
+    samplePacksService.getBySlug.mockResolvedValue({ data: pack({ descriptionEn: "A pack" }) });
+    renderPage();
+    expect(await screen.findByText("Un pack")).toBeInTheDocument();
+    expect(screen.queryByText("A pack")).toBeNull();
+  });
+
+  it("passes the pack title and ZIP size to the browser", async () => {
+    samplePacksService.getBySlug.mockResolvedValue({ data: pack() });
+    renderPage();
+    expect(await screen.findByText("1 carpeta · 1 sample · ZIP 143 MB")).toBeInTheDocument();
+  });
+
   it("404 shows the not-found text and the back link", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     samplePacksService.getBySlug.mockRejectedValue({ response: { status: 404 } });
