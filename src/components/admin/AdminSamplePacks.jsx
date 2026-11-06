@@ -7,10 +7,11 @@ import { useConfirm } from "../../hooks/useConfirm";
 import { Icons } from "./icons";
 import { SkeletonCard, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
+import { formatPackPrice } from "../../utils/formatPrice";
 import { isAbortError } from "../../utils/isAbortError";
 
 export const AdminSamplePacks = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -95,6 +96,10 @@ export const AdminSamplePacks = () => {
                 <p className={styles.itemTitle}>{sp.title}</p>
                 <p className={styles.itemDesc}>{sp.description}</p>
                 <p className={styles.itemMeta}>{t("admin.samplePacks.samplesCount", { count: sp.itemsCount ?? 0 })}</p>
+                <p className={styles.itemMeta}>
+                  <span className={styles.badge}>{sp.published ? t("admin.samplePacks.published") : t("admin.samplePacks.draft")}</span>{" "}
+                  <span className={styles.badge}>{sp.priceArs == null ? t("admin.samplePacks.free") : formatPackPrice(sp, i18n.language)}</span>
+                </p>
               </div>
               <div className={styles.itemActions}>
                 <Link to={`/admin/samplepacks/${sp._id}/samples`} className={styles.btnSmall}><Icons.MusicNote size={13} /> {t("admin.common.view")}</Link>

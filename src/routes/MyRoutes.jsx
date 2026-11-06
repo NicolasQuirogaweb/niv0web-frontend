@@ -26,6 +26,7 @@ const AdminPlaylists = lazyNamed(() => import("../components/admin/AdminPlaylist
 const AdminPlaylistForm = lazyNamed(() => import("../components/admin/AdminPlaylistForm"), "AdminPlaylistForm");
 const AdminBeats = lazyNamed(() => import("../components/admin/AdminBeats"), "AdminBeats");
 const AdminLoops = lazyNamed(() => import("../components/admin/AdminLoops"), "AdminLoops");
+const AdminSamplePackForm = lazyNamed(() => import("../components/admin/AdminSamplePackForm"), "AdminSamplePackForm");
 const AdminSamplePacks = lazyNamed(() => import("../components/admin/AdminSamplePacks"), "AdminSamplePacks");
 const AdminSamples = lazyNamed(() => import("../components/admin/AdminSamples"), "AdminSamples");
 const AdminUsers = lazyNamed(() => import("../components/admin/AdminUsers"), "AdminUsers");
@@ -125,8 +126,8 @@ export const MyRoutes = () => {
                 <Route path="loops/:id/edit" element={<AdminPlaylistForm type="loops" />} />
                 <Route path="loops/:id/loops" element={<AdminLoops />} />
                 <Route path="samplepacks" element={<AdminSamplePacks />} />
-                <Route path="samplepacks/new" element={<AdminPlaylistForm type="samples" />} />
-                <Route path="samplepacks/:id/edit" element={<AdminPlaylistForm type="samples" />} />
+                <Route path="samplepacks/new" element={<AdminSamplePackForm />} />
+                <Route path="samplepacks/:id/edit" element={<AdminSamplePackForm />} />
                 <Route path="samplepacks/:id/samples" element={<AdminSamples />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>

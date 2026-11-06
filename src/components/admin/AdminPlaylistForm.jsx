@@ -21,16 +21,13 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const isSamplePack = type === "samples";
-  const redirectBase = isSamplePack ? "/admin/samplepacks" : type === "loops" ? "/admin/loops" : "/admin/playlists";
-  const itemLabel = isSamplePack ? t("admin.samplePacks.packLabel") : type === "loops" ? t("admin.loops.catalogLabel") : t("admin.playlists.catalogLabel");
+  const redirectBase = type === "loops" ? "/admin/loops" : "/admin/playlists";
+  const itemLabel = type === "loops" ? t("admin.loops.catalogLabel") : t("admin.playlists.catalogLabel");
 
   useEffect(() => {
     if (!isEdit) return;
-    // Los sample packs viven en otra colección: buscarlos en /playlists dejaba el form vacío.
-    const source = isSamplePack ? adminService.samplepacks : adminService.playlists;
     const ctrl = new AbortController();
-    source.list(ctrl.signal)
+    adminService.playlists.list(ctrl.signal)
       .then((res) => {
         const item = res.data.find((p) => p._id === id);
         if (item) setForm({ title: item.title, description: item.description, imageUrl: item.imageUrl, backgroundVideo: item.backgroundVideo || "" });
@@ -40,7 +37,7 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
         toast.error(t("admin.toast.errorLoading", { name: itemLabel.toLowerCase() }));
       });
     return () => ctrl.abort();
-  }, [id, isEdit, isSamplePack, toast, t, itemLabel]);
+  }, [id, isEdit, toast, t, itemLabel]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -54,7 +51,7 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     if (!form.description.trim()) errs.description = t("admin.validation.descriptionRequired");
     else if (form.description.length > 300) errs.description = t("admin.validation.max300");
     if (!form.imageUrl.trim()) errs.imageUrl = t("admin.validation.imageRequired");
-    if (!isSamplePack && !form.backgroundVideo.trim()) errs.backgroundVideo = t("admin.validation.backgroundRequired");
+    if (!form.backgroundVideo.trim()) errs.backgroundVideo = t("admin.validation.backgroundRequired");
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -64,15 +61,9 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     if (!validate()) return;
     setSaving(true);
     try {
-      if (isSamplePack) {
-        const { backgroundVideo, ...packData } = form;
-        if (isEdit) await adminService.samplepacks.update(id, packData);
-        else await adminService.samplepacks.create(packData);
-      } else {
-        const data = { ...form, type };
-        if (isEdit) await adminService.playlists.update(id, data);
-        else await adminService.playlists.create(data);
-      }
+      const data = { ...form, type };
+      if (isEdit) await adminService.playlists.update(id, data);
+      else await adminService.playlists.create(data);
       toast.success(isEdit ? t("admin.toast.updated", { name: itemLabel }) : t("admin.toast.created", { name: itemLabel }));
       navigate(redirectBase);
     } catch (err) {
@@ -110,14 +101,12 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
           {form.imageUrl && <p className={styles.uploadSuccess}>{t("admin.common.imageUploaded")}</p>}
           {errors.imageUrl && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.imageUrl}</p>}
         </div>
-        {!isSamplePack && (
-          <div>
-            <label className={styles.label}>{t("admin.common.backgroundMediaRequired")}</label>
-            <AdminUploader folder="videos" accept="video/*,image/*,.jfif" onUpload={(url) => { setForm({ ...form, backgroundVideo: url }); setErrors({ ...errors, backgroundVideo: "" }); }} />
-            {form.backgroundVideo && <p className={styles.uploadSuccess}>{t("admin.common.backgroundUploaded")}</p>}
-            {errors.backgroundVideo && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.backgroundVideo}</p>}
-          </div>
-        )}
+        <div>
+          <label className={styles.label}>{t("admin.common.backgroundMediaRequired")}</label>
+          <AdminUploader folder="videos" accept="video/*,image/*,.jfif" onUpload={(url) => { setForm({ ...form, backgroundVideo: url }); setErrors({ ...errors, backgroundVideo: "" }); }} />
+          {form.backgroundVideo && <p className={styles.uploadSuccess}>{t("admin.common.backgroundUploaded")}</p>}
+          {errors.backgroundVideo && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.backgroundVideo}</p>}
+        </div>
         <div className={styles.formActions} style={{ marginTop: 8 }}>
           <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
             {saving ? t("admin.common.saving") : isEdit ? t("admin.common.update") : t("admin.playlists.create")}

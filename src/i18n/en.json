@@ -261,7 +261,14 @@
       "uploadCount_plural": "Upload {{count}} samples",
       "editTitle": "Edit Sample",
       "newTitle": "New Sample",
-      "sampleLabel": "Sample"
+      "sampleLabel": "Sample",
+      "folder": "Folder",
+      "folderRequired": "Pick a folder",
+      "chooseFolder": "Pick a folder…",
+      "allFolders": "All folders",
+      "batchFolder": "Destination folder",
+      "noFolders": "Create a folder in the pack before uploading samples",
+      "moveTo": "Move to folder"
     },
     "samplePacks": {
       "title": "Sample Packs",
@@ -269,7 +276,61 @@
       "search": "Search sample packs...",
       "none": "No sample packs.",
       "samplesCount": "{{count}} samples",
-      "packLabel": "Sample Pack"
+      "packLabel": "Sample Pack",
+      "published": "Published",
+      "draft": "Draft",
+      "free": "Free",
+      "form": {
+        "newTitle": "New Sample Pack",
+        "editTitle": "Edit Sample Pack",
+        "free": "Free",
+        "priceArs": "Price in ARS",
+        "priceUsd": "Price in USD (optional)",
+        "published": "Published",
+        "publishedHint": "Paid packs get published once the store exists",
+        "create": "Create pack",
+        "coverOptional": "Cover (optional)"
+      },
+      "validation": {
+        "priceArs": "Enter the ARS price (a number, 0 or more)",
+        "priceUsd": "The USD price must be a number, 0 or more"
+      },
+      "errors": {
+        "PACK_EMPTY": "Upload at least one sample before publishing",
+        "PACK_PAID_NOT_SELLABLE": "Paid packs get published once the store exists",
+        "FOLDER_EXISTS": "A folder with that name already exists",
+        "FOLDER_NOT_EMPTY": "The folder has samples: move or delete them first",
+        "FOLDER_NOT_FOUND": "Folder not found",
+        "UNKNOWN_FOLDER": "That folder does not exist in this pack",
+        "ZIP_BUILDING": "This pack's ZIP is already being built"
+      },
+      "folders": {
+        "title": "Folders",
+        "none": "No folders yet",
+        "count": "{{count}} samples",
+        "add": "Add",
+        "newPlaceholder": "Folder name",
+        "rename": "Rename",
+        "up": "Move up",
+        "down": "Move down",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "added": "Folder created",
+        "renamed": "Folder renamed",
+        "deleted": "Folder deleted"
+      },
+      "zip": {
+        "title": "Pack ZIP",
+        "none": "No ZIP yet",
+        "built": "Built on {{date}}",
+        "download": "Download",
+        "stale": "There are changes: build the ZIP again",
+        "building": "Building ZIP…",
+        "build": "Build ZIP",
+        "started": "Building the ZIP in the background",
+        "failed": "Build failed: {{error}}"
+      }
     },
     "users": {
       "title": "Users",
