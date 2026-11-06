@@ -21,5 +21,5 @@ All beat catalogs currently share the same generic speaker image, which also fav
 
 ## Consequences
 
-- `CardPlaylist` / `GlassCard` remain only on the current Sample packs page and Prod mix master.
+- `GlassCard` remains only on Prod mix master. Sample packs moved to the catalog console and `CardPlaylist` was removed with the old per-pack samples page.
 - Licenses on Beats keep their cards below the catalogs.

@@ -18,6 +18,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- The sample pack page drew underneath the fixed page background, so the browser, the names and the ZIP button were hidden. It now sits above it, with left-aligned text, the Bebas ZIP button and a stacked header on phones.
+- Sample packs: a pack without a cover is saved with `imageUrl: null`; the ZIP panel explains an interrupted build when the failure has no message; "1 carpeta · 1 sample" (and "1 folder") read singular; the unused `getSamples` call to the removed `/api/resources/samples/playlist/:id` route and the `card.items_samples` strings are gone.
 - On the About page the "niv0 beats" logo takes a logged-in visitor to the logged-in home instead of the public one.
 
 ### Removed

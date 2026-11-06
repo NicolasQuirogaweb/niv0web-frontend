@@ -56,6 +56,25 @@ describe("AdminSamplePackForm", () => {
     expect(adminService.samplepacks.update.mock.calls[0][1]).toMatchObject({ priceArs: null, priceUsd: null, published: false });
   });
 
+  it("sends imageUrl null when the pack has no cover", async () => {
+    adminService.samplepacks.update.mockResolvedValue({ data: pack });
+    renderEdit();
+    await screen.findByDisplayValue("Mastermind");
+    await userEvent.click(screen.getByRole("button", { name: /actualizar/i }));
+    await waitFor(() => expect(adminService.samplepacks.update).toHaveBeenCalled());
+    expect(adminService.samplepacks.update.mock.calls[0][1].imageUrl).toBeNull();
+  });
+
+  it("keeps the cover url when the pack has one", async () => {
+    adminService.samplepacks.list.mockResolvedValue({ data: [{ ...pack, imageUrl: "https://b2/cover.jpg" }] });
+    adminService.samplepacks.update.mockResolvedValue({ data: pack });
+    renderEdit();
+    await screen.findByDisplayValue("Mastermind");
+    await userEvent.click(screen.getByRole("button", { name: /actualizar/i }));
+    await waitFor(() => expect(adminService.samplepacks.update).toHaveBeenCalled());
+    expect(adminService.samplepacks.update.mock.calls[0][1].imageUrl).toBe("https://b2/cover.jpg");
+  });
+
   it("shows the Spanish message for PACK_PAID_NOT_SELLABLE", async () => {
     adminService.samplepacks.update.mockRejectedValue({
       response: { status: 409, data: { code: "PACK_PAID_NOT_SELLABLE", message: "x" } },

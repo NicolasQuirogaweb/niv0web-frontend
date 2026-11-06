@@ -31,4 +31,31 @@ describe("SamplePacks showcase", () => {
     const cover = container.querySelector(".catalog-record-label .pack-cover-generated");
     expect(cover).toHaveTextContent("Mastermind");
   });
+
+  const renderOne = async (folderCount, itemsCount) => {
+    samplePacksService.getAll.mockResolvedValue({
+      data: [{ _id: "p1", title: "Mastermind", slug: "mastermind", imageUrl: null, folderCount, itemsCount, isFree: true, priceArs: null, priceUsd: null }],
+    });
+    render(
+      <HelmetProvider>
+        <MemoryRouter>
+          <SamplePacks />
+        </MemoryRouter>
+      </HelmetProvider>
+    );
+    return screen.findByRole("link", { name: /Mastermind/ });
+  };
+
+  it("reads singular for one folder and one sample in Spanish", async () => {
+    const link = await renderOne(1, 1);
+    expect(link).toHaveTextContent("1 carpeta · 1 sample");
+    expect(link).not.toHaveTextContent("carpetas");
+  });
+
+  it("reads singular and plural in English", async () => {
+    await i18n.changeLanguage("en");
+    const link = await renderOne(1, 2);
+    expect(link).toHaveTextContent("1 folder · 2 samples");
+    expect(link).not.toHaveTextContent("folders");
+  });
 });

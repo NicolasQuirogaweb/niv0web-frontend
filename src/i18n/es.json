@@ -81,7 +81,11 @@
     "free": "GRATIS",
     "browserLabel": "Contenido del pack",
     "browserIdle": "Tocá un sample para escucharlo",
-    "meta": "{{folders}} carpetas · {{samples}} samples",
+    "meta": "{{folders}} · {{samples}}",
+    "folderCount_one": "{{count}} carpeta",
+    "folderCount_other": "{{count}} carpetas",
+    "sampleCount_one": "{{count}} sample",
+    "sampleCount_other": "{{count}} samples",
     "seoTitle": "Sample Packs",
     "seoDesc": "Descarga sample packs exclusivos de Niv0. Incluye drums, sintetizadores, bajos y más.",
     "downloadZip": "DESCARGAR ZIP",
@@ -329,7 +333,8 @@
         "building": "Armando ZIP…",
         "build": "Armar ZIP",
         "started": "Armando el ZIP en segundo plano",
-        "failed": "Falló el armado: {{error}}"
+        "failed": "Falló el armado: {{error}}",
+        "interrupted": "El armado se interrumpió. Volvé a intentar."
       }
     },
     "users": {
@@ -390,9 +395,7 @@
     "items_beats_one": "{{count}} beat",
     "items_beats_other": "{{count}} beats",
     "items_loops_one": "{{count}} loop",
-    "items_loops_other": "{{count}} loops",
-    "items_samples_one": "{{count}} sample",
-    "items_samples_other": "{{count}} samples"
+    "items_loops_other": "{{count}} loops"
   },
   "licenses": {
     "title": "Licencias",
