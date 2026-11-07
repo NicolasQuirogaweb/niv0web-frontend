@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth, useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
-import { ConsoleMenu } from "./common/ConsoleMenu";
+import { LowerThirdMenu } from "./common/LowerThirdMenu";
 import "./HomeLogued.css";
 import { PageBackground } from "./common/PageBackground";
 import { PAGE_BACKGROUNDS } from "../content/backgrounds";
@@ -29,7 +29,7 @@ export const HomeLogued = () => {
             <h5><button onClick={handleLogout} aria-label={t("nav.logOut")}>{t("nav.logOut")}</button></h5>
           </div>
         </div>
-        <ConsoleMenu />
+        <LowerThirdMenu />
         {isAdmin && (
           <h6 className="admin-home" style={{ marginTop: 16 }}>
             <Link to="/admin" style={{ color: "var(--color-accent)", border: "1px solid var(--color-accent)", padding: "4px 12px", borderRadius: 4, fontSize: 12 }}>

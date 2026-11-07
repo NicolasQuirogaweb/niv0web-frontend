@@ -43,7 +43,14 @@
     "seoDescLogged": "Niv0 Beats - Beats, Samples, Loops and Prod Mix Master for logged-in users.",
     "loops": "LOOPS",
     "about": "NIV0",
-    "menuLabel": "Sections"
+    "menuLabel": "Sections",
+    "sub": {
+      "beats": "Hear the catalog",
+      "samplePacks": "Free · ZIP download",
+      "loops": "Loops for your tracks",
+      "about": "The story",
+      "prodMixMaster": "Production, mix and master"
+    }
   },
   "login": {
     "title": "BEATS, SAMPLE PACKS, MIDI KITS, LOOPS",
