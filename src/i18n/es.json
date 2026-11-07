@@ -123,10 +123,11 @@
     "seoDesc": "Explora y descarga loops de Niv0. Loops de alta calidad para tu producción musical."
   },
   "prodMix": {
-    "title": "Prod mix n mastering",
-    "subtitle": "Escucha mi trabajo en Spotify",
-    "openSpotify": "Abrir Playlist de Spotify",
-    "iconAlt": "Icono loops",
+    "title": "Prod · Mix · Master",
+    "subtitle": "Temas que produje, mezclé y masterizé. Dale play.",
+    "playerTitle": "Playlist de Prod Mix Master en Spotify",
+    "hire": "¿Querés que trabaje tu tema? Escribime",
+    "openSpotify": "Abrir en Spotify",
     "seoTitle": "Prod Mix Master",
     "seoDesc": "Niv0 Prod Mix Master - Servicios profesionales de mezcla y masterización para tu música."
   },
