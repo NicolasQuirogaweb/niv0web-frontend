@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
 import { SEO } from "./common/SEO";
-import { ConsoleMenu } from "./common/ConsoleMenu";
+import { LowerThirdMenu } from "./common/LowerThirdMenu";
 import { useAuth } from "../hooks/useAuth";
 import "./Home.css";
 
@@ -27,7 +27,7 @@ export const Home = () => {
             )}
           </div>
         </div>
-        <ConsoleMenu />
+        <LowerThirdMenu />
         <p>{t("home.cta")}</p>
       </div>
     </section>
