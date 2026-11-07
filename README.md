@@ -96,8 +96,13 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 - [0002 — Migrate to Vite](docs/decisions/0002-migrate-to-vite.md)
 - [0003 — Visual system: tokens, glass and motion](docs/decisions/0003-visual-system.md)
 - [0004 — Animated page backgrounds without hurting performance](docs/decisions/0004-animated-page-backgrounds.md)
-- [0005 — Console-style section menu on both homes](docs/decisions/0005-console-style-home-menu.md)
+- [0005 — Console-style section menu on both homes](docs/decisions/0005-console-style-home-menu.md) (superseded by 0011)
 - [0006 — Two typefaces: console for interface, Inter for reading](docs/decisions/0006-typography.md)
+- [0007 — Sample pack browser instead of per-sample downloads](docs/decisions/0007-sample-pack-browser.md)
+- [0008 — Console-style keyboard navigation on every section](docs/decisions/0008-console-keyboard-navigation.md)
+- [0009 — NIVØ page as a documentary](docs/decisions/0009-about-documentary.md)
+- [0010 — Catalogs shown like the home menu](docs/decisions/0010-catalog-console.md)
+- [0011 — Lower-third section menu on both homes](docs/decisions/0011-lower-third-home-menu.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 

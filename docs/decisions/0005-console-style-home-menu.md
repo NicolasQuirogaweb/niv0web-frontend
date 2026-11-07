@@ -1,6 +1,6 @@
 # 0005 — Console-style section menu on both homes
 
-**Status:** accepted · **Date:** 2026-11
+**Status:** superseded by [0011](0011-lower-third-home-menu.md) · **Date:** 2026-11
 
 ## Context
 
