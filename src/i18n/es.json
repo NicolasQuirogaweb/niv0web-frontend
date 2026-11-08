@@ -20,6 +20,19 @@
     "switchTo": "Cambiar a Español",
     "switchFrom": "Switch to English"
   },
+  "theme": {
+    "open": "Color de la página",
+    "title": "Color",
+    "hue": "Tono",
+    "presets": {
+      "amber": "Ámbar",
+      "red": "Rojo",
+      "magenta": "Magenta",
+      "cyan": "Cian",
+      "mint": "Menta",
+      "lime": "Lima"
+    }
+  },
   "seo": {
     "siteName": "niv0 prod",
     "fallbackDesc": "Niv0 Beats - Beats, Samples, Loops y Prod Mix Master"

@@ -6,6 +6,7 @@ import { GOOGLE_CLIENT_ID } from "../config";
 import { authService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { ThemePicker } from "./common/ThemePicker";
 import { SEO } from "./common/SEO";
 import "./Login.css";
 
@@ -47,6 +48,7 @@ export const Login = () => {
         <div className="login-container">
           <div style={{ position: "absolute", top: 16, right: 16 }}>
             <LanguageSwitcher />
+            <ThemePicker />
           </div>
           <h1>{t("login.title")}</h1>
           {loading ? (

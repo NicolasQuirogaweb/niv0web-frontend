@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { discographyService } from "../services/api";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { ThemePicker } from "./common/ThemePicker";
 import { RecordCrate } from "./common/RecordCrate";
 import { UpcomingRelease } from "./common/UpcomingRelease";
 import { PageBackground } from "./common/PageBackground";
@@ -69,6 +70,7 @@ export const About = () => {
           <div className="about-topbar">
             <Link to={homePath} className="about-logo">{t("nav.niv0Beats")}</Link>
             <LanguageSwitcher />
+            <ThemePicker />
           </div>
           <div className="about-hero-text">
             <p className="about-kicker">{t("about.kicker")}</p>

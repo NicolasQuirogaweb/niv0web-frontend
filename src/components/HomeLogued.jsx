@@ -4,6 +4,7 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 import { useAuth, useLogout } from "../hooks/useAuth";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { ThemePicker } from "./common/ThemePicker";
 import { SEO } from "./common/SEO";
 import { LowerThirdMenu } from "./common/LowerThirdMenu";
 import "./HomeLogued.css";
@@ -25,6 +26,7 @@ export const HomeLogued = () => {
           <h3><Link to="/homelogued">{t("nav.niv0Beats")}</Link></h3>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <LanguageSwitcher />
+            <ThemePicker />
             <h4><Link to="/homelogued">{userEmail || t("loading")}</Link></h4>
             <h5><button onClick={handleLogout} aria-label={t("nav.logOut")}>{t("nav.logOut")}</button></h5>
           </div>

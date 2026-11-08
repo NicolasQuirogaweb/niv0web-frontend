@@ -5,6 +5,7 @@ import { useAuth, useLogout } from "../../hooks/useAuth";
 import { ToastProvider } from "../../hooks/useToast";
 import { ConfirmProvider } from "../../hooks/useConfirm";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
+import { ThemePicker } from "../common/ThemePicker";
 import { Icons } from "./icons";
 import styles from "./admin.module.css";
 
@@ -72,6 +73,7 @@ export const AdminLayout = () => {
           </p>
           <div className={`${styles.langWrap} ${sidebarOpen ? "" : styles.langWrapHidden}`}>
             <LanguageSwitcher />
+            <ThemePicker />
           </div>
           <button onClick={handleLogout} className={styles.signOutBtn} aria-label={t("admin.layout.signOut")}>
             <Icons.Logout size={20} className={styles.navIcon} />

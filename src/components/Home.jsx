@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "./common/LanguageSwitcher";
+import { ThemePicker } from "./common/ThemePicker";
 import { SEO } from "./common/SEO";
 import { LowerThirdMenu } from "./common/LowerThirdMenu";
 import { useAuth } from "../hooks/useAuth";
@@ -19,6 +20,7 @@ export const Home = () => {
           <h3><Link to="/home">{t("nav.niv0Beats")}</Link></h3>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <LanguageSwitcher />
+            <ThemePicker />
             {isAuthenticated ? (
               <h4><Link to="/homelogued">{t("nav.enter")}</Link></h4>
             ) : (

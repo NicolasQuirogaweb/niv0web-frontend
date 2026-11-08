@@ -1,0 +1,119 @@
+import { useEffect, useId, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ACCENT_PRESETS, accentRgb, applyAccent, loadAccentHue, saveAccentHue } from "../../utils/theme";
+import "./ThemePicker.css";
+
+const STEP = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+
+/**
+ * Selector del color de acento, al lado del de idioma (ADR 0012). Un botón con un LED del
+ * color actual abre una ventanita de "Preferences" de DAW: seis colores listos y un fader
+ * para cualquier tono. Cambia todo el sitio en vivo y queda guardado para la próxima visita.
+ */
+export const ThemePicker = () => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [hue, setHue] = useState(loadAccentHue);
+  const wrapRef = useRef(null);
+  const triggerRef = useRef(null);
+  const panelId = useId();
+
+  const choose = (next) => {
+    setHue(next);
+    applyAccent(next);
+    saveAccentHue(next);
+  };
+
+  const close = (refocus) => {
+    setOpen(false);
+    if (refocus) triggerRef.current?.focus();
+  };
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDown = (e) => {
+      if (!wrapRef.current?.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("touchstart", onDown);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("touchstart", onDown);
+    };
+  }, [open]);
+
+  // Las teclas del panel son del panel: que la navegación de la página no se mueva ni vuelva atrás.
+  const onPanelKey = (e) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close(true);
+      return;
+    }
+    const step = STEP[e.key];
+    const swatches = [...e.currentTarget.querySelectorAll(".tp-swatch")];
+    const at = swatches.indexOf(e.target);
+    if (step && at >= 0) {
+      e.preventDefault();
+      swatches[(at + step + swatches.length) % swatches.length].focus();
+    }
+  };
+
+  const preset = ACCENT_PRESETS.find((p) => p.hue === hue);
+
+  return (
+    <div className="tp" ref={wrapRef}>
+      <button
+        ref={triggerRef}
+        type="button"
+        className="tp-trigger"
+        aria-label={t("theme.open")}
+        title={t("theme.open")}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <i className="tp-led" aria-hidden="true" />
+        <span aria-hidden="true">COLOR</span>
+      </button>
+      {open && (
+        <div id={panelId} className="tp-panel" role="dialog" aria-label={t("theme.title")} onKeyDown={onPanelKey}>
+          <div className="tp-bar" aria-hidden="true">
+            <b />
+            <b />
+            <b />
+            <span>THEME</span>
+          </div>
+          <div className="tp-body">
+            <div className="tp-swatches">
+              {ACCENT_PRESETS.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  className="tp-swatch"
+                  style={{ "--sw": accentRgb(p.hue).join(" ") }}
+                  aria-label={t(`theme.presets.${p.id}`)}
+                  title={t(`theme.presets.${p.id}`)}
+                  aria-pressed={p.hue === hue}
+                  onClick={() => choose(p.hue)}
+                />
+              ))}
+            </div>
+            <input
+              className="tp-fader"
+              type="range"
+              min="0"
+              max="359"
+              value={hue}
+              aria-label={t("theme.hue")}
+              onChange={(e) => choose(Number(e.target.value))}
+            />
+            <div className="tp-readout" aria-live="polite">
+              <span>ACCENT</span>
+              <em>{preset ? t(`theme.presets.${preset.id}`) : `${hue}°`}</em>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
