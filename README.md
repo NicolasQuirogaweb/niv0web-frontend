@@ -103,6 +103,7 @@ The hook drives the `<audio>` element imperatively on purpose. With the screen l
 - [0009 — NIVØ page as a documentary](docs/decisions/0009-about-documentary.md)
 - [0010 — Catalogs shown like the home menu](docs/decisions/0010-catalog-console.md)
 - [0011 — Lower-third section menu on both homes](docs/decisions/0011-lower-third-home-menu.md)
+- [0012 — Visitors can pick the site's accent color](docs/decisions/0012-visitor-accent-color.md)
 
 The API-side decisions (cookies, B2, Docker) are documented in [the backend](https://github.com/NicolasQuirogaweb/niv0web-backend/tree/main/docs/decisions).
 

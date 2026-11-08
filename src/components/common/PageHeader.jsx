@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useAuth";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ThemePicker } from "./ThemePicker";
 
 const logoutButtonStyle = {
   background: "none",
@@ -25,6 +26,7 @@ export const PageHeader = ({ className, titleAs: Title = "h3", style }) => {
       </Title>
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
         <LanguageSwitcher />
+        <ThemePicker />
         <button type="button" onClick={handleLogout} style={logoutButtonStyle}>
           {t("nav.logOut")}
         </button>

@@ -1,0 +1,178 @@
+/* Selector de color (ADR 0012): ventanita de "Preferences" de DAW al lado del idioma. */
+.tp {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Mismo tamaño y borde que el botón de idioma. */
+.tp-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: none;
+  color: #888;
+  font: 11px monospace;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.tp-trigger:hover,
+.tp-trigger[aria-expanded="true"] {
+  color: var(--color-text);
+  border-color: var(--color-accent-line);
+}
+.tp-trigger:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.tp-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+}
+
+.tp-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 252px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #121518;
+  border: 1px solid #2a2f33;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), var(--glow-accent);
+  text-align: left;
+  animation: tp-in var(--dur-fast) var(--ease-out);
+}
+
+@keyframes tp-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+
+.tp-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: linear-gradient(#1d2226, #15191c);
+  border-bottom: 1px solid #2a2f33;
+  font: 10px monospace;
+  letter-spacing: 1px;
+  color: #889;
+}
+.tp-bar b {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #444;
+}
+.tp-bar b:first-child {
+  background: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent);
+}
+.tp-bar span {
+  margin-left: 4px;
+}
+
+.tp-body {
+  padding: 12px;
+}
+
+.tp-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.tp-swatch {
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgb(var(--sw));
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast);
+}
+.tp-swatch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgb(var(--sw) / 0.35);
+}
+.tp-swatch[aria-pressed="true"],
+.tp-swatch:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Fader: la pista es el círculo de tonos con la misma luz que los colores. */
+.tp-fader {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin: 0;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    hsl(0 87% 69%),
+    hsl(60 87% 69%),
+    hsl(120 87% 69%),
+    hsl(180 87% 69%),
+    hsl(240 87% 69%),
+    hsl(300 87% 69%),
+    hsl(359 87% 69%)
+  );
+  cursor: pointer;
+}
+.tp-fader::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(#eee, #aaa);
+  box-shadow: 0 2px 6px #000, inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+}
+.tp-fader::-moz-range-thumb {
+  width: 10px;
+  height: 20px;
+  border: 0;
+  border-radius: 2px;
+  background: linear-gradient(#eee, #aaa);
+  box-shadow: 0 2px 6px #000;
+}
+.tp-fader:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.tp-readout {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font: 10px monospace;
+  letter-spacing: 1px;
+  color: #889;
+  text-transform: uppercase;
+}
+.tp-readout em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-panel {
+    animation: none;
+  }
+  .tp-swatch {
+    transition: none;
+  }
+}
