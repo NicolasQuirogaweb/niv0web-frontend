@@ -41,6 +41,8 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  // Índices de los temas que no se pudieron reproducir: la lista lo muestra en su fila.
+  const [failed, setFailed] = useState(() => new Set());
 
   // Valores vivos para listeners y handlers que se registran una sola vez.
   const tracksRef = useRef(tracks);
@@ -244,7 +246,9 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
           play(el);
           return;
         }
-        // Un archivo que no carga (borrado en B2, sin red) no corta la playlist.
+        // Un archivo que no carga (borrado en B2, sin red) no corta la playlist, pero se avisa.
+        const failedIndex = indexRef.current;
+        setFailed((prev) => new Set(prev).add(failedIndex));
         advanceOrStop();
         break;
       }
@@ -351,6 +355,7 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
   }, [tracksKey, elements]);
 
   return {
+    failed,
     currentIndex,
     isPlaying,
     isLoading,

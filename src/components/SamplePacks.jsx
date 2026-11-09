@@ -7,6 +7,7 @@ import { CatalogConsole } from "./common/CatalogConsole";
 import { PackCover } from "./samplepacks/PackCover";
 import { formatPackPrice } from "../utils/formatPrice";
 import { PageHeader } from "./common/PageHeader";
+import { LoadError } from "./common/LoadError";
 import { SEO } from "./common/SEO";
 import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./SamplePacks.css";
@@ -34,7 +35,7 @@ export const SamplePacks = () => {
         {loading ? (
           <p>{t("samplePacks.loading")}</p>
         ) : error ? (
-          <p role="alert">{t("samples.error")}{error.message || t("samples.errorFallback")}</p>
+          <LoadError error={error} onRetry={() => run(samplePacksService.getAll())} />
         ) : packs.length === 0 ? (
           <p>{t("samplePacks.none")}</p>
         ) : (
