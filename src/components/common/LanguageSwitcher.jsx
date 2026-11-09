@@ -34,7 +34,7 @@ export const LanguageSwitcher = () => {
     localStorage.setItem("lang", next);
   };
 
-  const label = i18n.language === "es" ? t("lang.switchTo") : t("lang.switchFrom");
+  const label = t("lang.switch");
 
   return (
     <button

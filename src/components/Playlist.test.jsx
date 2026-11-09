@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import i18n from "../i18n/config";
@@ -96,6 +96,22 @@ describe("Playlist page", () => {
     expect(await screen.findByText("Rhodes 90bpm")).toBeInTheDocument();
     expect(loopsService.getById).toHaveBeenCalledWith("p2");
     expect(beatsService.getById).not.toHaveBeenCalled();
+  });
+
+  it("when the catalog fails to load, keeps the page with a clear message, a retry and the way back", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    beatsService.getById.mockRejectedValueOnce({ message: "Network Error" });
+    beatsService.getById.mockResolvedValueOnce({
+      data: { _id: "p1", title: "Beats Vol. 1", beats: [{ _id: "b1", title: "Night Drive", audioFile: "https://x/a.mp3" }] },
+    });
+    renderAt("/beats/playlist/p1");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(i18n.t("loadError.network"));
+    expect(screen.queryByText(/Network Error/)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: i18n.t("nav.backToCatalogue") })).toHaveAttribute("href", "/beats");
+
+    fireEvent.click(screen.getByRole("button", { name: i18n.t("loadError.retry") }));
+    expect(await screen.findByText("Night Drive")).toBeInTheDocument();
   });
 
   it("does not call any service for an unknown resource type", async () => {

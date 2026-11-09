@@ -311,6 +311,8 @@ export function SampleBrowser({ folders, player, packTitle = "", zipBytes = null
     ? folders[parseSample(shownKey)[0]]?.samples[parseSample(shownKey)[1]]
     : null;
   const shownIsPlaying = shownKey != null && shownKey === playingKey;
+  const shownFlat = shownKey?.startsWith("s") ? flatIndex[parseSample(shownKey)[0]]?.[parseSample(shownKey)[1]] : null;
+  const shownFailed = shownFlat != null && player.failed?.has(shownFlat);
 
   const rawProgress = shownIsPlaying && player.duration > 0 ? (player.currentTime / player.duration) * 100 : 0;
   const progress = Number.isFinite(rawProgress) ? Math.min(100, Math.max(0, Math.round(rawProgress))) : 0;
@@ -380,7 +382,11 @@ export function SampleBrowser({ folders, player, packTitle = "", zipBytes = null
           <div className="sb-now" title={shownSample?.title || shownFolder?.name || undefined}>
             {shownSample?.title || shownFolder?.name || t("samplePacks.browserIdle")}
           </div>
-          <div className="sb-meta">{meta}</div>
+          {shownFailed ? (
+            <div className="sb-meta sb-failed" role="alert">{t("player.failed")}</div>
+          ) : (
+            <div className="sb-meta">{meta}</div>
+          )}
         </div>
 
         <div className="sb-scope">
