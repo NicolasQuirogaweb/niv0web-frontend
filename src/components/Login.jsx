@@ -12,6 +12,15 @@ import "./Login.css";
 
 const isDev = import.meta.env.DEV;
 
+// Qué decirle a quien no pudo entrar después de que Google lo aceptó. Los bloqueadores solo
+// pueden ser la causa cuando el servidor no contestó; si contestó con un error, es nuestro.
+export const loginErrorKey = (error) => {
+  const status = error?.response?.status;
+  if (!status) return "login.errorNetwork";
+  if (status === 429) return "login.errorRateLimit";
+  return "login.errorServer";
+};
+
 export const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -29,7 +38,7 @@ export const Login = () => {
       navigate("/homelogued", { replace: true });
     } catch (error) {
       console.error("Error en autenticaci\u00f3n de Google:", error);
-      setLoginError(t("login.errorBlocked"));
+      setLoginError(t(loginErrorKey(error)));
       clearAuth();
     } finally {
       setLoading(false);
