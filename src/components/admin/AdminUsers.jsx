@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
 import { useConfirm } from "../../hooks/useConfirm";
+import { useAuth } from "../../hooks/useAuth";
 import { SkeletonLine, SpinnerStyles } from "./Spinner";
 import styles from "./admin.module.css";
 import { isAbortError } from "../../utils/isAbortError";
@@ -12,8 +13,13 @@ export const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [pendingId, setPendingId] = useState(null);
   const toast = useToast();
   const confirm = useConfirm();
+  const { userEmail } = useAuth();
+  const roleName = (role) => t(`admin.users.roles.${role === "admin" ? "admin" : "user"}`);
+  // Quitarse el propio rol de admin deja al panel sin acceso: no se ofrece.
+  const isSelfAdmin = (user) => user.role === "admin" && !!userEmail && user.email === userEmail;
 
   const fetchUsers = (signal) => {
     setLoading(true);
@@ -33,15 +39,23 @@ export const AdminUsers = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleRole = async (user) => {
+    if (isSelfAdmin(user)) return;
     const newRole = user.role === "admin" ? "user" : "admin";
-    const ok = await confirm(t("admin.confirm.changeRole"), t("admin.confirm.changeRoleMessage", { email: user.email, role: newRole }));
+    const ok = await confirm(
+      t("admin.confirm.changeRole"),
+      t("admin.confirm.changeRoleMessage", { email: user.email, role: roleName(newRole) }),
+      { confirmLabel: t("admin.users.changeRole"), tone: "neutral" }
+    );
     if (!ok) return;
+    setPendingId(user._id);
     try {
       await adminService.users.updateRole(user._id, newRole);
-      toast.success(t("admin.toast.roleChanged", { email: user.email, role: newRole }));
+      toast.success(t("admin.toast.roleChanged", { email: user.email, role: roleName(newRole) }));
       fetchUsers();
     } catch (err) {
       toast.error(err.response?.data?.message || t("admin.toast.errorUpdatingRole"));
+    } finally {
+      setPendingId(null);
     }
   };
 
@@ -83,13 +97,17 @@ export const AdminUsers = () => {
               <p className={styles.userName}>{user.name || "—"}</p>
               <p className={styles.userEmailText}>{user.email || "—"}</p>
             </div>
-            <span className={`${styles.badge} ${user.role === "admin" ? styles.badgeAdmin : styles.badgeUser}`}>{user.role || "user"}</span>
+            <span className={`${styles.badge} ${user.role === "admin" ? styles.badgeAdmin : styles.badgeUser}`}>{roleName(user.role)}</span>
             <button
               onClick={() => toggleRole(user)}
+              disabled={pendingId === user._id || isSelfAdmin(user)}
+              aria-describedby={isSelfAdmin(user) ? `self-admin-${user._id}` : undefined}
+              title={isSelfAdmin(user) ? t("admin.users.cantRevokeSelf") : undefined}
               className={`${styles.roleBtn} ${user.role === "admin" ? styles.roleBtnDanger : styles.roleBtnSuccess}`}
             >
               {user.role === "admin" ? t("admin.users.revokeAdmin") : t("admin.users.makeAdmin")}
             </button>
+            {isSelfAdmin(user) && <span id={`self-admin-${user._id}`} className={styles.visuallyHidden}>{t("admin.users.cantRevokeSelf")}</span>}
           </div>
         ))}
       </div>

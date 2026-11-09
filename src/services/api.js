@@ -153,12 +153,14 @@ export const adminService = {
     delete: (id) => api.delete(`/api/admin/samples/${id}`),
   },
   upload: {
-    file: (file, folder = "uploads") => {
+    // onUploadProgress (opcional) recibe el evento de axios: { loaded, total }.
+    file: (file, folder = "uploads", { onUploadProgress } = {}) => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("folder", folder);
       return api.post("/api/admin/upload", formData, {
         headers: { "Content-Type": null },
+        onUploadProgress,
       });
     },
     batch: (files, folder = "uploads") => {

@@ -1,5 +1,7 @@
 export const Spinner = ({ size = 20 }) => (
   <span
+    className="admin-spinner"
+    aria-hidden="true"
     style={{
       display: "inline-block",
       width: size, height: size,
@@ -14,6 +16,8 @@ export const Spinner = ({ size = 20 }) => (
 
 export const Skeleton = ({ width = "100%", height = 20, mb = 8 }) => (
   <div
+    className="admin-skeleton"
+    aria-hidden="true"
     style={{
       width, height, borderRadius: 4,
       background: "linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%)",
@@ -53,5 +57,9 @@ export const SpinnerStyles = () => (
   <style>{`
     @keyframes spinnerRotate { to { transform: rotate(360deg); } }
     @keyframes skeletonShimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .admin-spinner { animation: none !important; }
+      .admin-skeleton { animation: none !important; }
+    }
   `}</style>
 );

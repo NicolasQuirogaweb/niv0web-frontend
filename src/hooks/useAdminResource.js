@@ -1,9 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../services/api";
 import { useToast } from "./useToast";
 import { useConfirm } from "./useConfirm";
 import { isAbortError } from "../utils/isAbortError";
+import { useUnsavedChanges } from "./useUnsavedChanges";
+import { focusFirstInvalid } from "../components/admin/formA11y";
+
+const sameForm = (a, b) => Object.keys(a).every((k) => a[k] === b[k]);
 
 /**
  * Shared state/handlers for the admin "list + form + delete" CRUD screens
@@ -23,7 +27,12 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(emptyForm);
+  // What the form held when it opened: Cancel only asks when form differs from it.
+  const [initialForm, setInitialForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
+  const [pendingId, setPendingId] = useState(null);
+  const [focusRequest, setFocusRequest] = useState(0);
+  const formRef = useRef(null);
   const [saving, setSaving] = useState(false);
   const [batchMode, setBatchMode] = useState(false);
   const [batchFiles, setBatchFiles] = useState([]);
@@ -50,19 +59,47 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     return () => ctrl.abort();
   }, [load]);
 
+  const formDirty = showForm && !sameForm(form, initialForm);
+  const confirmDiscard = useUnsavedChanges(formDirty || batchFiles.length > 0);
+
   const resetForm = () => {
     setForm(emptyForm);
+    setInitialForm(emptyForm);
     setErrors({});
     setEditItem(null);
     setShowForm(false);
   };
 
+  // Cancel: asks before throwing away edits.
+  const cancelForm = async () => {
+    if (formDirty && !(await confirmDiscard())) return;
+    resetForm();
+  };
+
+  // Changes the form without counting as an edit (e.g. preselecting the only folder).
+  const syncForm = useCallback((updater) => {
+    setForm(updater);
+    setInitialForm(updater);
+  }, []);
+
   const handleEdit = (item) => {
-    const picked = Object.fromEntries(Object.keys(emptyForm).map((key) => [key, item[key]]));
+    const picked = Object.fromEntries(Object.keys(emptyForm).map((key) => [key, item[key] ?? emptyForm[key]]));
     setForm(picked);
+    setInitialForm(picked);
+    setErrors({});
     setEditItem(item);
     setShowForm(true);
+    setFocusRequest((n) => n + 1);
   };
+
+  // The form renders above the list: after Edit on a lower row, bring it into view.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!focusRequest || !el) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    el.scrollIntoView?.({ block: "start", behavior: reduce ? "auto" : "smooth" });
+    el.querySelector("input, textarea, select")?.focus({ preventScroll: true });
+  }, [focusRequest]);
 
   const validate = () => {
     const errs = {};
@@ -70,12 +107,17 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     if (!form.audioFile) errs.audioFile = t("admin.validation.audioRequired");
     Object.assign(errs, extraValidate?.(form, t));
     setErrors(errs);
-    return Object.keys(errs).length === 0;
+    return errs;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    const formEl = e.currentTarget;
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      focusFirstInvalid(formEl, errs);
+      return;
+    }
     setSaving(true);
     try {
       if (editItem) {
@@ -101,12 +143,15 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
       t("admin.confirm.deleteMessage", { item: target?.title })
     );
     if (!ok) return;
+    setPendingId(itemId);
     try {
       await deleteFn(itemId);
       toast.success(t("admin.toast.deleted", { name: label }));
-      load();
+      await load();
     } catch (err) {
       toast.error(err.response?.data?.message || t("admin.toast.errorDeleting"));
+    } finally {
+      setPendingId(null);
     }
   };
 
@@ -173,6 +218,10 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     setErrors,
     saving,
     resetForm,
+    cancelForm,
+    syncForm,
+    formRef,
+    pendingId,
     handleEdit,
     handleSubmit,
     handleDelete,

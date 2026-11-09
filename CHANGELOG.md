@@ -23,6 +23,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Admin panel (from a design review):
+  - Every upload works from the keyboard: Tab reaches the drop zones (single file and batch), Enter or Space opens the file picker, and the zone shows a focus ring.
+  - Every button, link and field in the admin shows a visible focus ring in the page accent color; fields had none.
+  - Single-file uploads show a progress bar with the percentage. An image that is still uploading or failed shows that state over its preview instead of looking done.
+  - Catalog, sample pack and beat/loop/sample forms ask before Cancel throws away changes, and the browser warns before closing or reloading the tab with unsaved changes (also with batch files queued). Sidebar links inside the admin are not guarded yet.
+  - Notifications are read by screen readers, have a close button, pause while the mouse or keyboard focus is on them, and errors stay until you close them.
+  - Changing a user's role asks with a "Cambiar rol" button instead of a red "Eliminar", roles show translated, and an admin can no longer remove their own admin role.
+  - Confirmation dialogs keep Tab inside them and give focus back to the button that opened them.
+  - Edit on a beat, loop or sample lower in the list scrolls the form into view and puts the cursor in the title.
+  - Every form field has a name for screen readers, errors are linked to their field, and a failed save moves the cursor to the first field with an error.
+  - Deleting a folder of a sample pack asks first. Duplicate and Delete buttons (and the role button) stay disabled while their request runs, so a double click no longer makes two copies.
+  - The dashboard shows an error with a Retry button when the stats can't load, instead of zeros.
+  - The admin spinner, loading placeholders, notifications and sidebar respect reduced motion; a few hint texts got back their dim color.
 - Phones (found in a 390px review with Playwright):
   - The page color window opened about 75px off the left edge of the screen. It now moves back inside.
   - Pages taller than the screen showed white when stretched or while loading; the page underneath is dark now.

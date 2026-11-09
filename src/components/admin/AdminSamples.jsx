@@ -10,6 +10,7 @@ import { AdminZipPanel } from "./AdminZipPanel";
 import { AdminUploader } from "./AdminUploader";
 import { Icons } from "./icons";
 import { Spinner, SkeletonCard, SpinnerStyles } from "./Spinner";
+import { fieldA11y, FieldError, errorId } from "./formA11y";
 import styles from "./admin.module.css";
 
 const EMPTY_FORM = { title: "", description: "", audioFile: "", folder: "" };
@@ -47,6 +48,10 @@ export const AdminSamples = () => {
     setErrors,
     saving,
     resetForm,
+    cancelForm,
+    syncForm,
+    formRef,
+    pendingId,
     handleEdit,
     handleSubmit,
     handleDelete,
@@ -87,10 +92,11 @@ export const AdminSamples = () => {
   // Una carpeta renombrada o borrada deja de valer: se limpia y, si queda una sola, se preselecciona.
   useEffect(() => {
     const valid = (v) => (folders.includes(v) ? v : onlyFolder);
-    setForm((f) => (valid(f.folder) === f.folder ? f : { ...f, folder: valid(f.folder) }));
+    // syncForm: an automatic folder change is not an edit Cancel should ask about.
+    syncForm((f) => (valid(f.folder) === f.folder ? f : { ...f, folder: valid(f.folder) }));
     setBatchFolder((v) => valid(v));
     setFolderFilter((v) => (folders.includes(v) ? v : ""));
-  }, [folders, onlyFolder, showForm, batchMode, setForm]);
+  }, [folders, onlyFolder, showForm, batchMode, syncForm]);
 
   const samplesByFolder = useMemo(() => {
     const map = {};
@@ -140,40 +146,44 @@ export const AdminSamples = () => {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className={styles.formBox}>
+        <form ref={formRef} onSubmit={handleSubmit} noValidate className={styles.formBox}>
           <h3 className={styles.formTitle}>{editSample ? t("admin.samples.editTitle") : t("admin.samples.newTitle")}</h3>
           <div>
-            <input name="title" value={form.title} onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
+            <input {...fieldA11y("sample", "title", errors)} aria-label={t("admin.common.titlePlaceholder")} value={form.title}
+              onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
               placeholder={t("admin.common.titlePlaceholder")} className={`${styles.input} ${errors.title ? styles.inputError : ""}`} />
-            {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
+            <FieldError prefix="sample" name="title" errors={errors} className={styles.fieldError} />
           </div>
-          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
+          <textarea {...fieldA11y("sample", "description", errors)} aria-label={t("admin.common.descriptionPlaceholder")} value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
           <div className={styles.mt16}>
             <label htmlFor="sample-folder" className={styles.labelPlain}>{t("admin.samples.folder")}</label>
-            <select id="sample-folder" value={form.folder} onChange={(e) => { setForm({ ...form, folder: e.target.value }); setErrors({ ...errors, folder: "" }); }}
+            <select {...fieldA11y("sample", "folder", errors)} value={form.folder} onChange={(e) => { setForm({ ...form, folder: e.target.value }); setErrors({ ...errors, folder: "" }); }}
               className={`${styles.input} ${errors.folder ? styles.inputError : ""}`}>
               <option value="">{t("admin.samples.chooseFolder")}</option>
               {folders.map((f) => <option key={f} value={f}>{f}</option>)}
             </select>
-            {errors.folder && <p className={styles.fieldError}>{errors.folder}</p>}
+            <FieldError prefix="sample" name="folder" errors={errors} className={styles.fieldError} />
           </div>
           <div className={styles.mt16}>
-            <label className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
+            <label htmlFor="sample-audioFile" className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
             {form.audioFile ? (
               <div className={styles.audioRow}>
                 <p className={styles.uploadSuccessInline}>{t("admin.common.audioUploaded")}</p>
                 <button type="button" onClick={() => { setForm({ ...form, audioFile: "" }); setErrors({ ...errors, audioFile: "" }); }} className={styles.changeBtn}>{t("admin.common.change")}</button>
               </div>
             ) : (
-              <AdminUploader folder="samples" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
+              <AdminUploader id="sample-audioFile" name="audioFile" invalid={!!errors.audioFile}
+                describedBy={errors.audioFile ? errorId("sample", "audioFile") : undefined}
+                folder="samples" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
             )}
-            {errors.audioFile && <p className={styles.fieldErrorBlock}>{errors.audioFile}</p>}
+            <FieldError prefix="sample" name="audioFile" errors={errors} className={styles.fieldErrorBlock} />
           </div>
           <div className={styles.formActions}>
-            <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
+            <button type="submit" disabled={saving} className={styles.btnPrimary}>
               {saving ? <><Spinner size={14} /> {t("admin.common.saving")}</> : editSample ? t("admin.common.update") : t("admin.common.save")}
             </button>
-            <button type="button" onClick={resetForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+            <button type="button" onClick={cancelForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
           </div>
         </form>
       )}
@@ -190,29 +200,27 @@ export const AdminSamples = () => {
             {folders.map((f) => <option key={f} value={f}>{f}</option>)}
           </select>
           {folders.length === 0 && <p className={styles.fieldErrorBlock}>{t("admin.samples.noFolders")}</p>}
-          <div onDrop={handleDrop} onDragOver={handleDragOver}
-            onClick={() => document.getElementById("batch-input-samples")?.click()}
-            className={styles.batchDrop}>
-            <input id="batch-input-samples" type="file" multiple accept="audio/*"
-              className={styles.hiddenInput} onChange={handleBatchFiles} />
+          <label htmlFor="batch-input-samples" onDrop={handleDrop} onDragOver={handleDragOver} className={styles.batchDrop}>
+            <input id="batch-input-samples" type="file" multiple accept="audio/*" disabled={batchUploading}
+              className={styles.visuallyHidden} onChange={handleBatchFiles} />
             {batchFiles.length === 0 && !batchUploading ? (
-              <div>
-                <p className={styles.dragHint}>{t("admin.uploader.batchDrop")}</p>
-                <p className={styles.supportedHint}>{t("admin.uploader.batchSupported")}</p>
-              </div>
+              <span className={styles.uploadHints}>
+                <span className={styles.dragHint}>{t("admin.uploader.batchDrop")}</span>
+                <span className={styles.supportedHint}>{t("admin.uploader.batchSupported")}</span>
+              </span>
             ) : batchUploading ? (
-              <p className={styles.uploadProgress}><Spinner size={14} /> {batchProgress}</p>
+              <span role="status" className={styles.uploadProgress}><Spinner size={14} /> {batchProgress}</span>
             ) : null}
-          </div>
+          </label>
           {batchFiles.length > 0 && !batchUploading && (
             <>
               <div className={styles.batchList}>
                 {batchFiles.map((file, i) => (
-                  <div key={i} className={styles.batchFileRow}>
-                    <Icons.MusicNote size={14} className={styles.noShrink} />
+                  <div key={file.name + file.size} className={styles.batchFileRow}>
+                    <Icons.MusicNote size={14} className={styles.noShrink} aria-hidden="true" />
                     <span className={styles.batchFileName}>{file.name}</span>
-                    <span className={styles.batchFileTitle}>→ {file.name.replace(/\.[^/.]+$/, "")}</span>
-                    <button onClick={() => removeBatchFile(i)} className={styles.batchRemoveBtn}><Icons.Delete size={13} /></button>
+                    <span className={styles.batchFileTitle}><span aria-hidden="true">→ </span>{file.name.replace(/\.[^/.]+$/, "")}</span>
+                    <button type="button" onClick={() => removeBatchFile(i)} aria-label={`${t("admin.common.delete")} ${file.name}`} className={styles.batchRemoveBtn}><Icons.Delete size={13} aria-hidden="true" /></button>
                   </div>
                 ))}
               </div>
@@ -252,7 +260,7 @@ export const AdminSamples = () => {
               {folders.map((f) => <option key={f} value={f}>{f}</option>)}
             </select>
             <button onClick={() => handleEdit(sample)} className={styles.btnSmall}><Icons.Edit size={13} /> {t("admin.common.edit")}</button>
-            <button onClick={() => handleDelete(sample._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
+            <button onClick={() => handleDelete(sample._id)} disabled={pendingId === sample._id} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
           </div>
         ))}
       </div>

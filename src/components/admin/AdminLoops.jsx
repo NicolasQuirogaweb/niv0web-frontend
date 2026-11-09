@@ -6,6 +6,7 @@ import { useAdminResource } from "../../hooks/useAdminResource";
 import { AdminUploader } from "./AdminUploader";
 import { Icons } from "./icons";
 import { Spinner, SkeletonCard, SpinnerStyles } from "./Spinner";
+import { fieldA11y, FieldError, errorId } from "./formA11y";
 import styles from "./admin.module.css";
 
 const EMPTY_FORM = { title: "", description: "", audioFile: "" };
@@ -38,6 +39,9 @@ export const AdminLoops = () => {
     setErrors,
     saving,
     resetForm,
+    cancelForm,
+    formRef,
+    pendingId,
     handleEdit,
     handleSubmit,
     handleDelete,
@@ -65,31 +69,35 @@ export const AdminLoops = () => {
       </button>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className={styles.formBox}>
+        <form ref={formRef} onSubmit={handleSubmit} noValidate className={styles.formBox}>
           <h3 className={styles.formTitle}>{editLoop ? t("admin.loops.editTitle") : t("admin.loops.newTitle")}</h3>
           <div>
-            <input name="title" value={form.title} onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
+            <input {...fieldA11y("loop", "title", errors)} aria-label={t("admin.common.titlePlaceholder")} value={form.title}
+              onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
               placeholder={t("admin.common.titlePlaceholder")} className={`${styles.input} ${errors.title ? styles.inputError : ""}`} />
-            {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
+            <FieldError prefix="loop" name="title" errors={errors} className={styles.fieldError} />
           </div>
-          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
+          <textarea {...fieldA11y("loop", "description", errors)} aria-label={t("admin.common.descriptionPlaceholder")} value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
           <div className={styles.mt16}>
-            <label className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
+            <label htmlFor="loop-audioFile" className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
             {form.audioFile ? (
               <div className={styles.audioRow}>
                 <p className={styles.uploadSuccessInline}>{t("admin.common.audioUploaded")}</p>
                 <button type="button" onClick={() => { setForm({ ...form, audioFile: "" }); setErrors({ ...errors, audioFile: "" }); }} className={styles.changeBtn}>{t("admin.common.change")}</button>
               </div>
             ) : (
-              <AdminUploader folder="loops" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
+              <AdminUploader id="loop-audioFile" name="audioFile" invalid={!!errors.audioFile}
+                describedBy={errors.audioFile ? errorId("loop", "audioFile") : undefined}
+                folder="loops" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
             )}
-            {errors.audioFile && <p className={styles.fieldErrorBlock}>{errors.audioFile}</p>}
+            <FieldError prefix="loop" name="audioFile" errors={errors} className={styles.fieldErrorBlock} />
           </div>
           <div className={styles.formActions}>
-            <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
+            <button type="submit" disabled={saving} className={styles.btnPrimary}>
               {saving ? <><Spinner size={14} /> {t("admin.common.saving")}</> : editLoop ? t("admin.common.update") : t("admin.common.save")}
             </button>
-            <button type="button" onClick={resetForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+            <button type="button" onClick={cancelForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
           </div>
         </form>
       )}
@@ -106,7 +114,7 @@ export const AdminLoops = () => {
               <p className={styles.itemDesc}>{loop.description}</p>
             </div>
             <button onClick={() => handleEdit(loop)} className={styles.btnSmall}><Icons.Edit size={13} /> {t("admin.common.edit")}</button>
-            <button onClick={() => handleDelete(loop._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
+            <button onClick={() => handleDelete(loop._id)} disabled={pendingId === loop._id} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
           </div>
         ))}
       </div>

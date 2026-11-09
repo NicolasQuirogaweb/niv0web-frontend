@@ -226,7 +226,8 @@
       "roleChanged": "{{email}} is now {{role}}",
       "batchUploaded": "{{count}} items uploaded",
       "batchError": "Batch upload error: {{message}}",
-      "batchPartialError": "{{count}} file(s) failed to upload: {{names}}"
+      "batchPartialError": "{{count}} file(s) failed to upload: {{names}}",
+      "close": "Dismiss notification"
     },
     "confirm": {
       "deleteTitle": "Delete {{name}}?",
@@ -252,7 +253,9 @@
       "cardSamples": "Samples",
       "cardUsers": "Users",
       "seoTitle": "Admin Dashboard",
-      "seoDesc": "Niv0 Beats admin panel - manage beats, sample packs, loops, and users."
+      "seoDesc": "Niv0 Beats admin panel - manage beats, sample packs, loops, and users.",
+      "loadError": "Couldn't load the stats. Check your connection and try again.",
+      "retry": "Try again"
     },
     "playlists": {
       "title": "Catalogs ({{type}})",
@@ -357,7 +360,10 @@
         "cancel": "Cancel",
         "added": "Folder created",
         "renamed": "Folder renamed",
-        "deleted": "Folder deleted"
+        "deleted": "Folder deleted",
+        "deleteTitle": "Delete the folder {{name}}?",
+        "deleteMessage": "The folder is removed from the pack. This can't be undone.",
+        "notEmpty": "Move or delete its samples before deleting it"
       },
       "zip": {
         "title": "Pack ZIP",
@@ -380,7 +386,13 @@
       "makeAdmin": "Make Admin",
       "revokeAdmin": "Revoke Admin",
       "roleChanged": "{{email}} is now {{role}}",
-      "usersLabel": "Users"
+      "usersLabel": "Users",
+      "changeRole": "Change role",
+      "roles": {
+        "admin": "admin",
+        "user": "user"
+      },
+      "cantRevokeSelf": "You can't remove your own admin role"
     },
     "uploader": {
       "uploading": "Uploading...",
@@ -393,7 +405,13 @@
       "batchDrop": "Drop audio files here or click to select",
       "batchSupported": "You can select multiple files at once",
       "uploadingToB2": "Uploading files to B2...",
-      "creatingItems": "Creating {{name}}..."
+      "creatingItems": "Creating {{name}}...",
+      "progressLabel": "Upload progress"
+    },
+    "unsaved": {
+      "title": "Discard changes?",
+      "message": "You have unsaved changes. If you leave now, they'll be lost.",
+      "discard": "Discard"
     }
   },
   "about": {

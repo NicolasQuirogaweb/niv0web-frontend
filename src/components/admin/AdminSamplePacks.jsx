@@ -15,6 +15,8 @@ export const AdminSamplePacks = () => {
   const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  // Row whose Duplicate/Delete request is running: its buttons stay disabled (no double submit).
+  const [pendingId, setPendingId] = useState(null);
   const toast = useToast();
   const confirm = useConfirm();
 
@@ -39,22 +41,29 @@ export const AdminSamplePacks = () => {
   const handleDelete = async (id) => {
     const ok = await confirm(t("admin.confirm.deleteTitle", { name: t("admin.samplePacks.packLabel").toLowerCase() }), t("admin.confirm.deletePack"));
     if (!ok) return;
+    setPendingId(id);
     try {
       await adminService.samplepacks.delete(id);
       toast.success(t("admin.toast.deleted", { name: t("admin.samplePacks.packLabel") }));
       fetchPacks();
     } catch (err) {
       toast.error(err.response?.data?.message || t("admin.toast.errorDeleting"));
+    } finally {
+      setPendingId(null);
     }
   };
 
   const handleDuplicate = async (id) => {
+    if (pendingId) return;
+    setPendingId(id);
     try {
       await adminService.samplepacks.duplicate(id);
       toast.success(t("admin.toast.duplicated", { name: t("admin.samplePacks.packLabel") }));
       fetchPacks();
     } catch (err) {
       toast.error(err.response?.data?.message || t("admin.toast.errorDuplicating"));
+    } finally {
+      setPendingId(null);
     }
   };
 
@@ -104,8 +113,8 @@ export const AdminSamplePacks = () => {
               <div className={styles.itemActions}>
                 <Link to={`/admin/samplepacks/${sp._id}/samples`} className={styles.btnSmall}><Icons.MusicNote size={13} /> {t("admin.common.view")}</Link>
                 <Link to={`/admin/samplepacks/${sp._id}/edit`} className={styles.btnSmall}><Icons.Edit size={13} /> {t("admin.common.edit")}</Link>
-                <button onClick={() => handleDuplicate(sp._id)} className={styles.btnSmall}><Icons.Copy size={13} /> {t("admin.common.copy")}</button>
-                <button onClick={() => handleDelete(sp._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
+                <button onClick={() => handleDuplicate(sp._id)} disabled={pendingId === sp._id} className={styles.btnSmall}><Icons.Copy size={13} /> {t("admin.common.copy")}</button>
+                <button onClick={() => handleDelete(sp._id)} disabled={pendingId === sp._id} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
               </div>
             </div>
           ))}

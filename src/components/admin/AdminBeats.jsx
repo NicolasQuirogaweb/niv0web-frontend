@@ -6,6 +6,7 @@ import { useAdminResource } from "../../hooks/useAdminResource";
 import { AdminUploader } from "./AdminUploader";
 import { Icons } from "./icons";
 import { Spinner, SkeletonCard, SpinnerStyles } from "./Spinner";
+import { fieldA11y, FieldError, errorId } from "./formA11y";
 import styles from "./admin.module.css";
 
 const EMPTY_FORM = { title: "", artist: "", description: "", audioFile: "" };
@@ -38,6 +39,9 @@ export const AdminBeats = () => {
     setErrors,
     saving,
     resetForm,
+    cancelForm,
+    formRef,
+    pendingId,
     handleEdit,
     handleSubmit,
     handleDelete,
@@ -93,34 +97,39 @@ export const AdminBeats = () => {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className={styles.formBox}>
+        <form ref={formRef} onSubmit={handleSubmit} noValidate className={styles.formBox}>
           <h3 className={styles.formTitle}>{editBeat ? t("admin.beats.editTitle") : t("admin.beats.new")}</h3>
           <div className={styles.gridForm}>
             <div>
-              <input name="title" value={form.title} onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
+              <input {...fieldA11y("beat", "title", errors)} aria-label={t("admin.common.titlePlaceholder")} value={form.title}
+                onChange={(e) => { setForm({ ...form, title: e.target.value }); setErrors({ ...errors, title: "" }); }}
                 placeholder={t("admin.common.titlePlaceholder")} className={`${styles.input} ${errors.title ? styles.inputError : ""}`} />
-              {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
+              <FieldError prefix="beat" name="title" errors={errors} className={styles.fieldError} />
             </div>
-            <input name="artist" value={form.artist} onChange={(e) => setForm({ ...form, artist: e.target.value })} placeholder={t("admin.common.artistPlaceholder")} className={styles.input} />
+            <input {...fieldA11y("beat", "artist", errors)} aria-label={t("admin.common.artistPlaceholder")} value={form.artist}
+              onChange={(e) => setForm({ ...form, artist: e.target.value })} placeholder={t("admin.common.artistPlaceholder")} className={styles.input} />
           </div>
-          <textarea name="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
+          <textarea {...fieldA11y("beat", "description", errors)} aria-label={t("admin.common.descriptionPlaceholder")} value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t("admin.common.descriptionPlaceholder")} className={styles.textarea} />
           <div className={styles.mt16}>
-            <label className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
+            <label htmlFor="beat-audioFile" className={styles.labelPlain}>{t("admin.common.audioFileRequired")}</label>
             {form.audioFile ? (
               <div className={styles.audioRow}>
                 <p className={styles.uploadSuccessInline}>{t("admin.common.audioUploaded")}</p>
                 <button type="button" onClick={() => { setForm({ ...form, audioFile: "" }); setErrors({ ...errors, audioFile: "" }); }} className={styles.changeBtn}>{t("admin.common.change")}</button>
               </div>
             ) : (
-              <AdminUploader folder="beats" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
+              <AdminUploader id="beat-audioFile" name="audioFile" invalid={!!errors.audioFile}
+                describedBy={errors.audioFile ? errorId("beat", "audioFile") : undefined}
+                folder="beats" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
             )}
-            {errors.audioFile && <p className={styles.fieldErrorBlock}>{errors.audioFile}</p>}
+            <FieldError prefix="beat" name="audioFile" errors={errors} className={styles.fieldErrorBlock} />
           </div>
           <div className={styles.formActions}>
-            <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
+            <button type="submit" disabled={saving} className={styles.btnPrimary}>
               {saving ? <><Spinner size={14} /> {t("admin.common.saving")}</> : editBeat ? t("admin.common.update") : t("admin.common.save")}
             </button>
-            <button type="button" onClick={resetForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+            <button type="button" onClick={cancelForm} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
           </div>
         </form>
       )}
@@ -131,29 +140,27 @@ export const AdminBeats = () => {
             <Icons.Upload size={16} className={styles.batchTitleIcon} /> {t("admin.beats.batchTitle")}
           </h3>
           <p className={styles.batchHint}>{t("admin.beats.batchHint")}</p>
-          <div onDrop={handleDrop} onDragOver={handleDragOver}
-            onClick={() => document.getElementById("batch-input-beats")?.click()}
-            className={styles.batchDrop}>
-            <input id="batch-input-beats" type="file" multiple accept="audio/*"
-              className={styles.hiddenInput} onChange={handleBatchFiles} />
+          <label htmlFor="batch-input-beats" onDrop={handleDrop} onDragOver={handleDragOver} className={styles.batchDrop}>
+            <input id="batch-input-beats" type="file" multiple accept="audio/*" disabled={batchUploading}
+              className={styles.visuallyHidden} onChange={handleBatchFiles} />
             {batchFiles.length === 0 && !batchUploading ? (
-              <div>
-                <p className={styles.dragHint}>{t("admin.uploader.batchDrop")}</p>
-                <p className={styles.supportedHint}>{t("admin.uploader.batchSupported")}</p>
-              </div>
+              <span className={styles.uploadHints}>
+                <span className={styles.dragHint}>{t("admin.uploader.batchDrop")}</span>
+                <span className={styles.supportedHint}>{t("admin.uploader.batchSupported")}</span>
+              </span>
             ) : batchUploading ? (
-              <p className={styles.uploadProgress}><Spinner size={14} /> {batchProgress}</p>
+              <span role="status" className={styles.uploadProgress}><Spinner size={14} /> {batchProgress}</span>
             ) : null}
-          </div>
+          </label>
           {batchFiles.length > 0 && !batchUploading && (
             <>
               <div className={styles.batchList}>
                 {batchFiles.map((file, i) => (
-                  <div key={i} className={styles.batchFileRow}>
-                    <Icons.MusicNote size={14} className={styles.noShrink} />
+                  <div key={file.name + file.size} className={styles.batchFileRow}>
+                    <Icons.MusicNote size={14} className={styles.noShrink} aria-hidden="true" />
                     <span className={styles.batchFileName}>{file.name}</span>
-                    <span className={styles.batchFileTitle}>→ {file.name.replace(/\.[^/.]+$/, "")}</span>
-                    <button onClick={() => removeBatchFile(i)} className={styles.batchRemoveBtn}><Icons.Delete size={13} /></button>
+                    <span className={styles.batchFileTitle}><span aria-hidden="true">→ </span>{file.name.replace(/.[^/.]+$/, "")}</span>
+                    <button type="button" onClick={() => removeBatchFile(i)} aria-label={`${t("admin.common.delete")} ${file.name}`} className={styles.batchRemoveBtn}><Icons.Delete size={13} aria-hidden="true" /></button>
                   </div>
                 ))}
               </div>
@@ -181,7 +188,7 @@ export const AdminBeats = () => {
               <p className={styles.itemDesc}>{beat.description}</p>
             </div>
             <button onClick={() => handleEdit(beat)} className={styles.btnSmall}><Icons.Edit size={13} /> {t("admin.common.edit")}</button>
-            <button onClick={() => handleDelete(beat._id)} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
+            <button onClick={() => handleDelete(beat._id)} disabled={pendingId === beat._id} className={`${styles.btnSmall} ${styles.btnDanger}`}><Icons.Delete size={13} /> {t("admin.common.delete")}</button>
           </div>
         ))}
       </div>

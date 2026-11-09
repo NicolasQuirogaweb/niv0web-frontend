@@ -226,7 +226,8 @@
       "roleChanged": "{{email}} ahora es {{role}}",
       "batchUploaded": "{{count}} elementos subidos",
       "batchError": "Error de subida masiva: {{message}}",
-      "batchPartialError": "{{count}} archivo(s) no se pudieron subir: {{names}}"
+      "batchPartialError": "{{count}} archivo(s) no se pudieron subir: {{names}}",
+      "close": "Cerrar aviso"
     },
     "confirm": {
       "deleteTitle": "¿Eliminar {{name}}?",
@@ -252,7 +253,9 @@
       "cardSamples": "Samples",
       "cardUsers": "Usuarios",
       "seoTitle": "Panel Admin",
-      "seoDesc": "Panel de administración de Niv0 Beats - gestiona beats, sample packs, loops y usuarios."
+      "seoDesc": "Panel de administración de Niv0 Beats - gestiona beats, sample packs, loops y usuarios.",
+      "loadError": "No se pudieron cargar las estadísticas. Revisá la conexión y probá de nuevo.",
+      "retry": "Reintentar"
     },
     "playlists": {
       "title": "Catálogos ({{type}})",
@@ -357,7 +360,10 @@
         "cancel": "Cancelar",
         "added": "Carpeta creada",
         "renamed": "Carpeta renombrada",
-        "deleted": "Carpeta eliminada"
+        "deleted": "Carpeta eliminada",
+        "deleteTitle": "¿Eliminar la carpeta {{name}}?",
+        "deleteMessage": "Se quita la carpeta del pack. No se puede deshacer.",
+        "notEmpty": "Mové o borrá sus samples antes de eliminarla"
       },
       "zip": {
         "title": "ZIP del pack",
@@ -380,7 +386,13 @@
       "makeAdmin": "Hacer Admin",
       "revokeAdmin": "Revocar Admin",
       "roleChanged": "{{email}} ahora es {{role}}",
-      "usersLabel": "Usuarios"
+      "usersLabel": "Usuarios",
+      "changeRole": "Cambiar rol",
+      "roles": {
+        "admin": "admin",
+        "user": "usuario"
+      },
+      "cantRevokeSelf": "No podés quitarte tu propio rol de admin"
     },
     "uploader": {
       "uploading": "Subiendo...",
@@ -393,7 +405,13 @@
       "batchDrop": "Arrastrá archivos de audio acá o hacé clic para elegirlos",
       "batchSupported": "Podés elegir varios archivos a la vez",
       "uploadingToB2": "Subiendo archivos a B2...",
-      "creatingItems": "Creando {{name}}..."
+      "creatingItems": "Creando {{name}}...",
+      "progressLabel": "Progreso de subida"
+    },
+    "unsaved": {
+      "title": "¿Descartar los cambios?",
+      "message": "Tenés cambios sin guardar. Si salís ahora, se pierden.",
+      "discard": "Descartar"
     }
   },
   "about": {

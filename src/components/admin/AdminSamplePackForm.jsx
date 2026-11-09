@@ -3,12 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
+import { useUnsavedChanges } from "../../hooks/useUnsavedChanges";
 import { AdminUploader } from "./AdminUploader";
+import { Spinner, SpinnerStyles } from "./Spinner";
+import { fieldA11y, FieldError, focusFirstInvalid } from "./formA11y";
 import { isAbortError } from "../../utils/isAbortError";
 import { packErrorText } from "./packErrors";
 import styles from "./admin.module.css";
 
 const EMPTY = { title: "", description: "", descriptionEn: "", imageUrl: "", free: true, priceArs: "", priceUsd: "", published: false };
+
+const sameForm = (a, b) => Object.keys(a).every((k) => a[k] === b[k]);
 
 const isPrice = (v) => v !== "" && Number.isFinite(Number(v)) && Number(v) >= 0;
 
@@ -19,8 +24,11 @@ export const AdminSamplePackForm = () => {
   const toast = useToast();
   const isEdit = !!id;
   const [form, setForm] = useState(EMPTY);
+  // What the form held when it loaded: Cancel only asks when form differs from it.
+  const [initialForm, setInitialForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
+  const confirmDiscard = useUnsavedChanges(!saving && !sameForm(form, initialForm));
   const label = t("admin.samplePacks.packLabel");
 
   useEffect(() => {
@@ -30,16 +38,18 @@ export const AdminSamplePackForm = () => {
       .then((res) => {
         const item = res.data.find((p) => p._id === id);
         if (!item) return;
-        setForm({
-          title: item.title,
-          description: item.description,
+        const loaded = {
+          title: item.title ?? "",
+          description: item.description ?? "",
           descriptionEn: item.descriptionEn || "",
           imageUrl: item.imageUrl || "",
           free: item.priceArs == null,
           priceArs: item.priceArs ?? "",
           priceUsd: item.priceUsd ?? "",
           published: !!item.published,
-        });
+        };
+        setForm(loaded);
+        setInitialForm(loaded);
       })
       .catch((err) => {
         if (isAbortError(err)) return;
@@ -66,12 +76,17 @@ export const AdminSamplePackForm = () => {
       if (form.priceUsd !== "" && !isPrice(form.priceUsd)) errs.priceUsd = t("admin.samplePacks.validation.priceUsd");
     }
     setErrors(errs);
-    return Object.keys(errs).length === 0;
+    return errs;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    const formEl = e.currentTarget;
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      focusFirstInvalid(formEl, errs);
+      return;
+    }
     setSaving(true);
     const data = {
       title: form.title,
@@ -96,39 +111,44 @@ export const AdminSamplePackForm = () => {
       }
     } catch (err) {
       toast.error(packErrorText(t, err, "admin.toast.errorSaving"));
-    } finally {
       setSaving(false);
     }
   };
 
+  const handleCancel = async () => {
+    if (await confirmDiscard()) navigate("/admin/samplepacks");
+  };
+
+  const inputClass = (name, base = styles.input) => `${base} ${errors[name] ? styles.inputError : ""}`;
+
   return (
     <div className={styles.formContainer}>
+      <SpinnerStyles />
       <h2 className={styles.pageTitleMb}>
         {isEdit ? t("admin.samplePacks.form.editTitle") : t("admin.samplePacks.form.newTitle")}
       </h2>
-      <form onSubmit={handleSubmit} className={styles.formStack}>
+      <form onSubmit={handleSubmit} noValidate className={styles.formStack}>
         <div>
           <label htmlFor="pack-title" className={styles.label}>{t("admin.common.titleRequired")}</label>
-          <input id="pack-title" name="title" value={form.title} onChange={handleChange} className={`${styles.input} ${errors.title ? styles.inputError : ""}`} />
-          {errors.title && <p className={styles.fieldError}>{errors.title}</p>}
+          <input {...fieldA11y("pack", "title", errors)} value={form.title} onChange={handleChange} className={inputClass("title")} />
+          <FieldError prefix="pack" name="title" errors={errors} className={styles.fieldError} />
         </div>
         <div>
           <label htmlFor="pack-description" className={styles.label}>{t("admin.common.descriptionRequired")}</label>
-          <textarea id="pack-description" name="description" value={form.description} onChange={handleChange}
-            className={`${styles.textareaLg} ${errors.description ? styles.inputError : ""}`} />
-          {errors.description && <p className={styles.fieldError}>{errors.description}</p>}
+          <textarea {...fieldA11y("pack", "description", errors)} value={form.description} onChange={handleChange}
+            className={inputClass("description", styles.textareaLg)} />
+          <FieldError prefix="pack" name="description" errors={errors} className={styles.fieldError} />
         </div>
         <div>
-          <label htmlFor="pack-description-en" className={styles.label}>{t("admin.samplePacks.form.descriptionEn")}</label>
-          <textarea id="pack-description-en" name="descriptionEn" value={form.descriptionEn} onChange={handleChange}
-            aria-describedby="pack-description-en-hint"
-            className={`${styles.textareaLg} ${errors.descriptionEn ? styles.inputError : ""}`} />
-          <p id="pack-description-en-hint" className={styles.itemMeta}>{t("admin.samplePacks.form.descriptionEnHint")}</p>
-          {errors.descriptionEn && <p className={styles.fieldError}>{errors.descriptionEn}</p>}
+          <label htmlFor="pack-descriptionEn" className={styles.label}>{t("admin.samplePacks.form.descriptionEn")}</label>
+          <textarea {...fieldA11y("pack", "descriptionEn", errors, "pack-descriptionEn-hint")} value={form.descriptionEn} onChange={handleChange}
+            className={inputClass("descriptionEn", styles.textareaLg)} />
+          <p id="pack-descriptionEn-hint" className={styles.itemMeta}>{t("admin.samplePacks.form.descriptionEnHint")}</p>
+          <FieldError prefix="pack" name="descriptionEn" errors={errors} className={styles.fieldError} />
         </div>
         <div>
-          <label className={styles.label}>{t("admin.samplePacks.form.coverOptional")}</label>
-          <AdminUploader folder="images" accept="image/*" onUpload={(url) => set("imageUrl", url)} />
+          <label htmlFor="pack-imageUrl" className={styles.label}>{t("admin.samplePacks.form.coverOptional")}</label>
+          <AdminUploader id="pack-imageUrl" name="imageUrl" folder="images" accept="image/*" onUpload={(url) => set("imageUrl", url)} />
           {form.imageUrl && <p className={styles.uploadSuccess}>{t("admin.common.imageUploaded")}</p>}
         </div>
         <div>
@@ -140,16 +160,16 @@ export const AdminSamplePackForm = () => {
         {!form.free && (
           <>
             <div>
-              <label htmlFor="pack-price-ars" className={styles.label}>{t("admin.samplePacks.form.priceArs")}</label>
-              <input id="pack-price-ars" name="priceArs" type="number" min="0" step="any" value={form.priceArs}
-                onChange={handleChange} className={`${styles.input} ${errors.priceArs ? styles.inputError : ""}`} />
-              {errors.priceArs && <p className={styles.fieldError}>{errors.priceArs}</p>}
+              <label htmlFor="pack-priceArs" className={styles.label}>{t("admin.samplePacks.form.priceArs")}</label>
+              <input {...fieldA11y("pack", "priceArs", errors)} type="number" min="0" step="any" inputMode="decimal" value={form.priceArs}
+                onChange={handleChange} className={inputClass("priceArs")} />
+              <FieldError prefix="pack" name="priceArs" errors={errors} className={styles.fieldError} />
             </div>
             <div>
-              <label htmlFor="pack-price-usd" className={styles.label}>{t("admin.samplePacks.form.priceUsd")}</label>
-              <input id="pack-price-usd" name="priceUsd" type="number" min="0" step="any" value={form.priceUsd}
-                onChange={handleChange} className={`${styles.input} ${errors.priceUsd ? styles.inputError : ""}`} />
-              {errors.priceUsd && <p className={styles.fieldError}>{errors.priceUsd}</p>}
+              <label htmlFor="pack-priceUsd" className={styles.label}>{t("admin.samplePacks.form.priceUsd")}</label>
+              <input {...fieldA11y("pack", "priceUsd", errors)} type="number" min="0" step="any" inputMode="decimal" value={form.priceUsd}
+                onChange={handleChange} className={inputClass("priceUsd")} />
+              <FieldError prefix="pack" name="priceUsd" errors={errors} className={styles.fieldError} />
             </div>
           </>
         )}
@@ -163,10 +183,10 @@ export const AdminSamplePackForm = () => {
           </div>
         )}
         <div className={styles.formActions} style={{ marginTop: 8 }}>
-          <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
-            {saving ? t("admin.common.saving") : isEdit ? t("admin.common.update") : t("admin.samplePacks.form.create")}
+          <button type="submit" disabled={saving} className={styles.btnPrimary}>
+            {saving ? <><Spinner size={14} /> {t("admin.common.saving")}</> : isEdit ? t("admin.common.update") : t("admin.samplePacks.form.create")}
           </button>
-          <button type="button" onClick={() => navigate("/admin/samplepacks")} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+          <button type="button" onClick={handleCancel} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
         </div>
       </form>
     </div>
