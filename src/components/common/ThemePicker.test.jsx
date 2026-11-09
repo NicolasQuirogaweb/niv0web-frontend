@@ -88,6 +88,24 @@ describe("ThemePicker", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("on a narrow screen the window moves back inside the screen instead of opening cut off", () => {
+    // El botón termina en x=177 y la ventana mide 252: abierta a la derecha quedaría en x=-75.
+    const rect = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function rect() {
+      return this.classList?.contains("tp")
+        ? { left: 100, right: 177, width: 77, top: 20, bottom: 50, height: 30 }
+        : { left: 0, right: 0, width: 0, top: 0, bottom: 0, height: 0 };
+    });
+    const width = vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockImplementation(function w() {
+      return this.classList?.contains("tp-panel") ? 252 : 0;
+    });
+    window.innerWidth = 390;
+    render(<ThemePicker />);
+    const panel = open();
+    expect(panel.style.right).toBe("-83px"); // corre 75 + 8 de margen hacia adentro
+    rect.mockRestore();
+    width.mockRestore();
+  });
+
   it("has every text in both languages", () => {
     const keys = ["open", "title", "hue", ...ACCENT_PRESETS.map((p) => `presets.${p.id}`)];
     keys.forEach((key) => ["es", "en"].forEach((lng) => expect(i18n.exists(`theme.${key}`, { lng })).toBe(true)));

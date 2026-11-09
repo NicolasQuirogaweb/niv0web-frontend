@@ -2,6 +2,8 @@
 html {
   /* Bebas Neue tiene un solo peso: sin negrita ni cursiva falsas. */
   font-synthesis: none;
+  /* Debajo del fondo de cada página: sin blanco al estirar la página en el celular ni mientras carga. */
+  background: var(--color-bg);
 }
 
 body {

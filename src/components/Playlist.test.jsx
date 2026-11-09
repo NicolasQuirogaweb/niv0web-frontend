@@ -56,6 +56,26 @@ describe("Playlist page", () => {
     expect(screen.getByText(i18n.t("playlist.beatsLicenseNote"))).toBeInTheDocument();
   });
 
+  it("beat catalogs don't say the beats are free for non-profit use (they aren't downloadable)", async () => {
+    beatsService.getById.mockResolvedValue({
+      data: { _id: "p1", title: "Beats Vol. 1", beats: [{ _id: "b1", title: "Night Drive", audioFile: "https://x/a.mp3" }] },
+    });
+    renderAt("/beats/playlist/p1");
+
+    expect(await screen.findByText("Night Drive")).toBeInTheDocument();
+    expect(screen.queryByText(i18n.t("playlist.freeLicense"))).not.toBeInTheDocument();
+  });
+
+  it("loop catalogs still say loops are free for non-profit use", async () => {
+    loopsService.getById.mockResolvedValue({
+      data: { _id: "p2", title: "Loop Pack", loops: [{ _id: "l1", title: "Rhodes 90bpm", audioFile: "https://x/l.mp3" }] },
+    });
+    renderAt("/loops/playlist/p2");
+
+    expect(await screen.findByText("Rhodes 90bpm")).toBeInTheDocument();
+    expect(screen.getByText(i18n.t("playlist.freeLicense"))).toBeInTheDocument();
+  });
+
   it("loop catalogs keep their download buttons", async () => {
     loopsService.getById.mockResolvedValue({
       data: { _id: "p2", title: "Loop Pack", loops: [{ _id: "l1", title: "Rhodes 90bpm", audioFile: "https://x/l.mp3" }] },

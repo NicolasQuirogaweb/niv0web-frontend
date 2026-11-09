@@ -1,9 +1,10 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ACCENT_PRESETS, accentRgb, applyAccent, loadAccentHue, saveAccentHue } from "../../utils/theme";
 import "./ThemePicker.css";
 
 const STEP = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+const EDGE = 8; // margen mínimo con el borde de la pantalla
 
 /**
  * Selector del color de acento, al lado del de idioma (ADR 0012). Un botón con un LED del
@@ -16,6 +17,7 @@ export const ThemePicker = () => {
   const [hue, setHue] = useState(loadAccentHue);
   const wrapRef = useRef(null);
   const triggerRef = useRef(null);
+  const panelRef = useRef(null);
   const panelId = useId();
 
   const choose = (next) => {
@@ -28,6 +30,20 @@ export const ThemePicker = () => {
     setOpen(false);
     if (refocus) triggerRef.current?.focus();
   };
+
+  // La ventana se abre alineada a la derecha del botón; en un celular eso la deja cortada a la
+  // izquierda. Antes de pintarla, se corre lo justo para quedar entera dentro de la pantalla.
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!open || !panel) return;
+    // Se mide con el contenedor y el ancho real: el rect de la ventana está achicado por la animación de entrada.
+    const right = wrapRef.current.getBoundingClientRect().right;
+    const left = right - panel.offsetWidth;
+    let shift = 0;
+    if (left < EDGE) shift = EDGE - left;
+    else if (right > window.innerWidth - EDGE) shift = window.innerWidth - EDGE - right;
+    if (shift) panel.style.right = `${-shift}px`;
+  }, [open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -76,7 +92,7 @@ export const ThemePicker = () => {
         <span aria-hidden="true">COLOR</span>
       </button>
       {open && (
-        <div id={panelId} className="tp-panel" role="dialog" aria-label={t("theme.title")} onKeyDown={onPanelKey}>
+        <div ref={panelRef} id={panelId} className="tp-panel" role="dialog" aria-label={t("theme.title")} onKeyDown={onPanelKey}>
           <div className="tp-bar" aria-hidden="true">
             <b />
             <b />
