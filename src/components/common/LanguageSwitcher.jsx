@@ -38,6 +38,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <button
+      className="lang-btn"
       onClick={toggleLang}
       style={i18n.language === "en" ? activeStyle : btnStyle}
       title={label}

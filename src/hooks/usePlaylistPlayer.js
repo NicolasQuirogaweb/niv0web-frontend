@@ -121,9 +121,12 @@ export const usePlaylistPlayer = (tracks, { autoAdvance = false, meta = {} } = {
     setAction("previoustrack", () => actions.current.previous());
   };
 
-  // Deja el siguiente tema bajando en el elemento de reserva.
+  // Deja el siguiente tema bajando en el elemento de reserva. Con ahorro de datos o una
+  // conexión lenta no: bajaría un tema entero que quizás nunca se escuche.
   const preloadNext = () => {
     if (!optionsRef.current.autoAdvance) return;
+    const connection = typeof navigator !== "undefined" ? navigator.connection : null;
+    if (connection?.saveData || /(^|-)(2g|3g)$/.test(connection?.effectiveType || "")) return;
     const next = indexRef.current + 1;
     const track = tracksRef.current[next];
     if (!track || preloadedRef.current === next) return;

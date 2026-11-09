@@ -39,6 +39,14 @@
   cursor: default;
 }
 
+/* En pantallas táctiles el play mide 44px, lo mínimo cómodo para un dedo. */
+@media (pointer: coarse) {
+  .audio-play-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 .audio-play-btn:active {
   transform: scale(0.95);
 }
@@ -51,6 +59,8 @@
   align-items: center;
   cursor: pointer;
   min-width: 80px;
+  /* El arrastre es de la barra, no un scroll de la página. */
+  touch-action: none;
 }
 
 .audio-progress-track {

@@ -23,6 +23,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Design review, phones and performance:
+  - On phones the track list and the sample tree grow with the page instead of scrolling inside it, so a swipe that starts on them scrolls the page.
+  - The seek bar can be dragged with a finger or the mouse (it only jumped on click).
+  - On touch screens the row play button, the language and color buttons are 44px and the home menu links are taller.
+  - The next track is not preloaded with data saver on or on a 2g/3g connection.
+  - The ring around the catalog record pauses its 66 animations while it's off screen.
 - Phones (found in a 390px review with Playwright):
   - The page color window opened about 75px off the left edge of the screen. It now moves back inside.
   - Pages taller than the screen showed white when stretched or while loading; the page underneath is dark now.
