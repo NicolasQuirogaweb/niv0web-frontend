@@ -10,6 +10,15 @@
   align-items: center;
 }
 
+.prodmix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 40px 0;
+  box-sizing: border-box;
+}
+
 .prodmix-header h3 {
   color: var(--color-accent);
   margin: 0;
@@ -123,6 +132,18 @@
 }
 
 @media (max-width: 768px) {
+  /* Apilado como en Beats: el logo arriba y los botones debajo. */
+  .prodmix-header {
+    margin-top: 15px;
+    padding: 0 16px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .prodmix-header h3 {
+    font-size: 18px;
+  }
+
   .prodmix-title {
     margin-top: 20px;
   }

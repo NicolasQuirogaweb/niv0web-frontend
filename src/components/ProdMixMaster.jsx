@@ -24,10 +24,7 @@ export const ProdMixMaster = () => {
       <SEO title={t("prodMix.seoTitle")} description={t("prodMix.seoDesc")} />
       <PageBackground media={PAGE_BACKGROUNDS.prodMix} />
       <section className="prod-mix-master-section">
-        <PageHeader
-          className="prodmix-header"
-          style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "12px 40px 0" }}
-        />
+        <PageHeader className="prodmix-header" />
         <div className="prodmix-content">
           <h1 className="prodmix-title">{t("prodMix.title")}</h1>
           <p className="prodmix-subtitle">{t("prodMix.subtitle")}</p>
