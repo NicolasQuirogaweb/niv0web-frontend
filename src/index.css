@@ -92,6 +92,11 @@ a.back-to-catalogue-btn {
   text-decoration: none;
 }
 
+.back-to-catalogue-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 /* Texto solo para lectores de pantalla */
 .sr-only {
   position: absolute;
