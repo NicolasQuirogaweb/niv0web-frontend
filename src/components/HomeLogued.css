@@ -31,12 +31,13 @@
   color: inherit;
   text-decoration: none;
   font-size: 22px;
-  transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+  transition: text-shadow var(--dur-fast) var(--ease-out);
 }
 
-.home-section-logued .home-header-row h3 a:hover {
-  font-size: 26px;
-  letter-spacing: 1px;
+/* El header no cambia de tamaño al pasar el mouse: si creciera, empujaría a los botones de al lado. */
+.home-section-logued .home-header-row h3 a:hover,
+.home-section-logued .home-header-row h3 a:focus-visible {
+  text-shadow: 0 0 12px rgb(var(--color-accent-rgb) / 0.6);
 }
 
 .home-section-logued .home-header-row h4 {
@@ -60,7 +61,7 @@
   font-weight: inherit;
   color: var(--color-accent);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-size 0.3s var(--ease-out), text-shadow 0.3s var(--ease-out);
   background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
   background-position: 0% 100%;
@@ -68,9 +69,8 @@
   padding-bottom: 2px;
 }
 
-.home-section-logued .home-header-row h5 button:hover {
-  font-size: 32px;
-  letter-spacing: 1px;
+.home-section-logued .home-header-row h5 button:hover,
+.home-section-logued .home-header-row h5 button:focus-visible {
   text-shadow: 0 0 12px rgb(var(--color-accent-rgb) / 0.5);
   background-size: 100% 2px;
 }

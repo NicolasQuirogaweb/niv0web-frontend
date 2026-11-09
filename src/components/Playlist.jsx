@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams, Link } from "react-router-dom";
 import { playlistServices } from "../services/api";
@@ -9,6 +9,7 @@ import { usePlaylistPlayer } from "../hooks/usePlaylistPlayer";
 import { PageBackground } from "./common/PageBackground";
 import { catalogBackground } from "../content/backgrounds";
 import { SEO } from "./common/SEO";
+import { LoadError } from "./common/LoadError";
 import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Playlist.css";
 
@@ -21,13 +22,15 @@ export const Playlist = () => {
   const service = playlistServices[resourceType];
   const { data: playlistData, loading, error, run, setLoading } = usePublicResource();
 
+  const load = useCallback(() => run(service.getById(playlistId)), [service, playlistId, run]);
+
   useEffect(() => {
     if (!service) {
       setLoading(false);
       return;
     }
-    run(service.getById(playlistId));
-  }, [service, playlistId, run, setLoading]);
+    load();
+  }, [service, load, setLoading]);
 
   const tracks = playlistData?.[resourceType] || [];
   // En beats y loops, al terminar un tema pasa al siguiente (como un álbum).
@@ -37,7 +40,6 @@ export const Playlist = () => {
   });
 
   if (!service) return <p>{t("notFound.title")}</p>;
-  if (error) return <p>{t("playlist.error")}{error.message || t("playlist.errorFallback")}</p>;
 
   return (
     <>
@@ -47,6 +49,8 @@ export const Playlist = () => {
         <PageHeader className="playlist-header" titleAs="h2" />
         {loading ? (
           <p>{t("playlist.loading")}</p>
+        ) : error ? (
+          <LoadError error={error} onRetry={load} />
         ) : playlistData ? (
           <div className="playlist-content">
             <div className="playlist-info-row">

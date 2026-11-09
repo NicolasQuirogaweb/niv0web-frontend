@@ -30,7 +30,11 @@ export const Home = () => {
           </div>
         </div>
         <LowerThirdMenu />
-        <p>{t("home.cta")}</p>
+        {!isAuthenticated && (
+          <p className="home-cta">
+            <Link to="/login">{t("home.cta")}</Link>
+          </p>
+        )}
       </div>
     </section>
     </>

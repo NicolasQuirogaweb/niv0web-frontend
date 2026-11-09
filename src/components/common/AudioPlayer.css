@@ -120,3 +120,7 @@
     animation-duration: 2.4s;
   }
 }
+
+.beat-error {
+  color: #ef9a9a;
+}

@@ -60,6 +60,7 @@ const Harness = ({ autoAdvance, tracks = TRACKS }) => {
   return (
     <div>
       <p data-testid="state">{`${p.currentIndex ?? "none"}|${p.isPlaying ? "playing" : "stopped"}|${p.isLoading ? "loading" : "ready"}`}</p>
+      <p data-testid="failed">{[...p.failed].join(",")}</p>
       <button onClick={p.togglePlayAll}>all</button>
       <button onClick={() => p.toggleTrack(2)}>third</button>
     </div>
@@ -188,6 +189,24 @@ describe("usePlaylistPlayer", () => {
       fireEvent.click(screen.getByText("all"));
       fire("error");
       expect(state()).toBe("1|playing|ready");
+    });
+
+    it("remembers which tracks failed, so the list can say so", () => {
+      render(<Harness autoAdvance />);
+      fireEvent.click(screen.getByText("all"));
+      fire("error");
+      expect(screen.getByTestId("failed").textContent).toBe("0");
+    });
+
+    it("a single track that fails (no auto-advance) stops loading instead of spinning forever", () => {
+      HTMLMediaElement.prototype.play.mockRestore();
+      mockPlay({ emitPlaying: false });
+      render(<Harness />);
+      fireEvent.click(screen.getByText("third"));
+      expect(state()).toBe("2|playing|loading");
+      fire("error");
+      expect(state()).toBe("2|stopped|ready");
+      expect(screen.getByTestId("failed").textContent).toBe("2");
     });
   });
 

@@ -16,11 +16,19 @@
     "enter": "enter",
     "logInOrSignUp": "log in / sign up"
   },
+  "loadError": {
+    "network": "We couldn't reach the server. Check your connection and try again.",
+    "notFound": "We couldn't find what you were looking for.",
+    "server": "Something went wrong on our side. Please try again in a while.",
+    "retry": "Try again"
+  },
   "lang": {
-    "switchTo": "Switch to English",
-    "switchFrom": "Cambiar a Español"
+    "switch": "Switch to Spanish"
   },
   "theme": {
+    "button": "COLOR",
+    "bar": "THEME",
+    "accent": "ACCENT",
     "open": "Page color",
     "title": "Color",
     "hue": "Hue",
@@ -43,6 +51,7 @@
     "seek": "Seek",
     "playAll": "Play catalog",
     "pauseAll": "Pause catalog",
+    "failed": "This track couldn't be played.",
     "nowPlaying": "Now playing",
     "loading": "Loading…"
   },
@@ -81,7 +90,7 @@
     "loading": "Loading playlists...",
     "none": "No playlists found.",
     "seoTitle": "Beats",
-    "seoDesc": "Browse exclusive beats from Niv0. Listen, lease, and download premium beats."
+    "seoDesc": "Listen to niv0's beat catalogs and pick your license: common, exclusive or exclusive with stems."
   },
   "playlist": {
     "error": "Error: ",

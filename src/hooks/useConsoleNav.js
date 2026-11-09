@@ -83,8 +83,11 @@ export const useConsoleNav = ({ back } = {}) => {
 
       if (event.key === "Enter") {
         const item = activeRef.current;
+        const focused = document.activeElement;
         // Con el foco en el item, el navegador ya aprieta el link o el botón solo.
-        if (!item?.isConnected || item.contains(document.activeElement)) return;
+        if (!item?.isConnected || item.contains(focused)) return;
+        // Con el foco en otro control (idioma, color, un link), Enter es de ese control.
+        if (focused && focused !== document.body) return;
         event.preventDefault();
         pressTarget(item).click();
         return;

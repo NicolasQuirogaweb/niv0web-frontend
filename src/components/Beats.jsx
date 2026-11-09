@@ -6,6 +6,7 @@ import { usePublicResource } from "../hooks/usePublicResource";
 import { CatalogConsole } from "./common/CatalogConsole";
 import { PageHeader } from "./common/PageHeader";
 import { LicenseCards } from "./common/LicenseCards";
+import { LoadError } from "./common/LoadError";
 import { SEO } from "./common/SEO";
 import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Beats.css";
@@ -41,7 +42,7 @@ export const Beats = () => {
           {loading ? (
             <p>{t("beats.loading")}</p>
           ) : error ? (
-            <p role="alert">{t("playlist.error")}{error.message || t("playlist.errorFallback")}</p>
+            <LoadError error={error} onRetry={() => run(beatsService.getAll())} />
           ) : playlists.length === 0 ? (
             <p>{t("beats.none")}</p>
           ) : (

@@ -61,7 +61,7 @@ export const Login = () => {
           </div>
           <h1>{t("login.title")}</h1>
           {loading ? (
-            <div style={{ marginTop: "2rem" }}>
+            <div style={{ marginTop: "2rem" }} role="status">
               <div className="login-spinner" />
               <p style={{ fontWeight: "bold", margin: 0 }}>
                 {t("login.entering")}
@@ -84,7 +84,7 @@ export const Login = () => {
               </div>
             </div>
           )}
-          {loginError && <p style={{ color: "red", marginTop: "1rem" }}>{loginError}</p>}
+          {loginError && <p role="alert" className="login-error">{loginError}</p>}
           {isDev && (
             <p style={{ color: "#666", fontSize: 11, marginTop: 12, textAlign: "center", maxWidth: 280 }}>
               {t("login.devHint")}
