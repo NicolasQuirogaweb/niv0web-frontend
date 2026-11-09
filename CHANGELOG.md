@@ -23,6 +23,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Login no longer blames ad blockers for every failure. If the server didn't answer, it says so (connection or blockers); after too many attempts it asks you to wait; if the server answered with an error, it says the problem is on our side.
 - Sample pack browser: picking a folder (click or keyboard) now updates the screen, not only samples. Durations read "2.4 s" under 10 seconds and "0:23" from there, instead of "0:02" for every one-shot.
 - Sample pack page: the "niv0 beats" header looks the same as on the showcase instead of a raw link, and the cover, info and browser are centered in one 800px column.
 - Admin batch upload of samples says "Subir 5 samples" (the plural used the `_plural` suffix that i18next no longer reads).
