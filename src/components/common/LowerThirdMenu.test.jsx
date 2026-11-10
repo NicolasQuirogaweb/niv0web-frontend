@@ -102,6 +102,22 @@ describe("LowerThirdMenu", () => {
     expect(screen.getByText("loops page")).toBeInTheDocument();
   });
 
+  it("leaves browser shortcuts alone (Alt + ← is the browser's back)", () => {
+    renderMenu();
+    const notPrevented = fireEvent.keyDown(document.body, { key: "ArrowLeft", altKey: true });
+    expect(notPrevented).toBe(true);
+    expect(links()[0]).toHaveAttribute("data-active", "true");
+  });
+
+  it("leaves the keys alone when something on the page already used them", () => {
+    renderMenu();
+    const widget = (e) => e.preventDefault();
+    document.addEventListener("keydown", widget);
+    fireEvent.keyDown(document.body, { key: "ArrowDown" });
+    document.removeEventListener("keydown", widget);
+    expect(links()[0]).toHaveAttribute("data-active", "true");
+  });
+
   it("leaves the arrows alone while typing in a field", () => {
     render(
       <MemoryRouter>

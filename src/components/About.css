@@ -335,15 +335,22 @@
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-/* El disco que tocás se levanta del cajón y queda de frente. */
+/* El disco que tocás se levanta del cajón y queda de frente. Con el mouse solo se mueve
+   (transform): si abriera lugar con margin, se correría de abajo del puntero y titilaría. */
 .crate-record:hover,
 .crate-record:focus-visible,
 .crate-record[data-nav-active="true"],
 .crate-record--selected {
   transform: rotateY(0deg) translateY(-26px);
-  margin: 0 76px 0 76px;
   z-index: 2;
   outline: none;
+}
+
+/* El elegido (teclado o click) además abre lugar en el cajón. */
+.crate-record:focus-visible,
+.crate-record[data-nav-active="true"]:not(:hover),
+.crate-record--selected {
+  margin: 0 76px 0 76px;
 }
 
 .crate-record:hover .crate-name,

@@ -98,6 +98,9 @@ export const TrackList = ({ tracks, player, fallbackName = "track", showArtist =
                 <div className="beat-card-info">
                   <p className="beat-title">{track.title}</p>
                   {showArtist && track.artist && <p className="beat-artist">{track.artist}</p>}
+                  {player.failed?.has(i) && (
+                    <p role="alert" className="beat-artist beat-error">{t("player.failed")}</p>
+                  )}
                   {(state === "error" || state === "licensed") && (
                     <p role="alert" className="beat-artist" style={{ color: "#ef9a9a" }}>
                       {t(state === "licensed" ? "playlist.licenseRequired" : "playlist.downloadError")}

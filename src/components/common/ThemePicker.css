@@ -23,6 +23,15 @@
   color: var(--color-text);
   border-color: var(--color-accent-line);
 }
+/* En pantallas táctiles, idioma y color miden 44px de alto: lo mínimo cómodo para un dedo. */
+@media (pointer: coarse) {
+  .tp-trigger,
+  .lang-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 .tp-trigger:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;

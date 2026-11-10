@@ -5,6 +5,7 @@ import { loopsService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { CatalogConsole } from "./common/CatalogConsole";
 import { PageHeader } from "./common/PageHeader";
+import { LoadError } from "./common/LoadError";
 import { SEO } from "./common/SEO";
 import { useConsoleNav } from "../hooks/useConsoleNav";
 import "./Beats.css";
@@ -32,7 +33,7 @@ export const Loops = () => {
         {loading ? (
           <p>{t("loops.loading")}</p>
         ) : error ? (
-          <p role="alert">{t("loops.error")}{error.message || t("loops.errorFallback")}</p>
+          <LoadError error={error} onRetry={() => run(loopsService.getAll())} />
         ) : catalogs.length === 0 ? (
           <p>{t("loops.none")}</p>
         ) : (

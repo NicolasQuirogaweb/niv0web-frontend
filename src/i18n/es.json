@@ -16,11 +16,19 @@
     "enter": "entrar",
     "logInOrSignUp": "ingresar / registrarse"
   },
+  "loadError": {
+    "network": "No pudimos conectar con el servidor. Revisá tu conexión y probá de nuevo.",
+    "notFound": "No encontramos lo que buscabas.",
+    "server": "Algo falló de nuestro lado. Probá de nuevo en un rato.",
+    "retry": "Reintentar"
+  },
   "lang": {
-    "switchTo": "Cambiar a Español",
-    "switchFrom": "Switch to English"
+    "switch": "Cambiar a inglés"
   },
   "theme": {
+    "button": "COLOR",
+    "bar": "TEMA",
+    "accent": "ACENTO",
     "open": "Color de la página",
     "title": "Color",
     "hue": "Tono",
@@ -43,6 +51,7 @@
     "seek": "Posición de reproducción",
     "playAll": "Reproducir catálogo",
     "pauseAll": "Pausar catálogo",
+    "failed": "No se pudo reproducir este tema.",
     "nowPlaying": "Sonando ahora",
     "loading": "Cargando…"
   },
@@ -81,7 +90,7 @@
     "loading": "Cargando playlists...",
     "none": "No se encontraron playlists.",
     "seoTitle": "Beats",
-    "seoDesc": "Explora beats exclusivos de Niv0. Escucha, alquila y descarga beats premium."
+    "seoDesc": "Escuchá los catálogos de beats de niv0 y elegí tu licencia: común, exclusiva o exclusiva con stems."
   },
   "playlist": {
     "error": "Error: ",

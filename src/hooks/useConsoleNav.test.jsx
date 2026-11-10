@@ -11,12 +11,13 @@ const placeItems = () => {
 };
 
 // Grilla de 3 × 2 (A B C / D E F), cada card de 100 × 100 con 20 de separación.
-const Grid = ({ back = "/home", onPress }) => {
+const Grid = ({ back = "/home", onPress, onOther }) => {
   useConsoleNav({ back });
   const cards = ["A", "B", "C", "D", "E", "F"];
   return (
     <div>
       <input aria-label="search" />
+      <button type="button" onClick={onOther}>other control</button>
       <div role="slider" tabIndex={0} aria-label="seek" aria-valuenow={0} />
       {cards.map((name, i) => (
         <Link
@@ -106,6 +107,17 @@ describe("useConsoleNav", () => {
     document.body.focus();
     key("Enter");
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it("Enter uses the control that has focus, not the item the mouse picked before", () => {
+    const onOther = vi.fn();
+    renderGrid({ onOther });
+    fireEvent.mouseOver(screen.getByText("E"));
+    const other = screen.getByRole("button", { name: "other control" });
+    other.focus();
+    const notPrevented = key("Enter");
+    expect(notPrevented).toBe(true); // the browser presses the focused button itself
+    expect(screen.queryByText("opened card")).not.toBeInTheDocument();
   });
 
   it("Esc goes back", () => {

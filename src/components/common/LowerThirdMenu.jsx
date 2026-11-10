@@ -34,6 +34,8 @@ export const LowerThirdMenu = () => {
 
   useEffect(() => {
     const onKeyDown = (event) => {
+      // Atajos del navegador (Alt + ← es "atrás") y teclas que ya usó otro widget quedan como están.
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented) return;
       const focused = document.activeElement;
       const inMenu = navRef.current?.contains(focused);
       if (!inMenu && isOtherControl(focused)) return;

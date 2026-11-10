@@ -23,6 +23,30 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Design review (Vercel interface guidelines + animation guide), visitor bugs:
+  - Enter presses the control that has focus (language, color, a link) instead of the record or catalog the mouse picked before.
+  - The home menu leaves browser shortcuts alone (Alt + ← goes back) and keys another widget already used.
+  - The language button says what it does in the current language ("Cambiar a inglés" / "Switch to Spanish"); it said the opposite in Spanish.
+  - The NIVØ record crate no longer flickers on hover: hovering only lifts the record; picking it (keyboard or click) opens space.
+  - Header links and the logout button no longer grow on hover and push the language and color buttons; they glow and underline, and show the same on keyboard focus.
+  - Login on phones: the card fits the Google button; the error and "Ingresando…" are announced to screen readers.
+  - The public home's "sign up / log in" line is a link to the login, and is hidden once you're logged in.
+  - A catalog or pack that fails to load keeps the page (header, way back) with a clear translated message and "Reintentar", instead of axios's raw English error.
+  - A track or sample that can't be played says so on its row (or on the browser's screen) instead of being skipped silently.
+  - Esc closes the color window right after clicking its button too (it used to leave the page); "COLOR", "TEMA" and "ACENTO" are translated.
+  - The Beats SEO description no longer says beats can be downloaded.
+- Design review, phones and performance:
+  - On phones the track list and the sample tree grow with the page instead of scrolling inside it, so a swipe that starts on them scrolls the page.
+  - The seek bar can be dragged with a finger or the mouse (it only jumped on click).
+  - On touch screens the row play button, the language and color buttons are 44px and the home menu links are taller.
+  - The next track is not preloaded with data saver on or on a 2g/3g connection.
+  - The ring around the catalog record pauses its 66 animations while it's off screen.
+- Design review, polish:
+  - The "most chosen" license keeps its accent ring and glow when you hover or pick it.
+  - Shared links show a large preview image (`og:image`, `summary_large_image`).
+  - "Volver" buttons show keyboard focus and animate only what changes (no `transition: all`).
+  - The home menu's letter rise is shorter (0.3s, 15ms per letter) because it replays on every arrow; the sample browser's waveform follows the keyboard in 0.15s.
+  - Removed the unused `Samples.css`.
 - Admin panel (from a design review):
   - Every upload works from the keyboard: Tab reaches the drop zones (single file and batch), Enter or Space opens the file picker, and the zone shows a focus ring.
   - Every button, link and field in the admin shows a visible focus ring in the page accent color; fields had none.

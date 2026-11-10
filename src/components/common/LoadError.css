@@ -1,0 +1,40 @@
+.load-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 24px auto;
+  padding: 0 16px;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.load-error p {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.load-error-retry {
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font: 400 18px var(--font-display);
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.load-error-retry:hover,
+.load-error-retry:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  outline: none;
+}
+
+.load-error-retry:active {
+  transform: scale(0.97);
+}

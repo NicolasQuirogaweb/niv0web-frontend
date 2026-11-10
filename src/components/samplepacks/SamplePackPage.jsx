@@ -7,6 +7,7 @@ import { usePlaylistPlayer } from "../../hooks/usePlaylistPlayer";
 import { useConsoleNav } from "../../hooks/useConsoleNav";
 import { PageHeader } from "../common/PageHeader";
 import { PageBackground } from "../common/PageBackground";
+import { LoadError } from "../common/LoadError";
 import { SEO } from "../common/SEO";
 import { PAGE_BACKGROUNDS } from "../../content/backgrounds";
 import { formatBytes, formatPackPrice } from "../../utils/formatPrice";
@@ -76,7 +77,7 @@ export const SamplePackPage = () => {
           ) : notFound ? (
             <p role="alert">{t("samplePacks.notFound")}</p>
           ) : error ? (
-            <p role="alert">{t("samples.error")}{error.message || t("samples.errorFallback")}</p>
+            <LoadError error={error} onRetry={() => run(samplePacksService.getBySlug(slug))} />
           ) : pack ? (
             <div className="pack-page-content">
               <div className="pack-page-head">

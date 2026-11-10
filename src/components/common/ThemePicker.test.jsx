@@ -66,6 +66,27 @@ describe("ThemePicker", () => {
     window.removeEventListener("keydown", onWindowKey);
   });
 
+  it("Esc closes it right after clicking the button too, without leaving the page", () => {
+    const pageSaw = vi.fn();
+    const onWindowKey = (e) => pageSaw(e.defaultPrevented);
+    window.addEventListener("keydown", onWindowKey);
+    render(<ThemePicker />);
+    open();
+    trigger().focus();
+    fireEvent.keyDown(trigger(), { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(pageSaw).toHaveBeenCalledWith(true);
+    window.removeEventListener("keydown", onWindowKey);
+  });
+
+  it("the window's labels are translated", () => {
+    i18n.changeLanguage("es");
+    render(<ThemePicker />);
+    open();
+    expect(screen.getByText(i18n.t("theme.accent"))).toBeInTheDocument();
+    expect(i18n.exists("theme.button", { lng: "en" }) && i18n.exists("theme.bar", { lng: "en" })).toBe(true);
+  });
+
   it("arrows move between the colors without moving the page's own selection", () => {
     render(<ThemePicker />);
     open();
