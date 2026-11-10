@@ -13,11 +13,16 @@
   display: block;
   width: max-content;
   max-width: 100%;
-  color: #fff;
+  /* Blanco de copia de película, no blanco de pantalla, con la halación cálida
+     que hace el film alrededor de lo claro (ADR 0014). */
+  color: var(--film-white);
   text-decoration: none;
   font: 400 clamp(56px, 9vw, 124px) / 0.85 var(--font-display);
   letter-spacing: 2px;
-  text-shadow: 0 4px 30px rgb(0 0 0 / 0.45);
+  text-shadow:
+    0 0 2px rgb(255 235 210 / 0.34),
+    0 0 14px rgb(255 120 60 / 0.24),
+    0 4px 30px rgb(0 0 0 / 0.45);
 }
 
 .lt-title-clip {
@@ -102,7 +107,8 @@
 }
 
 .lt-link[data-active="true"] {
-  color: #fff;
+  color: var(--film-white);
+  text-shadow: 0 0 10px rgb(255 120 60 / 0.24), 0 2px 10px rgb(0 0 0 / 0.6);
 }
 
 .lt-link:focus-visible {
@@ -125,11 +131,44 @@
   }
 }
 
+/* ---- Look de película (ADR 0014) ----
+   Grano: cuatro cuadros de ruido que se alternan a 12 por segundo, como un rollo proyectado.
+   Temblor de proyector (keyframes film-weave en styles/film.css): el menú se corre menos de un píxel,
+   con un parpadeo de luz leve. */
+.lt-title-clip,
+.lt-sub,
+.lt-link {
+  animation: film-grain 0.333s steps(1, end) infinite;
+}
+
+.lt-menu {
+  animation: film-weave 0.667s steps(1, end) infinite;
+}
+
+@keyframes film-grain {
+  0% { filter: url(#film-grain-1); }
+  25% { filter: url(#film-grain-2); }
+  50% { filter: url(#film-grain-3); }
+  75% { filter: url(#film-grain-4); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lt-char,
   .lt-sub::before {
     animation: none;
     transform: none;
+  }
+
+  /* Sin movimiento: el grano queda quieto y el menú no tiembla. */
+  .lt-menu {
+    animation: none;
+  }
+
+  .lt-title-clip,
+  .lt-sub,
+  .lt-link {
+    animation: none;
+    filter: url(#film-grain-1);
   }
 
   .lt-sub::before {

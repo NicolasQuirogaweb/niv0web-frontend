@@ -32,7 +32,7 @@ export const AdminLayout = () => {
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-admin>
       {sidebarOpen && <div className={styles.overlay} onClick={closeSidebar} />}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarExpanded : ""}`}>
         <div className={styles.logo}>
