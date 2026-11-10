@@ -133,7 +133,8 @@
 
 /* ---- Look de película (ADR 0014) ----
    Grano: cuatro cuadros de ruido que se alternan a 12 por segundo, como un rollo proyectado.
-   Temblor de proyector: el menú se corre menos de un píxel, con un parpadeo de luz leve. */
+   Temblor de proyector (keyframes film-weave en styles/film.css): el menú se corre menos de un píxel,
+   con un parpadeo de luz leve. */
 .lt-title-clip,
 .lt-sub,
 .lt-link {
@@ -149,17 +150,6 @@
   25% { filter: url(#film-grain-2); }
   50% { filter: url(#film-grain-3); }
   75% { filter: url(#film-grain-4); }
-}
-
-@keyframes film-weave {
-  0% { transform: translate(0, 0); opacity: 1; }
-  12% { transform: translate(0.6px, -0.3px); }
-  25% { transform: translate(-0.24px, 0); opacity: 0.955; }
-  37% { transform: translate(0, 0.6px); opacity: 1; }
-  50% { transform: translate(-0.48px, 0.18px); }
-  62% { transform: translate(0.3px, 0); opacity: 0.978; }
-  75% { transform: translate(0, -0.42px); opacity: 1; }
-  87% { transform: translate(0.18px, 0.24px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

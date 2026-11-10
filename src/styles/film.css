@@ -1,8 +1,20 @@
 /* Grano de película en las letras de todas las secciones (ADR 0014).
    Los mismos cuatro cuadros de ruido del home (index.html), alternados a 12 por segundo.
-   Va en títulos y textos grandes; el texto de corrido queda limpio para leerse bien.
+   Encima, el temblor de proyector (gate weave): la letra se corre menos de un píxel y la luz
+   parpadea apenas, igual que el menú del home. Va en títulos y textos grandes; el texto de corrido queda limpio para leerse bien.
    Reemplaza a la tinta gastada de los h1: las dos juntas dejaban la letra agujereada.
    El admin queda afuera: es una herramienta, no una pantalla para mirar. */
+
+@keyframes film-weave {
+  0% { transform: translate(0, 0); opacity: 1; }
+  12% { transform: translate(0.6px, -0.3px); }
+  25% { transform: translate(-0.24px, 0); opacity: 0.955; }
+  37% { transform: translate(0, 0.6px); opacity: 1; }
+  50% { transform: translate(-0.48px, 0.18px); }
+  62% { transform: translate(0.3px, 0); opacity: 0.978; }
+  75% { transform: translate(0, -0.42px); opacity: 1; }
+  87% { transform: translate(0.18px, 0.24px); }
+}
 
 @keyframes film-grain {
   0% { filter: url(#film-grain-1); }
@@ -24,7 +36,9 @@
   .license-price,
   .sb-now
 ):not([data-admin] *) {
-  animation: film-grain 0.333s steps(1, end) infinite;
+  animation:
+    film-grain 0.333s steps(1, end) infinite,
+    film-weave 0.667s steps(1, end) infinite;
 }
 
 /* Reducir movimiento: el grano queda quieto. */

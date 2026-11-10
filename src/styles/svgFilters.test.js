@@ -30,7 +30,8 @@ describe("SVG filters", () => {
 
   it("titles and big display text in every section carry the moving film grain, except the admin", () => {
     const film = css.find(({ file }) => file.endsWith("film.css"))?.text ?? "";
-    expect(film).toMatch(/animation:\s*film-grain\b/);
+    expect(film).toMatch(/animation:\s*film-grain\b[^;]*,\s*film-weave\b/); // grano + temblor de proyector
+    expect(film).toMatch(/@keyframes film-weave/);
     // El grano reemplaza a la tinta gastada: las dos juntas dejaban la letra agujereada.
     expect(css.some(({ text }) => text.includes("ink-worn"))).toBe(false);
     for (const target of ["h1", "h2", "h3", ".catalog-record-name", ".license-price", ".about-quote blockquote", ".sb-now"]) {
