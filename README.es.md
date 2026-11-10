@@ -23,7 +23,7 @@ Los catálogos de beats y loops se escuchan como un álbum: botón de play gener
 ## Correrlo en local
 
 ```bash
-cp .env.example .env          # VITE_BACKEND_URL y VITE_GOOGLE_CLIENT_ID
+cp .env.example .env          # VITE_BACKEND_URL y VITE_GOOGLE_CLIENT_ID (VITE_SENTRY_DSN es opcional)
 npm install
 npm run dev                   # http://localhost:3000
 ```

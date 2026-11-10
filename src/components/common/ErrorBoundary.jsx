@@ -1,5 +1,6 @@
 import React from "react";
 import i18n from "i18next";
+import { reportError } from "../../utils/monitoring";
 import "./ErrorBoundary.css";
 
 export class ErrorBoundary extends React.Component {
@@ -14,6 +15,7 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught:", error, info);
+    reportError(error, info);
 
     // After a new deploy, a browser with a stale cached shell (service
     // worker or otherwise) can try to fetch a JS chunk whose hash no

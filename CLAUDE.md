@@ -4,7 +4,7 @@ Context for AI coding agents working in this repo. Humans: see README.md.
 
 ## Commands
 
-- `npm run dev`: Vite dev server on :3000 (fixed port: CORS and the Google client allow it). Needs `.env` with `VITE_BACKEND_URL` and `VITE_GOOGLE_CLIENT_ID`.
+- `npm run dev`: Vite dev server on :3000 (fixed port: CORS and the Google client allow it). Needs `.env` with `VITE_BACKEND_URL` and `VITE_GOOGLE_CLIENT_ID`. `VITE_SENTRY_DSN` is optional and only set in Vercel Production (ADR 0013); read production errors through the Sentry MCP, project `niv0-frontend`.
 - `npm test`: Vitest, runs once and exits. `npm run test:watch` for watch mode.
 - `npm run lint`: `--max-warnings=0`, so a warning fails CI.
 - `npm run build`: production build into `build/` (no source maps, see `vite.config.js`).
