@@ -5,38 +5,84 @@ const ConfirmContext = createContext(null);
 
 export const useConfirm = () => useContext(ConfirmContext);
 
+const CLOSED = { open: false, title: "", message: "", confirmLabel: "", tone: "danger" };
+
+const BUTTON = {
+  padding: "8px 20px", borderRadius: 6,
+  cursor: "pointer", fontSize: 13, fontFamily: "monospace",
+};
+
+const TONES = {
+  danger: { background: "#c62828", border: "none", color: "#fff" },
+  neutral: {
+    background: "var(--color-accent, #f5c26b)", border: "none",
+    color: "var(--color-on-accent, #0d0d0d)",
+  },
+};
+
+/**
+ * confirm(title, message?, { confirmLabel?, tone? }) → Promise<boolean>.
+ * tone "danger" (por defecto, botón rojo "Eliminar") o "neutral" para acciones
+ * que no borran nada (ej. cambiar un rol).
+ */
 export const ConfirmProvider = ({ children }) => {
   const { t } = useTranslation();
-  const [state, setState] = useState({ open: false, title: "", message: "" });
+  const [state, setState] = useState(CLOSED);
   const resolveRef = useRef(null);
+  const dialogRef = useRef(null);
+  const cancelRef = useRef(null);
 
-  const confirm = useCallback((title, message) => {
+  const confirm = useCallback((title, message, options = {}) => {
     return new Promise((resolve) => {
       resolveRef.current = resolve;
-      setState({ open: true, title, message: message || t("admin.confirm.cancel") });
+      setState({
+        open: true,
+        title,
+        message: message || "",
+        confirmLabel: options.confirmLabel || "",
+        tone: options.tone === "neutral" ? "neutral" : "danger",
+      });
     });
-  }, [t]);
-
-  const handleConfirm = useCallback(() => {
-    resolveRef.current?.(true);
-    setState({ open: false, title: "", message: "" });
   }, []);
 
-  const handleCancel = useCallback(() => {
-    resolveRef.current?.(false);
-    setState({ open: false, title: "", message: "" });
+  const close = useCallback((result) => {
+    resolveRef.current?.(result);
+    resolveRef.current = null;
+    setState(CLOSED);
   }, []);
+  const handleConfirm = useCallback(() => close(true), [close]);
+  const handleCancel = useCallback(() => close(false), [close]);
 
-  // Al abrir, el foco va a "Cancelar" (la opción segura) y Esc cierra.
-  const cancelRef = useRef(null);
+  // Al abrir, el foco va a "Cancelar" (la opción segura), Esc cierra y Tab no sale
+  // del diálogo. Al cerrar, el foco vuelve al botón que lo abrió.
   useEffect(() => {
     if (!state.open) return;
+    const opener = document.activeElement;
     cancelRef.current?.focus();
     const onKey = (e) => {
-      if (e.key === "Escape") handleCancel();
+      if (e.key === "Escape") {
+        handleCancel();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focusables = Array.from(dialogRef.current.querySelectorAll("button:not([disabled])"));
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const inside = dialogRef.current.contains(document.activeElement);
+      if (e.shiftKey && (document.activeElement === first || !inside)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !inside)) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (opener && typeof opener.focus === "function" && document.contains(opener)) opener.focus();
+    };
   }, [state.open, handleCancel]);
 
   return (
@@ -53,10 +99,11 @@ export const ConfirmProvider = ({ children }) => {
           }}
         >
           <div
+            ref={dialogRef}
             role="alertdialog"
             aria-modal="true"
             aria-labelledby="confirm-title"
-            aria-describedby="confirm-message"
+            aria-describedby={state.message ? "confirm-message" : undefined}
             onClick={(e) => e.stopPropagation()}
             style={{
               background: "#111", border: "1px solid #333", borderRadius: 8,
@@ -64,36 +111,38 @@ export const ConfirmProvider = ({ children }) => {
               boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
             }}
           >
-            <p id="confirm-title" style={{ color: "#fff", margin: "0 0 8px", fontSize: 15, fontWeight: "bold" }}>
+            <h2 id="confirm-title" style={{ color: "#fff", margin: "0 0 8px", fontSize: 15, fontWeight: "bold", fontFamily: "monospace", letterSpacing: "normal" }}>
               {state.title}
-            </p>
-            <p id="confirm-message" style={{ color: "#aaa", margin: "0 0 20px", fontSize: 13 }}>
-              {state.message}
-            </p>
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            </h2>
+            {state.message && (
+              <p id="confirm-message" style={{ color: "#aaa", margin: "0 0 20px", fontSize: 13 }}>
+                {state.message}
+              </p>
+            )}
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: state.message ? 0 : 20 }}>
               <button
                 ref={cancelRef}
+                type="button"
+                className="niv0-confirm-btn"
                 onClick={handleCancel}
-                style={{
-                  background: "transparent", border: "1px solid #333",
-                  color: "#aaa", padding: "8px 20px", borderRadius: 6,
-                  cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-                }}
+                style={{ ...BUTTON, background: "transparent", border: "1px solid #333", color: "#aaa" }}
               >
                 {t("admin.confirm.cancel")}
               </button>
               <button
+                type="button"
+                className="niv0-confirm-btn"
+                data-tone={state.tone}
                 onClick={handleConfirm}
-                style={{
-                  background: "#c62828", border: "none",
-                  color: "#fff", padding: "8px 20px", borderRadius: 6,
-                  cursor: "pointer", fontSize: 13, fontFamily: "monospace",
-                }}
+                style={{ ...BUTTON, ...TONES[state.tone] }}
               >
-                {t("admin.confirm.confirm")}
+                {state.confirmLabel || t("admin.confirm.confirm")}
               </button>
             </div>
           </div>
+          <style>{`
+            .niv0-confirm-btn:focus-visible { outline: 2px solid var(--color-accent, #f5c26b); outline-offset: 2px; }
+          `}</style>
         </div>
       )}
     </ConfirmContext.Provider>

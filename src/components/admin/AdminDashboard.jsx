@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
@@ -12,19 +12,28 @@ export const AdminDashboard = () => {
   const { t } = useTranslation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  // A failed load shows an error with Retry, never cards with 0 that look like real data.
+  const [failed, setFailed] = useState(false);
   const toast = useToast();
 
-  useEffect(() => {
-    const ctrl = new AbortController();
-    adminService.dashboard(ctrl.signal)
+  const load = useCallback((signal) => {
+    setLoading(true);
+    setFailed(false);
+    adminService.dashboard(signal)
       .then((res) => setStats(res.data))
       .catch((err) => {
         if (isAbortError(err)) return;
+        setFailed(true);
         toast.error(err.response?.data?.message || t("admin.toast.errorLoading", { name: t("admin.dashboard.title") }));
       })
       .finally(() => setLoading(false));
-    return () => ctrl.abort();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    load(ctrl.signal);
+    return () => ctrl.abort();
+  }, [load]);
 
   const cards = [
     { label: t("admin.dashboard.cardCatalogsBeats"), value: stats?.beatPlaylists, path: "/admin/playlists", color: "#7c6ff0" },
@@ -51,6 +60,11 @@ export const AdminDashboard = () => {
               <SkeletonCard />
             </div>
           ))}
+        </div>
+      ) : failed ? (
+        <div className={styles.dashboardError}>
+          <p>{t("admin.dashboard.loadError")}</p>
+          <button type="button" onClick={() => load()} className={styles.btnSecondary}>{t("admin.dashboard.retry")}</button>
         </div>
       ) : (
         <div className={styles.dashboardGrid}>

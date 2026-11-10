@@ -3,11 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
+import { useUnsavedChanges } from "../../hooks/useUnsavedChanges";
 import { AdminUploader } from "./AdminUploader";
+import { Spinner, SpinnerStyles } from "./Spinner";
+import { fieldA11y, FieldError, errorId, focusFirstInvalid } from "./formA11y";
 import { isAbortError } from "../../utils/isAbortError";
 import styles from "./admin.module.css";
 
-const INPUT_ERROR = { border: "1px solid #c62828" };
+const EMPTY = { title: "", description: "", imageUrl: "", backgroundVideo: "" };
+const sameForm = (a, b) => Object.keys(a).every((k) => a[k] === b[k]);
 
 export const AdminPlaylistForm = ({ type = "beats" }) => {
   const { t } = useTranslation();
@@ -15,11 +19,12 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
   const navigate = useNavigate();
   const toast = useToast();
   const isEdit = !!id;
-  const [form, setForm] = useState({
-    title: "", description: "", imageUrl: "", backgroundVideo: "",
-  });
+  const [form, setForm] = useState(EMPTY);
+  // What the form held when it loaded: Cancel only asks when form differs from it.
+  const [initialForm, setInitialForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
+  const confirmDiscard = useUnsavedChanges(!saving && !sameForm(form, initialForm));
 
   const redirectBase = type === "loops" ? "/admin/loops" : "/admin/playlists";
   const itemLabel = type === "loops" ? t("admin.loops.catalogLabel") : t("admin.playlists.catalogLabel");
@@ -30,7 +35,15 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     adminService.playlists.list(ctrl.signal)
       .then((res) => {
         const item = res.data.find((p) => p._id === id);
-        if (item) setForm({ title: item.title, description: item.description, imageUrl: item.imageUrl, backgroundVideo: item.backgroundVideo || "" });
+        if (!item) return;
+        const loaded = {
+          title: item.title ?? "",
+          description: item.description ?? "",
+          imageUrl: item.imageUrl ?? "",
+          backgroundVideo: item.backgroundVideo || "",
+        };
+        setForm(loaded);
+        setInitialForm(loaded);
       })
       .catch((err) => {
         if (isAbortError(err)) return;
@@ -39,10 +52,11 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     return () => ctrl.abort();
   }, [id, isEdit, toast, t, itemLabel]);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+  const set = (name, value) => {
+    setForm((f) => ({ ...f, [name]: value }));
+    setErrors((e) => ({ ...e, [name]: "" }));
   };
+  const handleChange = (e) => set(e.target.name, e.target.value);
 
   const validate = () => {
     const errs = {};
@@ -53,12 +67,17 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
     if (!form.imageUrl.trim()) errs.imageUrl = t("admin.validation.imageRequired");
     if (!form.backgroundVideo.trim()) errs.backgroundVideo = t("admin.validation.backgroundRequired");
     setErrors(errs);
-    return Object.keys(errs).length === 0;
+    return errs;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    const formEl = e.currentTarget;
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      focusFirstInvalid(formEl, errs);
+      return;
+    }
     setSaving(true);
     try {
       const data = { ...form, type };
@@ -68,50 +87,57 @@ export const AdminPlaylistForm = ({ type = "beats" }) => {
       navigate(redirectBase);
     } catch (err) {
       toast.error(err.response?.data?.message || t("admin.toast.errorSaving"));
-    } finally {
       setSaving(false);
     }
   };
 
+  const handleCancel = async () => {
+    if (await confirmDiscard()) navigate(redirectBase);
+  };
+
   const typeLabel = type === "loops" ? t("admin.loops.title") : t("admin.beats.title");
+  const inputClass = (name, base = styles.input) => `${base} ${errors[name] ? styles.inputError : ""}`;
 
   return (
     <div className={styles.formContainer}>
+      <SpinnerStyles />
       <h2 className={styles.pageTitleMb}>
         {isEdit ? t("admin.playlists.editTitle", { type: typeLabel }) : t("admin.playlists.newTitle", { type: typeLabel })}
       </h2>
-      <form onSubmit={handleSubmit} className={styles.formStack}>
+      <form onSubmit={handleSubmit} noValidate className={styles.formStack}>
         <div>
           <label htmlFor="playlist-title" className={styles.label}>{t("admin.common.titleRequired")}</label>
-          <input id="playlist-title" name="title" value={form.title} onChange={handleChange} className={styles.input}
-            style={errors.title ? INPUT_ERROR : undefined}
-            placeholder={t("admin.playlists.titleExample")} />
-          {errors.title && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.title}</p>}
+          <input {...fieldA11y("playlist", "title", errors)} value={form.title} onChange={handleChange}
+            className={inputClass("title")} placeholder={t("admin.playlists.titleExample")} />
+          <FieldError prefix="playlist" name="title" errors={errors} className={styles.fieldError} />
         </div>
         <div>
           <label htmlFor="playlist-description" className={styles.label}>{t("admin.common.descriptionRequired")}</label>
-          <textarea id="playlist-description" name="description" value={form.description} onChange={handleChange} className={styles.textareaLg}
-            style={errors.description ? INPUT_ERROR : undefined}
-            placeholder={t("admin.playlists.catalogDescription")} />
-          {errors.description && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.description}</p>}
+          <textarea {...fieldA11y("playlist", "description", errors)} value={form.description} onChange={handleChange}
+            className={inputClass("description", styles.textareaLg)} placeholder={t("admin.playlists.catalogDescription")} />
+          <FieldError prefix="playlist" name="description" errors={errors} className={styles.fieldError} />
         </div>
         <div>
-          <label className={styles.label}>{t("admin.common.coverImageRequired")}</label>
-          <AdminUploader folder="images" accept="image/*" onUpload={(url) => { setForm({ ...form, imageUrl: url }); setErrors({ ...errors, imageUrl: "" }); }} />
+          <label htmlFor="playlist-imageUrl" className={styles.label}>{t("admin.common.coverImageRequired")}</label>
+          <AdminUploader id="playlist-imageUrl" name="imageUrl" invalid={!!errors.imageUrl}
+            describedBy={errors.imageUrl ? errorId("playlist", "imageUrl") : undefined}
+            folder="images" accept="image/*" onUpload={(url) => set("imageUrl", url)} />
           {form.imageUrl && <p className={styles.uploadSuccess}>{t("admin.common.imageUploaded")}</p>}
-          {errors.imageUrl && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.imageUrl}</p>}
+          <FieldError prefix="playlist" name="imageUrl" errors={errors} className={styles.fieldError} />
         </div>
         <div>
-          <label className={styles.label}>{t("admin.common.backgroundMediaRequired")}</label>
-          <AdminUploader folder="videos" accept="video/*,image/*,.jfif" onUpload={(url) => { setForm({ ...form, backgroundVideo: url }); setErrors({ ...errors, backgroundVideo: "" }); }} />
+          <label htmlFor="playlist-backgroundVideo" className={styles.label}>{t("admin.common.backgroundMediaRequired")}</label>
+          <AdminUploader id="playlist-backgroundVideo" name="backgroundVideo" invalid={!!errors.backgroundVideo}
+            describedBy={errors.backgroundVideo ? errorId("playlist", "backgroundVideo") : undefined}
+            folder="videos" accept="video/*,image/*,.jfif" onUpload={(url) => set("backgroundVideo", url)} />
           {form.backgroundVideo && <p className={styles.uploadSuccess}>{t("admin.common.backgroundUploaded")}</p>}
-          {errors.backgroundVideo && <p style={{ color: "#c62828", fontSize: 12, margin: "4px 0 0" }}>{errors.backgroundVideo}</p>}
+          <FieldError prefix="playlist" name="backgroundVideo" errors={errors} className={styles.fieldError} />
         </div>
         <div className={styles.formActions} style={{ marginTop: 8 }}>
-          <button type="submit" disabled={saving} className={styles.btnPrimary} style={{ opacity: saving ? 0.6 : 1 }}>
-            {saving ? t("admin.common.saving") : isEdit ? t("admin.common.update") : t("admin.playlists.create")}
+          <button type="submit" disabled={saving} className={styles.btnPrimary}>
+            {saving ? <><Spinner size={14} /> {t("admin.common.saving")}</> : isEdit ? t("admin.common.update") : t("admin.playlists.create")}
           </button>
-          <button type="button" onClick={() => navigate(redirectBase)} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+          <button type="button" onClick={handleCancel} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
         </div>
       </form>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { adminService } from "../../services/api";
 import { useToast } from "../../hooks/useToast";
+import { useConfirm } from "../../hooks/useConfirm";
 import { packErrorText } from "./packErrors";
 import styles from "./admin.module.css";
 
@@ -11,6 +12,8 @@ export const AdminPackFolders = ({ pack, samplesByFolder = {}, onChange }) => {
   const [newName, setNewName] = useState("");
   const [editing, setEditing] = useState(null);
   const [editName, setEditName] = useState("");
+  const [deleting, setDeleting] = useState(null);
+  const confirm = useConfirm();
   const folders = pack.folders || [];
 
   const run = async (call, successKey) => {
@@ -33,6 +36,18 @@ export const AdminPackFolders = ({ pack, samplesByFolder = {}, onChange }) => {
 
   const saveRename = async (from) => {
     if (await run(() => adminService.samplepacks.renameFolder(pack._id, from, editName.trim()), "admin.samplePacks.folders.renamed")) setEditing(null);
+  };
+
+  // Destructive: asks first, and the button stays disabled while the request runs.
+  const removeFolder = async (name) => {
+    const ok = await confirm(
+      t("admin.samplePacks.folders.deleteTitle", { name }),
+      t("admin.samplePacks.folders.deleteMessage")
+    );
+    if (!ok) return;
+    setDeleting(name);
+    await run(() => adminService.samplepacks.deleteFolder(pack._id, name), "admin.samplePacks.folders.deleted");
+    setDeleting(null);
   };
 
   const move = (index, delta) => {
@@ -67,7 +82,8 @@ export const AdminPackFolders = ({ pack, samplesByFolder = {}, onChange }) => {
                 <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`${t("admin.samplePacks.folders.up")} ${name}`} className={styles.btnSmall}>↑</button>
                 <button type="button" onClick={() => move(i, 1)} disabled={i === folders.length - 1} aria-label={`${t("admin.samplePacks.folders.down")} ${name}`} className={styles.btnSmall}>↓</button>
                 <button type="button" onClick={() => { setEditing(name); setEditName(name); }} className={styles.btnSmall}>{t("admin.samplePacks.folders.rename")}</button>
-                <button type="button" disabled={count > 0} onClick={() => run(() => adminService.samplepacks.deleteFolder(pack._id, name), "admin.samplePacks.folders.deleted")}
+                <button type="button" disabled={count > 0 || deleting === name} onClick={() => removeFolder(name)}
+                  title={count > 0 ? t("admin.samplePacks.folders.notEmpty") : undefined}
                   className={`${styles.btnSmall} ${styles.btnDanger}`}>{t("admin.samplePacks.folders.delete")}</button>
               </>
             )}
