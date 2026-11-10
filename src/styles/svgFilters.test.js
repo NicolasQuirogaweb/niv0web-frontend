@@ -28,6 +28,19 @@ describe("SVG filters", () => {
     expect(missing).toEqual([]);
   });
 
+  it("titles and big display text in every section carry the moving film grain, except the admin", () => {
+    const film = css.find(({ file }) => file.endsWith("film.css"))?.text ?? "";
+    expect(film).toMatch(/animation:\s*film-grain\b/);
+    // El grano reemplaza a la tinta gastada: las dos juntas dejaban la letra agujereada.
+    expect(css.some(({ text }) => text.includes("ink-worn"))).toBe(false);
+    for (const target of ["h1", "h2", "h3", ".catalog-record-name", ".license-price", ".about-quote blockquote", ".sb-now"]) {
+      expect(film).toContain(target);
+    }
+    expect(film).toContain(":not([data-admin] *)");
+    expect(readFileSync(join(root, "src/components/admin/AdminLayout.jsx"), "utf8")).toContain("data-admin");
+    expect(readFileSync(join(root, "src/index.jsx"), "utf8")).toContain('import "./styles/film.css"');
+  });
+
   it("the home menu letters carry the moving film grain", () => {
     const menu = css.find(({ file }) => file.endsWith("LowerThirdMenu.css")).text;
     expect(menu).toMatch(/animation:\s*film-grain/);

@@ -1,0 +1,48 @@
+/* Grano de película en las letras de todas las secciones (ADR 0014).
+   Los mismos cuatro cuadros de ruido del home (index.html), alternados a 12 por segundo.
+   Va en títulos y textos grandes; el texto de corrido queda limpio para leerse bien.
+   Reemplaza a la tinta gastada de los h1: las dos juntas dejaban la letra agujereada.
+   El admin queda afuera: es una herramienta, no una pantalla para mirar. */
+
+@keyframes film-grain {
+  0% { filter: url(#film-grain-1); }
+  25% { filter: url(#film-grain-2); }
+  50% { filter: url(#film-grain-3); }
+  75% { filter: url(#film-grain-4); }
+}
+
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .about-quote blockquote,
+  .upcoming-countdown b,
+  .catalog-record-name,
+  .license-price,
+  .sb-now
+):not([data-admin] *) {
+  animation: film-grain 0.333s steps(1, end) infinite;
+}
+
+/* Reducir movimiento: el grano queda quieto. */
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .about-quote blockquote,
+    .upcoming-countdown b,
+    .catalog-record-name,
+    .license-price,
+    .sb-now
+  ):not([data-admin] *) {
+    animation: none;
+    filter: url(#film-grain-1);
+  }
+}

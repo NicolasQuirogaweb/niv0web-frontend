@@ -9,15 +9,17 @@ The big titles already had worn ink (ADR 0006), but it was a still texture. Nico
 ## Decision
 
 - **Grain.** SVG filters in `index.html` (`film-grain-1` to `-4`) multiply each letter pixel by a noise value, so every speck ends up between 60% and 140% of its brightness: light and dark grain, only inside the letters. The home menu (`LowerThirdMenu.css`) alternates the four frames at 12 per second, like a projected reel.
-- **Titles elsewhere.** `h1` and `h2` use `film-grain-soft` (weaker, still), on top of the worn ink on `h1`.
+- **Every section.** `src/styles/film.css` gives the same moving grain to all headings (`h1`–`h6`) and the big display text that isn't a heading: the About quote and countdown, the record label name in the catalog consoles, license prices and the sample browser's "now playing". Nicolás asked for it after seeing the home.
+- **Replaces the worn ink.** On top of the worn ink of ADR 0006 the grain left the letters full of holes, so `#ink-worn` and `#ink-worn-soft` are gone; the grain is the texture now.
+- **Not in the admin.** `AdminLayout` marks its wrapper with `data-admin` and the rule skips it: the admin is a tool, not a screen to look at.
 - **Film print white and halation.** The big home title uses `--film-white` (`#f6f1e8`) and a soft warm glow, the halo film makes around bright areas. The active home link gets the same glow.
 - **Gate weave and flicker.** The home menu moves under a pixel and its brightness dips 2–5%, stepped at 12 fps.
 - **Reduced motion.** With `prefers-reduced-motion`, the grain stays still and the menu doesn't move.
 - **Not on running text.** Descriptions and the story keep plain text: grain there hurts reading.
 
-`src/styles/svgFilters.test.js` checks that every `url(#id)` in the CSS exists in `index.html`; a missing id makes the browser drop the filter silently.
+`src/styles/svgFilters.test.js` checks that every `url(#id)` in the CSS exists in `index.html` (a missing id makes the browser drop the filter silently), that the home and the rest of the sections use the moving grain, and that the admin is excluded.
 
 ## Consequences
 
-- Filters repaint the menu letters 12 times per second. It's a small area; if a phone struggles, the first lever is to stop the grain animation on `pointer: coarse`.
+- Filters repaint the textured letters 12 times per second. They are titles, a small share of each page; if a phone struggles, the first lever is to stop the grain animation on `pointer: coarse` (it stays, still).
 - Changing the intensity means changing `k1`/`k2` in the filters (`k1 = 2a`, `k2 = 1 − a`, with `a = 0.4` now).

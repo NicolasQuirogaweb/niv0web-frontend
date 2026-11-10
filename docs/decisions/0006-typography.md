@@ -26,7 +26,7 @@ Two typefaces, each with a fixed job, through two tokens in `src/styles/tokens.c
 
 Details of the vintage look:
 
-- **Worn ink.** Two SVG filters live once in `index.html`: `#ink-worn` (edges a little rough plus small gaps in the ink) on every `h1`, and `#ink-worn-soft` (rough edges only) on the home menu bars that aren't selected. Small text never gets the gaps, so it stays legible.
+- **Worn ink** (replaced by film grain in ADR 0014). Two SVG filters live once in `index.html`: `#ink-worn` (edges a little rough plus small gaps in the ink) on every `h1`, and `#ink-worn-soft` (rough edges only) on the home menu bars that aren't selected. Small text never gets the gaps, so it stays legible.
 - **One weight.** Bebas Neue has a single weight, so `html` sets `font-synthesis: none`: a leftover `font-weight: 700` renders regular instead of a smeared fake bold.
 - **The zero.** In Bebas Neue the zero and the O are the same shape, so "niv0" read "nivo". The `--font-display` stack starts with Red Hat Mono loaded with `text=0`, a subset that holds only the digit 0 with a slash. Every 0 in display text, the brand name and prices included, gets the slash; every other character falls through to Bebas Neue.
 - Sizes went up where Orbitron was small (menu bars, card titles, badges, the homes' call to action), because Bebas Neue is narrow.
