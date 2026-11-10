@@ -110,25 +110,7 @@
 }
 
 .prod-mix-master-section .back-to-catalogue-btn {
-  padding: 12px 32px;
   margin: 10px auto 50px;
-  color: var(--color-accent);
-  border: 2px solid var(--color-accent);
-  border-radius: 8px;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  box-shadow: 0 0 8px rgb(var(--color-accent-rgb) / 0.4), 0 0 20px rgb(var(--color-accent-rgb) / 0.15);
-  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
-}
-
-.prod-mix-master-section .back-to-catalogue-btn:hover,
-.prod-mix-master-section .back-to-catalogue-btn:focus-visible {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8), 0 0 40px rgb(var(--color-accent-rgb) / 0.3);
-  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
@@ -154,10 +136,5 @@
 
   .prodmix-player iframe {
     height: 380px;
-  }
-
-  .prod-mix-master-section .back-to-catalogue-btn {
-    padding: 10px 24px;
-    font-size: 14px;
   }
 }
