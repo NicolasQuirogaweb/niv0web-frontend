@@ -150,6 +150,17 @@ describe("usePlaylistPlayer", () => {
       expect(first.paused).toBe(true);
     });
 
+    it.each([["data saver", { saveData: true }], ["a slow connection", { effectiveType: "3g" }]])(
+      "does not preload the next track with %s",
+      (_label, connection) => {
+        Object.defineProperty(navigator, "connection", { value: connection, configurable: true });
+        render(<Harness autoAdvance />);
+        fireEvent.click(screen.getByText("all"));
+        expect(HTMLMediaElement.prototype.load).not.toHaveBeenCalled();
+        delete navigator.connection;
+      }
+    );
+
     it("shows a loading state until the new track actually starts", () => {
       HTMLMediaElement.prototype.play.mockRestore();
       mockPlay({ emitPlaying: false });

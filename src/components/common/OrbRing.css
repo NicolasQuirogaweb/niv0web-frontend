@@ -1,5 +1,16 @@
 /* Anillo y escala alrededor de un círculo (ADR 0010). El contenedor es position: relative
    y define --ring-r (radio del anillo) y --ticks-out (cuánto sobresale la escala). */
+.orb-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orb-wrap[data-paused] .orb-ticks,
+.orb-wrap[data-paused] .orb-ring > i > b {
+  animation-play-state: paused;
+}
+
 .orb-ticks {
   position: absolute;
   inset: var(--ticks-out, -60px);

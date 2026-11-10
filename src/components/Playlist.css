@@ -415,8 +415,9 @@
     height: 48px;
   }
 
+  /* En el celular la lista crece con la página: un scroll adentro de otro atrapa el dedo. */
   .track-box {
-    max-height: 55vh;
+    max-height: none;
     padding: 6px;
   }
 
