@@ -35,6 +35,14 @@
   box-shadow: 0 0 0 1px var(--color-accent), var(--glow-accent);
 }
 
+/* La destacada conserva su anillo al elegirla, y suma la elevación de las demás. */
+.license-card--featured:hover,
+.license-card--featured:focus-within,
+.license-card--featured[data-nav-active="true"] {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent), var(--glow-accent), var(--shadow-lift);
+}
+
 .license-badge {
   position: absolute;
   top: -12px;

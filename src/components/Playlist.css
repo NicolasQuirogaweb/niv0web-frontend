@@ -196,10 +196,11 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   box-shadow: 0 0 8px rgb(var(--color-accent-rgb) / 0.4), 0 0 20px rgb(var(--color-accent-rgb) / 0.15);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
-.back-to-catalogue-btn:hover {
+.back-to-catalogue-btn:hover,
+.back-to-catalogue-btn:focus-visible {
   background: var(--color-accent);
   color: #0d0d0d;
   box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8), 0 0 40px rgb(var(--color-accent-rgb) / 0.3);

@@ -120,7 +120,7 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   box-shadow: 0 0 8px rgb(var(--color-accent-rgb) / 0.4), 0 0 20px rgb(var(--color-accent-rgb) / 0.15);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
 .prod-mix-master-section .back-to-catalogue-btn:hover,

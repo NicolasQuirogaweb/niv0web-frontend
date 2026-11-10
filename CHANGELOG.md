@@ -41,6 +41,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
   - On touch screens the row play button, the language and color buttons are 44px and the home menu links are taller.
   - The next track is not preloaded with data saver on or on a 2g/3g connection.
   - The ring around the catalog record pauses its 66 animations while it's off screen.
+- Design review, polish:
+  - The "most chosen" license keeps its accent ring and glow when you hover or pick it.
+  - Shared links show a large preview image (`og:image`, `summary_large_image`).
+  - "Volver" buttons show keyboard focus and animate only what changes (no `transition: all`).
+  - The home menu's letter rise is shorter (0.3s, 15ms per letter) because it replays on every arrow; the sample browser's waveform follows the keyboard in 0.15s.
+  - Removed the unused `Samples.css`.
 - Phones (found in a 390px review with Playwright):
   - The page color window opened about 75px off the left edge of the screen. It now moves back inside.
   - Pages taller than the screen showed white when stretched or while loading; the page underneath is dark now.

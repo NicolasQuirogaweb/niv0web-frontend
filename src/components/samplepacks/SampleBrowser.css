@@ -674,7 +674,7 @@
 /* ── Movimiento ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .sb-wave i {
-    transition: height var(--dur-med) var(--ease-out), background-color 0.15s linear, box-shadow 0.15s linear;
+    transition: height 0.15s var(--ease-out), background-color 0.15s linear, box-shadow 0.15s linear;
   }
 
   .sb-playhead {

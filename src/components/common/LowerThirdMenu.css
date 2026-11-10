@@ -30,8 +30,9 @@
   display: inline-block;
   white-space: pre;
   transform: translateY(105%);
-  animation: lt-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: calc(var(--i) * 25ms);
+  /* Corta: se repite con cada flecha, y con el teclado lo lento se siente trabado. */
+  animation: lt-rise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 15ms);
 }
 
 @keyframes lt-rise {
