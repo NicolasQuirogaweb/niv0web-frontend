@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 export const formatTime = (s) => {
@@ -23,10 +24,27 @@ export const AudioPlayer = ({ isActive, isPlaying, isLoading, currentTime, durat
   const time = isActive ? currentTime : 0;
   const total = isActive ? duration : 0;
 
-  const handleSeek = (e) => {
-    if (!total) return;
+  const dragging = useRef(false);
+
+  const seekTo = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    onSeek(((e.clientX - rect.left) / rect.width) * total);
+    const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    onSeek(ratio * total);
+  };
+
+  // Tocar salta ahí; arrastrar (dedo o mouse) va siguiendo hasta soltar.
+  const onPointerDown = (e) => {
+    if (!total) return;
+    dragging.current = true;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+    seekTo(e);
+  };
+  const onPointerMove = (e) => {
+    if (dragging.current && total) seekTo(e);
+  };
+  const endDrag = (e) => {
+    dragging.current = false;
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
   };
 
   // Flechas para adelantar/atrasar 5s desde el teclado.
@@ -56,7 +74,10 @@ export const AudioPlayer = ({ isActive, isPlaying, isLoading, currentTime, durat
       </button>
       <div
         className="audio-progress"
-        onClick={handleSeek}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
         onKeyDown={handleSeekKey}
         role="slider"
         tabIndex={isActive ? 0 : -1}

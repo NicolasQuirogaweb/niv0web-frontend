@@ -58,13 +58,16 @@ export const ThemePicker = () => {
     };
   }, [open]);
 
-  // Las teclas del panel son del panel: que la navegación de la página no se mueva ni vuelva atrás.
-  const onPanelKey = (e) => {
-    if (e.key === "Escape") {
+  // Esc cierra desde el botón o desde la ventana, sin que la página vuelva atrás.
+  const onWrapKey = (e) => {
+    if (e.key === "Escape" && open) {
       e.preventDefault();
       close(true);
-      return;
     }
+  };
+
+  // Las flechas del panel son del panel: que la navegación de la página no se mueva.
+  const onPanelKey = (e) => {
     const step = STEP[e.key];
     const swatches = [...e.currentTarget.querySelectorAll(".tp-swatch")];
     const at = swatches.indexOf(e.target);
@@ -77,7 +80,7 @@ export const ThemePicker = () => {
   const preset = ACCENT_PRESETS.find((p) => p.hue === hue);
 
   return (
-    <div className="tp" ref={wrapRef}>
+    <div className="tp" ref={wrapRef} onKeyDown={onWrapKey}>
       <button
         ref={triggerRef}
         type="button"
@@ -89,7 +92,7 @@ export const ThemePicker = () => {
         onClick={() => setOpen((o) => !o)}
       >
         <i className="tp-led" aria-hidden="true" />
-        <span aria-hidden="true">COLOR</span>
+        <span aria-hidden="true">{t("theme.button")}</span>
       </button>
       {open && (
         <div ref={panelRef} id={panelId} className="tp-panel" role="dialog" aria-label={t("theme.title")} onKeyDown={onPanelKey}>
@@ -97,7 +100,7 @@ export const ThemePicker = () => {
             <b />
             <b />
             <b />
-            <span>THEME</span>
+            <span>{t("theme.bar")}</span>
           </div>
           <div className="tp-body">
             <div className="tp-swatches">
@@ -124,7 +127,7 @@ export const ThemePicker = () => {
               onChange={(e) => choose(Number(e.target.value))}
             />
             <div className="tp-readout" aria-live="polite">
-              <span>ACCENT</span>
+              <span>{t("theme.accent")}</span>
               <em>{preset ? t(`theme.presets.${preset.id}`) : `${hue}°`}</em>
             </div>
           </div>

@@ -60,6 +60,7 @@ const Harness = ({ autoAdvance, tracks = TRACKS }) => {
   return (
     <div>
       <p data-testid="state">{`${p.currentIndex ?? "none"}|${p.isPlaying ? "playing" : "stopped"}|${p.isLoading ? "loading" : "ready"}`}</p>
+      <p data-testid="failed">{[...p.failed].join(",")}</p>
       <button onClick={p.togglePlayAll}>all</button>
       <button onClick={() => p.toggleTrack(2)}>third</button>
     </div>
@@ -149,6 +150,17 @@ describe("usePlaylistPlayer", () => {
       expect(first.paused).toBe(true);
     });
 
+    it.each([["data saver", { saveData: true }], ["a slow connection", { effectiveType: "3g" }]])(
+      "does not preload the next track with %s",
+      (_label, connection) => {
+        Object.defineProperty(navigator, "connection", { value: connection, configurable: true });
+        render(<Harness autoAdvance />);
+        fireEvent.click(screen.getByText("all"));
+        expect(HTMLMediaElement.prototype.load).not.toHaveBeenCalled();
+        delete navigator.connection;
+      }
+    );
+
     it("shows a loading state until the new track actually starts", () => {
       HTMLMediaElement.prototype.play.mockRestore();
       mockPlay({ emitPlaying: false });
@@ -177,6 +189,24 @@ describe("usePlaylistPlayer", () => {
       fireEvent.click(screen.getByText("all"));
       fire("error");
       expect(state()).toBe("1|playing|ready");
+    });
+
+    it("remembers which tracks failed, so the list can say so", () => {
+      render(<Harness autoAdvance />);
+      fireEvent.click(screen.getByText("all"));
+      fire("error");
+      expect(screen.getByTestId("failed").textContent).toBe("0");
+    });
+
+    it("a single track that fails (no auto-advance) stops loading instead of spinning forever", () => {
+      HTMLMediaElement.prototype.play.mockRestore();
+      mockPlay({ emitPlaying: false });
+      render(<Harness />);
+      fireEvent.click(screen.getByText("third"));
+      expect(state()).toBe("2|playing|loading");
+      fire("error");
+      expect(state()).toBe("2|stopped|ready");
+      expect(screen.getByTestId("failed").textContent).toBe("2");
     });
   });
 

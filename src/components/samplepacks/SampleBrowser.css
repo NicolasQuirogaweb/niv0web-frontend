@@ -655,8 +655,9 @@
     font-size: 16px; /* sin zoom automático en iOS */
   }
 
+  /* En el celular el árbol crece con la página: un scroll adentro de otro atrapa el dedo. */
   .sb-scroll {
-    max-height: 62vh;
+    max-height: none;
   }
 
   .sb-sample > .sb-row {
@@ -715,4 +716,8 @@
 @keyframes sb-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }
+}
+
+.sb-failed {
+  color: #ff9a8a;
 }
