@@ -1,0 +1,31 @@
+/* "Cerrar sesión" de las páginas privadas: igual que el del home logueado
+   (HomeLogued.css, .home-header-row h5 button). El grano y el temblor de
+   película vienen de styles/film.css. */
+.header-logout {
+  all: unset;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  /* El del home hereda 0.04em del h5 (13.28px): 0.53px. */
+  letter-spacing: 0.038em;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: background-size 0.3s var(--ease-out), text-shadow 0.3s var(--ease-out);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
+}
+
+.header-logout:hover,
+.header-logout:focus-visible {
+  text-shadow: 0 0 12px rgb(var(--color-accent-rgb) / 0.5);
+  background-size: 100% 2px;
+}
+
+@media (max-width: 768px) {
+  .header-logout {
+    font-size: 16px;
+  }
+}

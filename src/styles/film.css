@@ -34,7 +34,8 @@
   .upcoming-countdown b,
   .catalog-record-name,
   .license-price,
-  .sb-now
+  .sb-now,
+  .header-logout
 ):not([data-admin] *) {
   animation:
     film-grain 0.333s steps(1, end) infinite,
@@ -54,7 +55,8 @@
     .upcoming-countdown b,
     .catalog-record-name,
     .license-price,
-    .sb-now
+    .sb-now,
+  .header-logout
   ):not([data-admin] *) {
     animation: none;
     filter: url(#film-grain-1);
