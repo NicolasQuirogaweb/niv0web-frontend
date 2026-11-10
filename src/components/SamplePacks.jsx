@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { samplePacksService } from "../services/api";
 import { usePublicResource } from "../hooks/usePublicResource";
 import { CatalogConsole } from "./common/CatalogConsole";
-import { PackCover } from "./samplepacks/PackCover";
 import { formatPackPrice } from "../utils/formatPrice";
 import { PageHeader } from "./common/PageHeader";
 import { LoadError } from "./common/LoadError";
@@ -48,7 +47,6 @@ export const SamplePacks = () => {
               samples: t("samplePacks.sampleCount", { count: pack.itemsCount }),
             })}
             getBadge={(pack) => (pack.isFree ? t("samplePacks.free") : formatPackPrice(pack, lang))}
-            renderLabelFallback={(pack) => <PackCover title={pack.title} imageUrl={null} />}
           />
         )}
       </div>

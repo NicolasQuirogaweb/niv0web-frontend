@@ -1,6 +1,6 @@
 # 0010 — Catalogs shown like the home menu
 
-**Status:** accepted · **Date:** 2026-11
+**Status:** accepted; the look is replaced by ADR 0015 (record back cover), the behavior stays · **Date:** 2026-11
 
 ## Context
 

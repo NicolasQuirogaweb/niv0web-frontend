@@ -9,7 +9,7 @@ The big titles already had worn ink (ADR 0006), but it was a still texture. Nico
 ## Decision
 
 - **Grain.** SVG filters in `index.html` (`film-grain-1` to `-4`) multiply each letter pixel by a noise value, so every speck ends up between 60% and 140% of its brightness: light and dark grain, only inside the letters. The home menu (`LowerThirdMenu.css`) alternates the four frames at 12 per second, like a projected reel.
-- **Every section.** `src/styles/film.css` gives the same moving grain and the projector weave with its flicker (see below) to all headings (`h1`–`h6`) and the big display text that isn't a heading: the About quote and countdown, the record label name in the catalog consoles, license prices and the sample browser's "now playing". Nicolás asked for it after seeing the home.
+- **Every section.** `src/styles/film.css` gives the same moving grain and the projector weave with its flicker (see below) to all headings (`h1`–`h6`) and the big display text that isn't a heading: the About quote and countdown, license prices and the sample browser's "now playing". Nicolás asked for it after seeing the home.
 - **Replaces the worn ink.** On top of the worn ink of ADR 0006 the grain left the letters full of holes, so `#ink-worn` and `#ink-worn-soft` are gone; the grain is the texture now.
 - **Buttons too, without neon.** The header log out and the "back to home" / "back" buttons carry the grain and weave. The back buttons lost their neon glow and hover zoom (thin border, amber fill on hover) and are styled once in `index.css`; `src/styles/backButton.test.js` keeps glow and per-page copies from coming back.
 - **Not in the admin.** `AdminLayout` marks its wrapper with `data-admin` and the rule skips it: the admin is a tool, not a screen to look at.

@@ -13,7 +13,7 @@ vi.mock("../services/api", () => ({
 describe("SamplePacks showcase", () => {
   beforeEach(() => i18n.changeLanguage("es"));
 
-  it("lists packs on the catalog console with badge, meta and generated cover", async () => {
+  it("lists packs on the record back cover with badge and meta, the chosen one featured", async () => {
     samplePacksService.getAll.mockResolvedValue({
       data: [{ _id: "p1", title: "Mastermind", slug: "mastermind", imageUrl: null, folderCount: 5, itemsCount: 247, isFree: true, priceArs: 0, priceUsd: null }],
     });
@@ -28,8 +28,9 @@ describe("SamplePacks showcase", () => {
     expect(link).toHaveAttribute("href", "/samplepacks/mastermind");
     expect(link).toHaveTextContent("GRATIS");
     expect(link).toHaveTextContent("5 carpetas · 247 samples");
-    const cover = container.querySelector(".catalog-record-label .pack-cover-generated");
-    expect(cover).toHaveTextContent("Mastermind");
+    // Contratapa: el pack elegido aparece en grande abajo, con su precio.
+    expect(container.querySelector(".sleeve-feature")).toHaveTextContent("Mastermind");
+    expect(container.querySelector(".sleeve-feature")).toHaveTextContent("GRATIS");
   });
 
   const renderOne = async (folderCount, itemsCount) => {
