@@ -27,6 +27,8 @@
 }
 
 .about-logo {
+  /* inline-block: el temblor de película (film.css) mueve con transform, que no corre en un link en línea. */
+  display: inline-block;
   font-family: var(--font-display);
   color: var(--color-accent);
   text-decoration: none;

@@ -36,7 +36,8 @@
   .license-price,
   .sb-now,
   .header-logout,
-  .back-to-catalogue-btn
+  .back-to-catalogue-btn,
+  .about-logo
 ):not([data-admin] *) {
   animation:
     film-grain 0.333s steps(1, end) infinite,
@@ -58,7 +59,8 @@
     .license-price,
     .sb-now,
     .header-logout,
-    .back-to-catalogue-btn
+    .back-to-catalogue-btn,
+    .about-logo
   ):not([data-admin] *) {
     animation: none;
     filter: url(#film-grain-1);
