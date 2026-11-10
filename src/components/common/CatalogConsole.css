@@ -1,316 +1,231 @@
-/* Catálogos con el lenguaje del menú del home (ADR 0010). */
-.catalog-console {
+/* Catálogos como la contratapa de un disco (ADR 0015). */
+.sleeve {
+  /* Papel viejo, tinta casi negra y el rojo de imprenta de las contratapas. */
+  --paper: #e9e1d2;
+  --ink: #1a1714;
+  --ink-soft: #6b625a;
+  --print-red: #8a2a12;
+
+  width: min(880px, calc(100% - 32px));
+  margin: 40px auto;
+  padding: 36px 44px 30px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  text-align: left;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.7);
+  /* Temblor de proyector en toda la hoja (styles/film.css, ADR 0014). */
+  animation: film-weave 0.667s steps(1, end) infinite;
+}
+
+/* Los textos globales de la página son blancos y centrados: en la hoja van en tinta y a la izquierda. */
+.sleeve :where(p) {
+  color: inherit;
+  text-align: left;
+}
+
+/* El grano va en la letra, no en el papel: sobre el papel claro llenaba todo de ruido. */
+.sleeve-head,
+.sleeve-side-title,
+.sleeve-row,
+.sleeve-feature {
+  animation: film-grain 0.333s steps(1, end) infinite;
+}
+
+.sleeve-head {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 120px;
-  padding: 70px 40px 40px;
-}
-
-/* ---- Vinilo con la tapa del catálogo elegido ---- */
-.catalog-record {
-  --ring-r: 172px;
-  --ticks-out: -64px;
-  position: relative;
-  flex: 0 0 280px;
-  height: 280px;
-  margin-bottom: 60px;
-}
-
-.catalog-record-disc {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: repeating-radial-gradient(circle, #0a0a0a 0 2px, #1d1d1d 2px 3px);
-  box-shadow: 0 0 70px rgb(var(--color-accent-rgb) / 0.3), 0 0 0 2px rgb(var(--color-accent-rgb) / 0.35);
-  animation: catalog-spin 6s linear infinite;
-}
-
-.catalog-record-label {
-  position: absolute;
-  inset: 27%;
-  border-radius: 50%;
-  background: var(--color-accent) center / cover;
-  box-shadow: 0 0 0 4px #111, 0 0 0 6px rgb(var(--color-accent-rgb) / 0.6);
-  animation: catalog-label-in 0.35s var(--ease-out) both;
-}
-
-.catalog-record-hole {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  margin: -5px;
-  border-radius: 50%;
-  background: var(--color-bg);
-}
-
-.catalog-record-caption {
-  position: absolute;
-  left: -40px;
-  right: -40px;
-  top: calc(100% + 76px);
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-align: center;
-}
-
-.catalog-record-name {
-  font: 400 30px var(--font-display);
-  letter-spacing: 3px;
-  color: var(--color-accent);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.catalog-record-count {
-  font: 500 12px var(--font-body);
-  letter-spacing: 3px;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 15px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.65);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 10px;
 }
 
-@keyframes catalog-spin {
-  to { transform: rotate(360deg); }
+.sleeve-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 22px 0 26px;
 }
 
-@keyframes catalog-label-in {
-  from { opacity: 0; transform: scale(0.85); }
-  to { opacity: 1; transform: none; }
+.sleeve-side-title {
+  margin: 0 0 10px 6px;
+  font-size: 13px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--print-red);
 }
 
-/* ---- Lista de catálogos en 3D, con scroll propio si son muchos ---- */
-.catalog-nav {
-  flex: 0 1 470px;
-  max-height: 470px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  perspective: 700px;
-  scrollbar-width: none;
-  mask: linear-gradient(transparent, #000 8%, #000 92%, transparent);
-}
-
-.catalog-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.catalog-list {
+.sleeve-list {
   list-style: none;
   margin: 0;
-  padding: 52px 44px 52px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transform: rotateY(-22deg);
-  transform-style: preserve-3d;
+  padding: 0;
 }
 
-.catalog-item,
-.catalog-link {
-  transform-style: preserve-3d;
-}
-
-.catalog-link {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  text-decoration: none;
-  outline: none;
-}
-
-.catalog-dot {
-  flex: 0 0 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid rgb(var(--color-accent-rgb) / 0.7);
-  background: radial-gradient(circle, rgb(var(--color-accent-rgb) / 0.25), transparent 70%);
-  transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
-}
-
-.catalog-blade {
-  position: relative;
-  overflow: hidden;
-  flex: 1;
+.sleeve-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 10px 20px;
-  color: var(--color-accent);
-  border: 1px solid rgb(var(--color-accent-rgb) / 0.55);
-  background: rgb(var(--color-accent-rgb) / 0.06);
-  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
-  opacity: 0.55;
-  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
-    transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow var(--dur-fast) var(--ease-out),
-    opacity var(--dur-fast) var(--ease-out);
+  gap: 10px;
+  padding: 5px 6px;
+  font-size: 19px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  outline: none;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-.catalog-blade-title {
-  font: 400 24px var(--font-display);
-  letter-spacing: 3px;
-  white-space: nowrap;
+.sleeve-row-n {
+  flex: 0 0 26px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.sleeve-row-name {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.catalog-blade-count {
-  flex-shrink: 0;
-  font: 500 11px var(--font-body);
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.sleeve-row-dots {
+  flex: 1 1 20px;
+  border-bottom: 1px dotted var(--ink-soft);
+  transform: translateY(-4px);
 }
 
-/* Etiqueta chica (precio / GRATIS) en cada barra y bajo el vinilo. */
-.catalog-blade-badge {
-  flex-shrink: 0;
-  margin-left: auto;
-  padding: 1px 8px;
-  border: 1px solid currentColor;
-  font: 500 11px var(--font-body);
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.sleeve-row-end {
+  font-size: 14px;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
-.catalog-record-badge {
-  font: 500 11px var(--font-body);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 1px 8px;
-  border: 1px solid rgb(var(--color-accent-rgb) / 0.6);
+.sleeve-row[data-active="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sleeve-row[data-active="true"] .sleeve-row-n,
+.sleeve-row[data-active="true"] .sleeve-row-end {
   color: var(--color-accent);
 }
 
-/* Brillo que cruza la barra cada vez que se elige. */
-.catalog-blade::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -60%;
-  width: 40%;
-  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.55), transparent);
-  transform: skewX(-20deg);
-  opacity: 0;
-  pointer-events: none;
+.sleeve-row:focus-visible {
+  outline: 2px solid var(--print-red);
+  outline-offset: 2px;
 }
 
-.catalog-link[data-active="true"] .catalog-blade {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  box-shadow: 0 0 30px rgb(var(--color-accent-rgb) / 0.6);
-  opacity: 1;
-  transform: translateZ(50px) translateX(22px);
+/* ---- El elegido en grande, como el zócalo del home ---- */
+.sleeve-feature {
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
 }
 
-.catalog-link[data-active="true"] .catalog-blade::after {
-  animation: catalog-shine 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+.sleeve-feature-title {
+  margin: 0;
+  font: 400 clamp(36px, 5.5vw, 76px) / 0.9 var(--font-display);
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-.catalog-link[data-active="true"] .catalog-dot {
-  background: var(--color-accent);
-  box-shadow: 0 0 16px rgb(var(--color-accent-rgb) / 0.8);
+.sleeve-feature-clip {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding-top: 0.06em;
 }
 
-.catalog-link:focus-visible .catalog-blade {
-  box-shadow: 0 0 0 2px var(--color-accent-strong), 0 0 24px rgb(var(--color-accent-rgb) / 0.5);
+.sleeve-char {
+  display: inline-block;
+  white-space: pre;
+  transform: translateY(105%);
+  animation: sleeve-rise 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 15ms);
 }
 
-@keyframes catalog-shine {
-  0% { left: -60%; opacity: 1; }
-  100% { left: 130%; opacity: 0; }
-}
-
-/* ---- Pantallas medianas ---- */
-@media (max-width: 1100px) and (min-width: 769px) {
-  .catalog-console {
-    gap: 90px;
-  }
-
-  .catalog-record {
-    --ring-r: 116px;
-    --ticks-out: -44px;
-    flex-basis: 180px;
-    height: 180px;
-  }
-
-  .catalog-record-caption {
-    top: calc(100% + 54px);
-  }
-}
-
-/* ---- Celular: vinilo arriba, lista derecha abajo ---- */
-@media (max-width: 768px) {
-  .catalog-console {
-    flex-direction: column;
-    gap: 70px;
-    padding: 50px 16px 20px;
-  }
-
-  .catalog-record {
-    --ring-r: 94px;
-    --ticks-out: -36px;
-    flex: 0 0 150px;
-    width: 150px;
-    height: 150px;
-    margin-bottom: 30px;
-  }
-
-  .catalog-record-caption {
-    top: calc(100% + 44px);
-  }
-
-  .catalog-record-name {
-    font-size: 24px;
-  }
-
-  .catalog-nav {
-    flex: none;
-    width: 100%;
-    max-width: 380px;
-    max-height: none;
-    overflow: visible;
-    mask: none;
-  }
-
-  .catalog-list {
+@keyframes sleeve-rise {
+  to {
     transform: none;
-    padding: 0;
-    gap: 10px;
+  }
+}
+
+.sleeve-feature-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0 0;
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--print-red);
+}
+
+/* La rayita, como en el home, pero en el rojo de imprenta. */
+.sleeve-feature-sub::before {
+  content: "";
+  width: 0;
+  height: 2px;
+  background: var(--print-red);
+  animation: sleeve-bar 0.6s 0.1s ease-out forwards;
+}
+
+@keyframes sleeve-bar {
+  to {
+    width: 60px;
+  }
+}
+
+.sleeve-feature-badge {
+  padding: 1px 8px;
+  border: 1px solid var(--print-red);
+}
+
+@media (max-width: 768px) {
+  .sleeve {
+    padding: 24px 18px 20px;
+    margin: 24px auto;
   }
 
-  .catalog-dot {
-    flex-basis: 22px;
-    height: 22px;
+  .sleeve-head {
+    font-size: 12px;
+    letter-spacing: 3px;
   }
 
-  .catalog-blade-title {
-    font-size: 19px;
+  .sleeve-sides {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .catalog-link[data-active="true"] .catalog-blade {
-    transform: translateX(4px);
+  .sleeve-row {
+    font-size: 17px;
+    padding-block: 9px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .catalog-record-disc,
-  .catalog-record-label,
-  .catalog-link[data-active="true"] .catalog-blade::after {
+  .sleeve {
     animation: none;
   }
 
-  .catalog-blade {
-    transition: none;
+  .sleeve-head,
+  .sleeve-side-title,
+  .sleeve-row,
+  .sleeve-feature {
+    animation: none;
+    filter: url(#film-grain-1);
   }
 
-  .catalog-link[data-active="true"] .catalog-blade {
+  .sleeve-char,
+  .sleeve-feature-sub::before {
+    animation: none;
     transform: none;
+  }
+
+  .sleeve-feature-sub::before {
+    width: 60px;
   }
 }

@@ -492,6 +492,9 @@
     "catalogs": "Catalogs"
   },
   "catalog": {
-    "listLabel": "Catalogs"
+    "listLabel": "Catalogs",
+    "side": "Side {{side}}",
+    "total_one": "{{count}} in total",
+    "total_other": "{{count}} in total"
   }
 }

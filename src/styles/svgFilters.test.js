@@ -34,7 +34,7 @@ describe("SVG filters", () => {
     expect(film).toMatch(/@keyframes film-weave/);
     // El grano reemplaza a la tinta gastada: las dos juntas dejaban la letra agujereada.
     expect(css.some(({ text }) => text.includes("ink-worn"))).toBe(false);
-    for (const target of ["h1", "h2", "h3", ".catalog-record-name", ".license-price", ".about-quote blockquote", ".sb-now", ".about-logo"]) {
+    for (const target of ["h1", "h2", "h3", ".license-price", ".about-quote blockquote", ".sb-now", ".about-logo"]) {
       expect(film).toContain(target);
     }
     expect(film).toContain(":not([data-admin] *)");

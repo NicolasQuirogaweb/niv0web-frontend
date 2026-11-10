@@ -33,7 +33,7 @@ describe("Beats page", () => {
     const catalogs = await screen.findByRole("region", { name: i18n.t("beatsPage.catalogs") });
     const licenses = screen.getByRole("region", { name: i18n.t("licenses.title") });
 
-    expect(within(catalogs).getAllByRole("link")).toHaveLength(2);
+    expect(await within(catalogs).findAllByRole("link")).toHaveLength(2);
     expect(within(licenses).getAllByRole("article")).toHaveLength(3);
     // El orden en el documento es el de la disposición elegida.
     expect(h1.compareDocumentPosition(catalogs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

@@ -1,26 +1,25 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import i18n from "../../i18n/config";
 import { CatalogConsole } from "./CatalogConsole";
 
 const CATALOGS = [
-  { _id: "p1", title: "Archetype", imageUrl: "https://x/archetype.png", itemsCount: 9 },
-  { _id: "p2", title: "Furious Trap", imageUrl: "https://x/furious.png", itemsCount: 1 },
-  { _id: "p3", title: "Rambo", imageUrl: null, itemsCount: 5 },
+  { _id: "p1", title: "Archetype", itemsCount: 9 },
+  { _id: "p2", title: "Furious Trap", itemsCount: 1 },
+  { _id: "p3", title: "Rambo", itemsCount: 5 },
 ];
 
-const renderConsole = (props = {}) =>
+const renderConsole = (props = {}, items = CATALOGS) =>
   render(
     <MemoryRouter>
-      <CatalogConsole items={CATALOGS} resourceType="beats" {...props} />
+      <CatalogConsole items={items} resourceType="beats" {...props} />
     </MemoryRouter>
   );
 
 const links = () => screen.getAllByRole("link");
-const label = (container) => container.querySelector(".catalog-record-label");
-const caption = (container) => container.querySelector(".catalog-record-caption");
+const feature = (container) => container.querySelector(".sleeve-feature");
 
-describe("CatalogConsole", () => {
+describe("CatalogConsole (contratapa del disco)", () => {
   beforeEach(() => i18n.changeLanguage("es"));
 
   it("lists every catalog as a link with its name and how many beats it has, ready for the arrows", () => {
@@ -33,23 +32,38 @@ describe("CatalogConsole", () => {
     links().forEach((a) => expect(a).toHaveAttribute("data-nav-item"));
   });
 
-  it("starts with the first catalog on the record, like the home menu", () => {
-    const { container } = renderConsole();
-    expect(links()[0]).toHaveAttribute("data-active", "true");
-    expect(label(container)).toHaveStyle({ backgroundImage: "url(https://x/archetype.png)" });
-    expect(caption(container)).toHaveTextContent("Archetype");
-    expect(container.querySelector(".catalog-record")).toHaveAttribute("aria-hidden", "true");
+  it("splits the catalogs into side A and side B, numbered like a record's tracklist", () => {
+    renderConsole();
+    const sideA = screen.getByRole("list", { name: i18n.t("catalog.side", { side: "A" }) });
+    const sideB = screen.getByRole("list", { name: i18n.t("catalog.side", { side: "B" }) });
+    expect(within(sideA).getAllByRole("link").map((a) => a.textContent)).toEqual([
+      expect.stringContaining("A1"),
+      expect.stringContaining("A2"),
+    ]);
+    expect(within(sideB).getByRole("link")).toHaveTextContent("B1");
+    expect(within(sideB).getByRole("link")).toHaveTextContent("Rambo");
   });
 
-  it("the mouse or keyboard focus puts another catalog on the record", () => {
+  it("a single catalog has no side B", () => {
+    renderConsole({}, CATALOGS.slice(0, 1));
+    expect(screen.queryByRole("list", { name: i18n.t("catalog.side", { side: "B" }) })).toBeNull();
+  });
+
+  it("starts with the first catalog featured at the bottom, like the home menu", () => {
+    const { container } = renderConsole();
+    expect(links()[0]).toHaveAttribute("data-active", "true");
+    expect(feature(container)).toHaveTextContent("Archetype");
+    expect(feature(container)).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("the mouse or keyboard focus features another catalog", () => {
     const { container } = renderConsole();
     fireEvent.mouseEnter(links()[1]);
     expect(links()[1]).toHaveAttribute("data-active", "true");
     expect(links()[0]).toHaveAttribute("data-active", "false");
-    expect(label(container)).toHaveStyle({ backgroundImage: "url(https://x/furious.png)" });
+    expect(feature(container)).toHaveTextContent("Furious Trap");
     fireEvent.focus(links()[2]);
-    expect(caption(container)).toHaveTextContent("Rambo");
-    expect(label(container).style.backgroundImage).toBe("");
+    expect(feature(container)).toHaveTextContent("Rambo");
   });
 
   it("links loop catalogs to their own pages and counts loops", () => {
@@ -58,27 +72,23 @@ describe("CatalogConsole", () => {
     expect(links()[0]).toHaveTextContent(i18n.t("card.items_loops", { count: 9 }));
   });
 
-  it("surrounds the record with the ring of small bars and the scale, like the home orb", () => {
-    const { container } = renderConsole();
-    expect(container.querySelectorAll(".catalog-record .orb-ring > i")).toHaveLength(64);
-    expect(container.querySelectorAll(".catalog-record .orb-ticks")).toHaveLength(2);
-  });
-
-  it("takes getHref, getMeta, getBadge and renderLabelFallback from the caller", () => {
+  it("takes getHref, getMeta and getBadge from the caller; the badge goes where the count was", () => {
     const { container } = renderConsole({
       getHref: (i) => `/x/${i._id}`,
       getMeta: (i) => `meta ${i.title}`,
       getBadge: (i) => (i._id === "p1" ? "FREE" : null),
-      renderLabelFallback: (i) => <span className="fb">{i.title}</span>,
     });
     expect(links().map((a) => a.getAttribute("href"))).toEqual(["/x/p1", "/x/p2", "/x/p3"]);
     expect(links()[0]).toHaveTextContent("meta Archetype");
-    expect(links()[0]).toHaveTextContent("FREE");
-    expect(links()[1]).not.toHaveTextContent("FREE");
-    expect(caption(container)).toHaveTextContent("FREE");
-    expect(container.querySelector(".fb")).toBeNull();
+    expect(links()[0].querySelector(".sleeve-row-end")).toHaveTextContent("FREE");
+    expect(links()[1].querySelector(".sleeve-row-end")).toHaveTextContent("1");
+    expect(feature(container)).toHaveTextContent("FREE");
     fireEvent.focus(links()[2]);
-    expect(label(container).querySelector(".fb")).toHaveTextContent("Rambo");
-    expect(caption(container)).toHaveTextContent("meta Rambo");
+    expect(feature(container)).toHaveTextContent("meta Rambo");
+  });
+
+  it("drops the old spinning record and 3D bars", () => {
+    const { container } = renderConsole();
+    expect(container.querySelector(".catalog-record, .catalog-blade, .orb-ring")).toBeNull();
   });
 });
