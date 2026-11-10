@@ -29,7 +29,7 @@ Live: [niv0web.vercel.app](https://niv0web.vercel.app) · API: [niv0web-backend]
 ## Run it locally
 
 ```bash
-cp .env.example .env          # VITE_BACKEND_URL and VITE_GOOGLE_CLIENT_ID
+cp .env.example .env          # VITE_BACKEND_URL and VITE_GOOGLE_CLIENT_ID (VITE_SENTRY_DSN is optional)
 npm install
 npm run dev                   # http://localhost:3000
 npm test                      # vitest, runs once (npm run test:watch to keep it open)

@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import "../../i18n/config";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { reportError } from "../../utils/monitoring";
+
+vi.mock("../../utils/monitoring", () => ({ reportError: vi.fn() }));
 
 const Boom = () => {
   throw new Error("raw internal stack trace detail");
@@ -27,6 +30,10 @@ describe("ErrorBoundary", () => {
 
     expect(screen.getByText("Algo salió mal")).toBeInTheDocument();
     expect(screen.queryByText(/raw internal stack trace detail/)).not.toBeInTheDocument();
+    expect(reportError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "raw internal stack trace detail" }),
+      expect.objectContaining({ componentStack: expect.any(String) })
+    );
 
     consoleSpy.mockRestore();
   });
