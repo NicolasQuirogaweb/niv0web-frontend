@@ -1,0 +1,38 @@
+// Los filtros SVG (tinta gastada, grano de película) viven en index.html y el CSS
+// los usa con url(#id). Si un id no existe, el navegador ignora el filtro en silencio
+// y la textura desaparece sin ningún error: este test lo atrapa.
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join, resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const html = readFileSync(join(root, "index.html"), "utf8");
+
+const cssFiles = (dir) =>
+  readdirSync(dir).flatMap((name) => {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) return cssFiles(full);
+    return name.endsWith(".css") ? [full] : [];
+  });
+
+const css = cssFiles(join(root, "src")).map((file) => ({ file, text: readFileSync(file, "utf8") }));
+
+describe("SVG filters", () => {
+  it("every url(#id) used in the CSS is defined in index.html", () => {
+    const missing = [];
+    for (const { file, text } of css) {
+      for (const [, id] of text.matchAll(/url\(#([\w-]+)\)/g)) {
+        if (!html.includes(`id="${id}"`)) missing.push(`${id} (${file})`);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  it("the home menu letters carry the moving film grain", () => {
+    const menu = css.find(({ file }) => file.endsWith("LowerThirdMenu.css")).text;
+    expect(menu).toMatch(/animation:\s*film-grain/);
+    for (const frame of ["film-grain-1", "film-grain-2", "film-grain-3", "film-grain-4"]) {
+      expect(html).toContain(`id="${frame}"`);
+    }
+  });
+});

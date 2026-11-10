@@ -31,9 +31,13 @@ button,
   letter-spacing: 0.04em;
 }
 
-/* Los títulos grandes llevan la tinta un poco gastada. */
+/* Los títulos grandes llevan la tinta un poco gastada y grano de película (ADR 0014). */
 h1 {
-  filter: url(#ink-worn);
+  filter: url(#ink-worn) url(#film-grain-soft);
+}
+
+h2 {
+  filter: url(#film-grain-soft);
 }
 
 input, select, textarea {

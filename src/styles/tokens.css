@@ -14,6 +14,8 @@
   --color-accent-soft: rgb(var(--color-accent-rgb) / 0.15);
   --color-accent-line: rgb(var(--color-accent-rgb) / 0.4);
   --color-text: #ffffff;
+  /* Blanco de copia de película, apenas cálido, para las letras grandes del home (ADR 0014). */
+  --film-white: #f6f1e8;
   --color-text-muted: rgba(255, 255, 255, 0.6);
   --color-text-faint: rgba(255, 255, 255, 0.35);
   --color-on-accent: #0d0d0d;
