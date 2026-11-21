@@ -22,14 +22,10 @@
     "server": "Algo falló de nuestro lado. Probá de nuevo en un rato.",
     "retry": "Reintentar"
   },
-  "lang": {
-    "switch": "Cambiar a inglés"
-  },
   "theme": {
-    "button": "COLOR",
-    "bar": "TEMA",
+    "bar": "AJUSTES",
     "accent": "ACENTO",
-    "open": "Color de la página",
+    "open": "Ajustes",
     "title": "Color",
     "hue": "Tono",
     "presets": {
@@ -39,7 +35,9 @@
       "cyan": "Cian",
       "mint": "Menta",
       "lime": "Lima"
-    }
+    },
+    "language": "IDIOMA",
+    "color": "COLOR"
   },
   "seo": {
     "siteName": "niv0 prod",
@@ -439,11 +437,6 @@
     "noCover": "Sin tapa",
     "photoAlt": "Foto de niv0",
     "kicker": "Artista y productor · Villa Mercedes, San Luis",
-    "quote": {
-      "before": "La música se hace con el",
-      "highlight": "corazón",
-      "after": "y no con la cabeza"
-    },
     "turntable": "Tocadiscos",
     "pickRecord": "Elegí un disco del cajón",
     "upcoming": {

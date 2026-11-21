@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import i18n from "../i18n/config";
@@ -50,7 +50,39 @@ describe("About page", () => {
     await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
   });
 
-  it("the story ends at INSPIRAR, with the quote in big letters", async () => {
+  it("shows only the biography: no big quote", async () => {
+    discographyService.getAll.mockResolvedValue({ data: [] });
+    const { container } = renderAbout();
+    await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
+    expect(screen.queryByRole("figure")).toBeNull();
+    expect(container.querySelector(".about-quote")).toBeNull();
+  });
+
+  // Los párrafos aparecen al llegar a la pantalla. Al cambiar el idioma se montaban
+  // párrafos nuevos que nadie miraba y quedaban invisibles.
+  it("after switching language, the new paragraphs still appear", async () => {
+    const observed = new Set();
+    const original = window.IntersectionObserver;
+    window.IntersectionObserver = class {
+      constructor(cb) { this.cb = cb; }
+      observe(el) { observed.add(el); this.cb([{ isIntersecting: true, target: el }]); }
+      unobserve() {}
+      disconnect() {}
+    };
+    try {
+      discographyService.getAll.mockResolvedValue({ data: [] });
+      const { container } = renderAbout();
+      await screen.findByText(i18n.t("about.story", { returnObjects: true })[0]);
+      await act(async () => { await i18n.changeLanguage("en"); });
+      const hidden = [...container.querySelectorAll(".reveal")].filter((el) => !el.classList.contains("is-in"));
+      expect(hidden).toEqual([]);
+    } finally {
+      window.IntersectionObserver = original;
+      await act(async () => { await i18n.changeLanguage("es"); });
+    }
+  });
+
+  it("the story ends at INSPIRAR", async () => {
     discographyService.getAll.mockResolvedValue({ data: [] });
     renderAbout();
     const story = i18n.t("about.story", { returnObjects: true });
@@ -58,7 +90,6 @@ describe("About page", () => {
       "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR."
     );
     expect(await screen.findByText(story[story.length - 1])).toBeInTheDocument();
-    expect(screen.getByRole("figure", { name: /corazón/ })).toBeInTheDocument();
   });
 
   it("announces the new album Sentimientos restringidos", async () => {

@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+﻿import { render, screen, fireEvent } from "@testing-library/react";
 import i18n from "../../i18n/config";
-import { ThemePicker } from "./ThemePicker";
+import { SettingsMenu } from "./SettingsMenu";
 import { accentRgb, loadAccentHue, ACCENT_PRESETS } from "../../utils/theme";
 
 const trigger = () => screen.getByRole("button", { name: i18n.t("theme.open") });
@@ -10,7 +10,7 @@ const open = () => {
 };
 const accent = () => document.documentElement.style.getPropertyValue("--color-accent-rgb");
 
-describe("ThemePicker", () => {
+describe("SettingsMenu", () => {
   beforeEach(() => {
     i18n.changeLanguage("es");
     localStorage.clear();
@@ -18,7 +18,7 @@ describe("ThemePicker", () => {
   });
 
   it("is a closed button until you open it", () => {
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     expect(trigger()).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     open();
@@ -26,7 +26,7 @@ describe("ThemePicker", () => {
   });
 
   it("offers the six colors by name, amber chosen at first", () => {
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     ACCENT_PRESETS.forEach(({ id }) => {
       const swatch = screen.getByRole("button", { name: i18n.t(`theme.presets.${id}`) });
@@ -35,7 +35,7 @@ describe("ThemePicker", () => {
   });
 
   it("picking a color repaints the site and remembers it", () => {
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     fireEvent.click(screen.getByRole("button", { name: i18n.t("theme.presets.cyan") }));
     const cyan = ACCENT_PRESETS.find((p) => p.id === "cyan").hue;
@@ -45,7 +45,7 @@ describe("ThemePicker", () => {
   });
 
   it("the fader picks any hue and the readout shows it in degrees", () => {
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     fireEvent.change(screen.getByRole("slider", { name: i18n.t("theme.hue") }), { target: { value: "120" } });
     expect(accent()).toBe(accentRgb(120).join(" "));
@@ -57,7 +57,7 @@ describe("ThemePicker", () => {
     const pageSaw = vi.fn();
     const onWindowKey = (e) => pageSaw(e.defaultPrevented);
     window.addEventListener("keydown", onWindowKey);
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     const dialog = open();
     fireEvent.keyDown(dialog, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -70,7 +70,7 @@ describe("ThemePicker", () => {
     const pageSaw = vi.fn();
     const onWindowKey = (e) => pageSaw(e.defaultPrevented);
     window.addEventListener("keydown", onWindowKey);
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     trigger().focus();
     fireEvent.keyDown(trigger(), { key: "Escape" });
@@ -81,14 +81,14 @@ describe("ThemePicker", () => {
 
   it("the window's labels are translated", () => {
     i18n.changeLanguage("es");
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     expect(screen.getByText(i18n.t("theme.accent"))).toBeInTheDocument();
-    expect(i18n.exists("theme.button", { lng: "en" }) && i18n.exists("theme.bar", { lng: "en" })).toBe(true);
+    expect(i18n.exists("theme.language", { lng: "en" }) && i18n.exists("theme.bar", { lng: "en" })).toBe(true);
   });
 
   it("arrows move between the colors without moving the page's own selection", () => {
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     open();
     const amber = screen.getByRole("button", { name: i18n.t("theme.presets.amber") });
     amber.focus();
@@ -101,7 +101,7 @@ describe("ThemePicker", () => {
     render(
       <div>
         <p>afuera</p>
-        <ThemePicker />
+        <SettingsMenu />
       </div>
     );
     open();
@@ -120,7 +120,7 @@ describe("ThemePicker", () => {
       return this.classList?.contains("tp-panel") ? 252 : 0;
     });
     window.innerWidth = 390;
-    render(<ThemePicker />);
+    render(<SettingsMenu />);
     const panel = open();
     expect(panel.style.right).toBe("-83px"); // corre 75 + 8 de margen hacia adentro
     rect.mockRestore();
@@ -130,5 +130,32 @@ describe("ThemePicker", () => {
   it("has every text in both languages", () => {
     const keys = ["open", "title", "hue", ...ACCENT_PRESETS.map((p) => `presets.${p.id}`)];
     keys.forEach((key) => ["es", "en"].forEach((lng) => expect(i18n.exists(`theme.${key}`, { lng })).toBe(true)));
+  });
+});
+
+describe("SettingsMenu: language and gear", () => {
+  beforeEach(() => {
+    i18n.changeLanguage("es");
+    localStorage.clear();
+  });
+  afterEach(() => i18n.changeLanguage("es"));
+
+  it("is a single settings (gear) button, named in the page language", () => {
+    render(<SettingsMenu />);
+    expect(screen.getByRole("button", { name: "Ajustes" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cambiar a inglés" })).not.toBeInTheDocument();
+  });
+
+  it("the language is chosen inside the panel, and remembered", () => {
+    render(<SettingsMenu />);
+    open();
+    const es = screen.getByRole("button", { name: "Español" });
+    const en = screen.getByRole("button", { name: "English" });
+    expect(es).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(en);
+    expect(i18n.language).toBe("en");
+    expect(localStorage.getItem("lang")).toBe("en");
+    expect(screen.getByRole("button", { name: "English" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
   });
 });

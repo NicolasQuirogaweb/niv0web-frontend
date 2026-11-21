@@ -1,18 +1,18 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ACCENT_PRESETS, accentRgb, applyAccent, loadAccentHue, saveAccentHue } from "../../utils/theme";
-import "./ThemePicker.css";
+import "./SettingsMenu.css";
 
 const STEP = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
 const EDGE = 8; // margen mínimo con el borde de la pantalla
 
 /**
- * Selector del color de acento, al lado del de idioma (ADR 0012). Un botón con un LED del
- * color actual abre una ventanita de "Preferences" de DAW: seis colores listos y un fader
- * para cualquier tono. Cambia todo el sitio en vivo y queda guardado para la próxima visita.
+ * Ajustes de toda la app (ADR 0012): un botón de engranaje abre una ventanita de
+ * "Preferences" de DAW con el idioma y el color de acento (seis colores listos y un fader
+ * para cualquier tono). Todo cambia en vivo y queda guardado para la próxima visita.
  */
-export const ThemePicker = () => {
-  const { t } = useTranslation();
+export const SettingsMenu = () => {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const [hue, setHue] = useState(loadAccentHue);
   const wrapRef = useRef(null);
@@ -77,6 +77,12 @@ export const ThemePicker = () => {
     }
   };
 
+  const lang = i18n.language?.startsWith("en") ? "en" : "es";
+  const chooseLang = (next) => {
+    i18n.changeLanguage(next);
+    localStorage.setItem("lang", next);
+  };
+
   const preset = ACCENT_PRESETS.find((p) => p.hue === hue);
 
   return (
@@ -91,8 +97,11 @@ export const ThemePicker = () => {
         aria-controls={panelId}
         onClick={() => setOpen((o) => !o)}
       >
+        <svg className="tp-gear" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.3 7.3 0 0 0-1.7-1L15 3.5h-4l-.3 2.5a7.3 7.3 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.3 7.3 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7.3 7.3 0 0 0 1.7-1l2.4 1 2-3.4z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
         <i className="tp-led" aria-hidden="true" />
-        <span aria-hidden="true">{t("theme.button")}</span>
       </button>
       {open && (
         <div ref={panelRef} id={panelId} className="tp-panel" role="dialog" aria-label={t("theme.title")} onKeyDown={onPanelKey}>
@@ -103,6 +112,22 @@ export const ThemePicker = () => {
             <span>{t("theme.bar")}</span>
           </div>
           <div className="tp-body">
+            <div className="tp-section-title" aria-hidden="true">{t("theme.language")}</div>
+            <div className="tp-langs">
+              {[["es", "Español"], ["en", "English"]].map(([code, name]) => (
+                <button
+                  key={code}
+                  type="button"
+                  lang={code}
+                  className="tp-lang"
+                  aria-pressed={lang === code}
+                  onClick={() => chooseLang(code)}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+            <div className="tp-section-title" aria-hidden="true">{t("theme.color")}</div>
             <div className="tp-swatches">
               {ACCENT_PRESETS.map((p) => (
                 <button

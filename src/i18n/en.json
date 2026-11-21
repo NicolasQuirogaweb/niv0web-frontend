@@ -22,14 +22,10 @@
     "server": "Something went wrong on our side. Please try again in a while.",
     "retry": "Try again"
   },
-  "lang": {
-    "switch": "Switch to Spanish"
-  },
   "theme": {
-    "button": "COLOR",
-    "bar": "THEME",
+    "bar": "SETTINGS",
     "accent": "ACCENT",
-    "open": "Page color",
+    "open": "Settings",
     "title": "Color",
     "hue": "Hue",
     "presets": {
@@ -39,7 +35,9 @@
       "cyan": "Cyan",
       "mint": "Mint",
       "lime": "Lime"
-    }
+    },
+    "language": "LANGUAGE",
+    "color": "COLOR"
   },
   "seo": {
     "siteName": "niv0 prod",
@@ -439,11 +437,6 @@
     "noCover": "No cover",
     "photoAlt": "Photo of niv0",
     "kicker": "Artist and producer · Villa Mercedes, San Luis",
-    "quote": {
-      "before": "Music is made with the",
-      "highlight": "heart",
-      "after": "not the head"
-    },
     "turntable": "Turntable",
     "pickRecord": "Pick a record from the crate",
     "upcoming": {

@@ -20,6 +20,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - Optional English description for sample packs ("Descripción (inglés)" in the admin form, sent as `descriptionEn`); the pack page and its SEO description use it in English and fall back to the Spanish one.
 
 ### Changed
+- Language and page color live together behind one gear (settings) button in every section, including the admin: the panel has Español / English and the colors. The separate ES/EN button is gone. The NIVØ page drops the big quote and shows only the biography.
 - The catalogs on Beats, Loops and Sample packs look like the back cover of a record instead of a spinning vinyl with 3D bars: side A and side B, numbered A1, B1…, with the count (or a pack's price) at the end of a dotted line, and the chosen one big at the bottom with its letters rising, like the home menu. Film grain and weave. Arrows work as before. See ADR 0015.
 - Prod Mix Master shows the playlist of tracks niv0 produced, mixed or mastered inside the page with Spotify's player (the tracklist is visible and plays count on Spotify), with a "work on your track" button to his Instagram and an "Open in Spotify" link, instead of a card that only linked out. New title and texts in both languages; the unused old styles are gone.
 - Both homes show the sections as the lower third of a music video, bottom-left so the background video stays free: the selected section huge with its letters rising, an amber line with a short subtitle, and the five sections in a numbered row below. Arrows (↑ ↓ ← →) and Enter work from the moment the page opens; reduced-motion aware. Replaces the console-style orb menu below. ADR 0011.
@@ -27,6 +28,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- On the NIVØ page, switching language made the biography disappear: the new paragraphs never got their fade-in.
 - "Sentimientos restringidos" comes out in January 2027, not November.
 - Admin uploads of long or heavy WAV/MP3 files (a loop of more than a minute) failed: they used the API's general 20 s cut, and the upload plus the MP3 preview takes longer. Admin uploads now wait up to 15 minutes. Several files are sent one per request (progress shows 2/5) instead of all in one request, so the 512 MB server never holds several big WAVs at once, and one failing file does not stop the rest. Applies to every admin section (beats, loops, samples, Prod Mix Master, covers, videos).
 - Design review (Vercel interface guidelines + animation guide), visitor bugs:

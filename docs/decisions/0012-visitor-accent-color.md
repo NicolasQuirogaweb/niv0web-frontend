@@ -21,3 +21,7 @@ We showed four mockups: a synth knob, a DAW "Preferences" window, a strip of LED
 
 - New colors in the CSS must keep coming from the tokens. A hardcoded amber would not follow the visitor's choice.
 - The chosen color lives in that visitor's browser only. It is not tied to the account.
+
+## Update 2026-11-21
+
+The picker became the settings menu (`SettingsMenu`): a gear button whose panel holds the language (Español / English) and the accent color, in every section. `LanguageSwitcher` was removed.
