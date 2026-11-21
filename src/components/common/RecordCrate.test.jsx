@@ -59,3 +59,24 @@ describe("RecordCrate", () => {
     expect(within(record("Night Drive")).getByText(i18n.t("about.noCover"))).toBeInTheDocument();
   });
 });
+
+describe("RecordCrate notes", () => {
+  const NOTES = { alb1: { es: "Un disco nocturno.", en: "A night record." } };
+
+  it("shows the chosen record's short story in the page language", () => {
+    i18n.changeLanguage("es");
+    render(<RecordCrate albums={ALBUMS} notes={NOTES} />);
+    fireEvent.click(record("Archetype"));
+    expect(within(deck()).getByText("Un disco nocturno.")).toBeInTheDocument();
+    i18n.changeLanguage("en");
+  });
+
+  it("falls back to Spanish when there is no English text, and shows nothing for a record without notes", () => {
+    i18n.changeLanguage("en");
+    render(<RecordCrate albums={ALBUMS} notes={{ alb1: { es: "Solo en castellano." } }} />);
+    fireEvent.click(record("Archetype"));
+    expect(within(deck()).getByText("Solo en castellano.")).toBeInTheDocument();
+    fireEvent.click(record("Night Drive"));
+    expect(deck().querySelector(".deck-notes")).toBeNull();
+  });
+});

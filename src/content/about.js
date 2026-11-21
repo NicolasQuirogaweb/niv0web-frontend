@@ -20,7 +20,7 @@ export const ABOUT_BACKGROUND = {
 // Cuando el disco sale, el aviso desaparece solo; ponelo en null cuando ya no haga falta.
 export const UPCOMING_RELEASE = {
   title: "Sentimientos restringidos",
-  month: "2026-11",
+  month: "2027-01",
   releaseDate: null,
   coverUrl: null,
   presaveUrl: null,

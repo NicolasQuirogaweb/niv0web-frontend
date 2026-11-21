@@ -490,6 +490,16 @@
   color: var(--color-accent);
 }
 
+/* Concepto del disco: corto, para leer, en la letra de texto. */
+.deck-notes {
+  max-width: 52ch;
+  margin: -4px 0 16px;
+  font: 400 15px / 1.6 var(--font-body);
+  color: var(--color-text-muted);
+  text-align: left;
+  text-wrap: pretty;
+}
+
 .spotify-player {
   display: block;
   width: 100%;
