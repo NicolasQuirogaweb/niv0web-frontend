@@ -7,7 +7,14 @@ import { packErrorText } from "./packErrors";
 import styles from "./admin.module.css";
 
 const POLL_MS = 5000;
+// El backend antepone esto a cada error de armado; en el panel sobra.
+const ERROR_PREFIX = /^No se pudo armar el ZIP:\s*/;
 
+/**
+ * Estado del ZIP del pack. El backend lo rearma solo después de cada cambio
+ * (services/zipAutoBuild): el panel muestra una sola línea con en qué está y se
+ * refresca solo mientras haya algo pendiente (cambios, armado o un fallo que se reintenta).
+ */
 export const AdminZipPanel = ({ pack, onRefresh }) => {
   const { t, i18n } = useTranslation();
   const toast = useToast();
@@ -15,13 +22,15 @@ export const AdminZipPanel = ({ pack, onRefresh }) => {
   const zip = pack.zip || {};
   const status = zip.build?.status;
   const building = status === "building";
+  const failed = status === "failed";
+  const updating = building || (!failed && Boolean(zip.stale));
+  const pending = updating || failed;
 
-  // Solo se consulta mientras se arma; al salir de 'building' o desmontar se limpia el timer.
   useEffect(() => {
-    if (!building) return undefined;
+    if (!pending) return undefined;
     const timer = setInterval(() => onRefresh(), POLL_MS);
     return () => clearInterval(timer);
-  }, [building, onRefresh]);
+  }, [pending, onRefresh]);
 
   const handleBuild = async () => {
     setStarting(true);
@@ -36,24 +45,42 @@ export const AdminZipPanel = ({ pack, onRefresh }) => {
     }
   };
 
+  const detail = failed && zip.build?.error ? zip.build.error.replace(ERROR_PREFIX, "") : null;
+  const date = zip.builtAt
+    ? new Date(zip.builtAt).toLocaleString(i18n.language, { dateStyle: "short", timeStyle: "short" })
+    : null;
+
+  let line;
+  if (updating) line = <p role="status">{t("admin.samplePacks.zip.updating")}</p>;
+  else if (failed)
+    line = (
+      <p role="alert" className={styles.fieldErrorBlock}>
+        {t("admin.samplePacks.zip.failed")}
+        {detail && (
+          <>
+            <br />
+            <small>{detail}</small>
+          </>
+        )}
+      </p>
+    );
+  else if (zip.url) line = <p>{t("admin.samplePacks.zip.upToDate")}</p>;
+  else line = <p>{t("admin.samplePacks.zip.none")}</p>;
+
   return (
     <div className={styles.formBox}>
       <h3 className={styles.formTitle}>{t("admin.samplePacks.zip.title")}</h3>
-      {zip.url ? (
+      {line}
+      {zip.url && (
         <p>
-          {zip.builtAt && <>{t("admin.samplePacks.zip.built", { date: new Date(zip.builtAt).toLocaleDateString(i18n.language) })}{" · "}</>}
-          {formatBytes(zip.bytes)}{" · "}
+          {date && <>{date} · </>}
+          {formatBytes(zip.bytes)} ·{" "}
           <a href={zip.url} target="_blank" rel="noopener noreferrer">{t("admin.samplePacks.zip.download")}</a>
         </p>
-      ) : (
-        <p>{t("admin.samplePacks.zip.none")}</p>
       )}
-      {zip.url && zip.stale && <p className={styles.fieldErrorBlock}>{t("admin.samplePacks.zip.stale")}</p>}
-      {building && <p>{t("admin.samplePacks.zip.building")}</p>}
-      {status === "failed" && <p className={styles.fieldErrorBlock}>{zip.build?.error ? t("admin.samplePacks.zip.failed", { error: zip.build.error }) : t("admin.samplePacks.zip.interrupted")}</p>}
       <div className={styles.formActions}>
-        <button type="button" onClick={handleBuild} disabled={building || starting} className={styles.btnPrimary}>
-          {t("admin.samplePacks.zip.build")}
+        <button type="button" onClick={handleBuild} disabled={building || starting} className={failed ? styles.btnPrimary : styles.btnSecondary}>
+          {failed ? t("admin.samplePacks.zip.retry") : zip.url ? t("admin.samplePacks.zip.rebuild") : t("admin.samplePacks.zip.build")}
         </button>
       </div>
     </div>

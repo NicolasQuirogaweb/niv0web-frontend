@@ -28,6 +28,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- The sample pack ZIP panel in the admin shows one line with what the ZIP is doing (up to date, updating with your changes, or could not update with the sample that failed) and refreshes itself while something is pending, so an old error no longer stays until you reload. The ZIP rebuilds on its own after every change (backend); the button is now "Rearmar ahora" / "Reintentar ahora".
 - On the NIVØ page, switching language made the biography disappear: the new paragraphs never got their fade-in.
 - "Sentimientos restringidos" comes out in January 2027, not November.
 - Admin uploads of long or heavy WAV/MP3 files (a loop of more than a minute) failed: they used the API's general 20 s cut, and the upload plus the MP3 preview takes longer. Admin uploads now wait up to 15 minutes. Several files are sent one per request (progress shows 2/5) instead of all in one request, so the 512 MB server never holds several big WAVs at once, and one failing file does not stop the rest. Applies to every admin section (beats, loops, samples, Prod Mix Master, covers, videos).

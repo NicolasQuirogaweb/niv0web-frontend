@@ -375,14 +375,14 @@
       "zip": {
         "title": "ZIP del pack",
         "none": "Todavía no hay ZIP",
-        "built": "Armado el {{date}}",
         "download": "Descargar",
-        "stale": "Hay cambios: volvé a armar el ZIP",
-        "building": "Armando ZIP…",
         "build": "Armar ZIP",
-        "started": "Armando el ZIP en segundo plano",
-        "failed": "Falló el armado: {{error}}",
-        "interrupted": "El armado se interrumpió. Volvé a intentar."
+        "started": "Actualizando el ZIP",
+        "failed": "No se pudo actualizar el ZIP. Se vuelve a intentar solo.",
+        "upToDate": "ZIP al día",
+        "updating": "Actualizando el ZIP con tus cambios…",
+        "retry": "Reintentar ahora",
+        "rebuild": "Rearmar ahora"
       }
     },
     "users": {
