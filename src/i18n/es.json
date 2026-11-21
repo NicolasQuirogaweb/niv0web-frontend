@@ -296,7 +296,11 @@
       "editTitle": "Editar Loop",
       "newTitle": "Nuevo Loop",
       "catalogLabel": "Catálogo de Loops",
-      "loopLabel": "Loop"
+      "loopLabel": "Loop",
+      "batchTitle": "Subir loops en lote",
+      "batchHint": "El nombre de cada archivo queda como título y descripción (después los podés editar)",
+      "uploadCount_one": "Subir {{count}} loop",
+      "uploadCount_other": "Subir {{count}} loops"
     },
     "samples": {
       "title": "Samples",

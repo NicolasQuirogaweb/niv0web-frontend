@@ -10,6 +10,8 @@ import { fieldA11y, FieldError, errorId } from "./formA11y";
 import styles from "./admin.module.css";
 
 const EMPTY_FORM = { title: "", description: "", audioFile: "" };
+// Al subir un audio, su nombre (sin extensión) completa título y descripción; se pueden editar después.
+const nameOf = (fileName = "") => fileName.replace(/\.[^/.]+$/, "");
 
 export const AdminLoops = () => {
   const { id } = useParams();
@@ -45,6 +47,17 @@ export const AdminLoops = () => {
     handleEdit,
     handleSubmit,
     handleDelete,
+    batchMode,
+    setBatchMode,
+    batchFiles,
+    batchUploading,
+    batchProgress,
+    handleBatchFiles,
+    handleDrop,
+    handleDragOver,
+    removeBatchFile,
+    handleBatchUpload,
+    cancelBatch,
   } = useAdminResource({
     emptyForm: EMPTY_FORM,
     labelKey: "admin.loops.loopLabel",
@@ -52,6 +65,15 @@ export const AdminLoops = () => {
     createFn: (form) => adminService.loops.create(id, form),
     updateFn: (loopId, form) => adminService.loops.update(loopId, form),
     deleteFn: (loopId) => adminService.loops.delete(loopId),
+    batch: {
+      folder: "loops",
+      mapUpload: (item) => ({
+        title: nameOf(item.originalName),
+        description: nameOf(item.originalName),
+        audioFile: item.url,
+      }),
+      batchFn: (loopsData) => adminService.loops.batch(id, loopsData),
+    },
   });
 
   return (
@@ -64,9 +86,57 @@ export const AdminLoops = () => {
         <h2 className={styles.pageTitleTop}>{playlist?.title || t("admin.loops.title")}</h2>
       </div>
 
-      <button onClick={() => { resetForm(); setShowForm(true); }} className={styles.btnPrimary}>
-        <Icons.Add size={16} /> {t("admin.loops.new")}
-      </button>
+      <div className={styles.actionRow}>
+        <button onClick={() => { cancelBatch(); resetForm(); setShowForm(true); }} className={styles.btnPrimary}>
+          <Icons.Add size={16} /> {t("admin.loops.new")}
+        </button>
+        {!batchMode && (
+          <button onClick={() => { setShowForm(false); setBatchMode(true); }} className={styles.btnSecondary}>
+            <Icons.Upload size={16} /> {t("admin.loops.batchTitle")}
+          </button>
+        )}
+      </div>
+
+      {batchMode && (
+        <div className={styles.batchBox}>
+          <h3 className={styles.batchFormTitle}>
+            <Icons.Upload size={16} className={styles.batchTitleIcon} /> {t("admin.loops.batchTitle")}
+          </h3>
+          <p className={styles.batchHint}>{t("admin.loops.batchHint")}</p>
+          <label htmlFor="batch-input-loops" onDrop={handleDrop} onDragOver={handleDragOver} className={styles.batchDrop}>
+            <input id="batch-input-loops" type="file" multiple accept="audio/*" disabled={batchUploading}
+              className={styles.visuallyHidden} onChange={handleBatchFiles} />
+            {batchFiles.length === 0 && !batchUploading ? (
+              <span className={styles.uploadHints}>
+                <span className={styles.dragHint}>{t("admin.uploader.batchDrop")}</span>
+                <span className={styles.supportedHint}>{t("admin.uploader.batchSupported")}</span>
+              </span>
+            ) : batchUploading ? (
+              <span role="status" className={styles.uploadProgress}><Spinner size={14} /> {batchProgress}</span>
+            ) : null}
+          </label>
+          {batchFiles.length > 0 && !batchUploading && (
+            <>
+              <div className={styles.batchList}>
+                {batchFiles.map((file, i) => (
+                  <div key={file.name + file.size} className={styles.batchFileRow}>
+                    <Icons.MusicNote size={14} className={styles.noShrink} aria-hidden="true" />
+                    <span className={styles.batchFileName}>{file.name}</span>
+                    <span className={styles.batchFileTitle}><span aria-hidden="true">→ </span>{nameOf(file.name)}</span>
+                    <button type="button" onClick={() => removeBatchFile(i)} aria-label={`${t("admin.common.delete")} ${file.name}`} className={styles.batchRemoveBtn}><Icons.Delete size={13} aria-hidden="true" /></button>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.formActions}>
+                <button onClick={handleBatchUpload} className={styles.btnPrimary}>
+                  <Icons.Upload size={16} /> {t("admin.loops.uploadCount", { count: batchFiles.length })}
+                </button>
+                <button onClick={cancelBatch} className={styles.btnSecondary}>{t("admin.common.cancel")}</button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {showForm && (
         <form ref={formRef} onSubmit={handleSubmit} noValidate className={styles.formBox}>
@@ -89,7 +159,11 @@ export const AdminLoops = () => {
             ) : (
               <AdminUploader id="loop-audioFile" name="audioFile" invalid={!!errors.audioFile}
                 describedBy={errors.audioFile ? errorId("loop", "audioFile") : undefined}
-                folder="loops" accept="audio/*" onUpload={(url) => { setForm({ ...form, audioFile: url }); setErrors({ ...errors, audioFile: "" }); }} />
+                folder="loops" accept="audio/*" onUpload={(url, fileName) => {
+                  const name = nameOf(fileName);
+                  setForm((prev) => ({ ...prev, audioFile: url, ...(name && { title: name, description: name }) }));
+                  setErrors({ ...errors, audioFile: "", title: "" });
+                }} />
             )}
             <FieldError prefix="loop" name="audioFile" errors={errors} className={styles.fieldErrorBlock} />
           </div>

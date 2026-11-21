@@ -296,7 +296,11 @@
       "editTitle": "Edit Loop",
       "newTitle": "New Loop",
       "catalogLabel": "Loop Catalog",
-      "loopLabel": "Loop"
+      "loopLabel": "Loop",
+      "batchTitle": "Batch Upload Loops",
+      "batchHint": "Each file's name becomes the title and description (you can edit them later)",
+      "uploadCount_one": "Upload {{count}} loop",
+      "uploadCount_other": "Upload {{count}} loops"
     },
     "samples": {
       "title": "Samples",
