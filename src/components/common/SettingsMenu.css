@@ -44,6 +44,8 @@
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linejoin: round;
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
   transition: transform 0.4s var(--ease-out);
 }
 
