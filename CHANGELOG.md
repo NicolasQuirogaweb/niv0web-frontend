@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 ## [Unreleased]
 
 ### Added
+- The NIVØ discography can show a short text (concept, story) under the chosen record, in Spanish and optionally English, from `src/content/albumNotes.js`. Records without a text look as before.
 - Film look on the letters: moving film grain (12 frames per second) on every section's titles and big display text (headings, license prices, the About quote and countdown, the sample browser's now playing); the same text, and the home menu, get a sub-pixel projector weave with a faint flicker; the home menu also gets a warm film-print white with a soft halo. The grain replaces the worn ink on `h1`. The "log out" button in the header of Beats, Sample packs, Loops, playlists and Prod Mix Master now looks like the home one (display font, underline on hover, film grain) instead of monospace. The "back to home" / "back" buttons drop the neon glow and hover zoom: display font, thin border, amber fill on hover, with the same film grain and weave, styled once in `index.css` instead of per page. The admin is left out. Reduced motion keeps the grain still. See ADR 0014.
 - Sentry error reporting in production: crashes caught by the error screen (with the React component stack) and uncaught errors go to the `niv0-frontend` project, without personal data or performance traces. The SDK loads after the first render, in its own chunk, and only when `VITE_SENTRY_DSN` is set. See ADR 0013.
 - Page color picker next to the language button, styled like a DAW preferences window: six colors (amber, red, magenta, cyan, mint, lime) and a fader for any hue. The whole site changes on the spot and the choice is remembered for the next visit. Arrows, Esc and clicking outside work. ADR 0012.
@@ -26,6 +27,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- "Sentimientos restringidos" comes out in January 2027, not November.
 - Admin uploads of long or heavy WAV/MP3 files (a loop of more than a minute) failed: they used the API's general 20 s cut, and the upload plus the MP3 preview takes longer. Admin uploads now wait up to 15 minutes. Several files are sent one per request (progress shows 2/5) instead of all in one request, so the 512 MB server never holds several big WAVs at once, and one failing file does not stop the rest. Applies to every admin section (beats, loops, samples, Prod Mix Master, covers, videos).
 - Design review (Vercel interface guidelines + animation guide), visitor bugs:
   - Enter presses the control that has focus (language, color, a link) instead of the record or catalog the mouse picked before.

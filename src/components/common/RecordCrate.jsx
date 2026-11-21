@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SpotifyPlayer } from "./SpotifyPlayer";
+import { ALBUM_NOTES } from "../../content/albumNotes";
 
 // Discografía como un cajón de disquería (ADR 0009): los discos están parados y
 // al pasar uno se levanta. Al elegirlo (clic, o flechas + Enter con useConsoleNav)
 // cae en el tocadiscos, baja el brazo y suena en el reproductor de Spotify.
-export const RecordCrate = ({ albums }) => {
-  const { t } = useTranslation();
+// notes: el texto corto de cada disco (content/albumNotes.js), por id de Spotify.
+export const RecordCrate = ({ albums, notes = ALBUM_NOTES }) => {
+  const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(null);
   // Cambia en cada elección para que el disco vuelva a caer aunque sea el mismo.
   const [spinKey, setSpinKey] = useState(0);
   const playing = albums.find((album) => album.spotifyId === current);
+  const note = playing && notes[playing.spotifyId];
+  const noteText = note && ((i18n.language?.startsWith("en") && note.en) || note.es);
 
   const pick = (album) => {
     setCurrent(album.spotifyId);
@@ -69,6 +73,7 @@ export const RecordCrate = ({ albums }) => {
             <>
               <p className="deck-year">{playing.releaseDate.slice(0, 4)}</p>
               <h3 className="deck-name">{playing.name}</h3>
+              {noteText && <p className="deck-notes">{noteText}</p>}
               <SpotifyPlayer albumId={playing.spotifyId} title={playing.name} />
               <a className="deck-link" href={playing.spotifyUrl} target="_blank" rel="noopener noreferrer">
                 {t("about.listenOnSpotify")}
