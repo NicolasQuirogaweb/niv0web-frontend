@@ -82,12 +82,12 @@ describe("About page", () => {
     }
   });
 
-  it("the story ends at INSPIRAR", async () => {
+  it("the story ends with transmitting and inspiring", async () => {
     discographyService.getAll.mockResolvedValue({ data: [] });
     renderAbout();
     const story = i18n.t("about.story", { returnObjects: true });
     expect(story[story.length - 1]).toBe(
-      "Para él, la música se hace con el corazón y no con la cabeza: todo se trata de transmitir y, sobre todo, de INSPIRAR."
+      "Para él, la música se hace con el corazón y no con la cabeza, todo se trata de transmitir y de inspirar."
     );
     expect(await screen.findByText(story[story.length - 1])).toBeInTheDocument();
   });
