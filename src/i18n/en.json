@@ -375,14 +375,14 @@
       "zip": {
         "title": "Pack ZIP",
         "none": "No ZIP yet",
-        "built": "Built on {{date}}",
         "download": "Download",
-        "stale": "The pack changed: rebuild the ZIP",
-        "building": "Building ZIP…",
         "build": "Build ZIP",
-        "started": "Building the ZIP in the background",
-        "failed": "Build failed: {{error}}",
-        "interrupted": "The build was interrupted. Try again."
+        "started": "Updating the ZIP",
+        "failed": "Could not update the ZIP. It will try again on its own.",
+        "upToDate": "ZIP up to date",
+        "updating": "Updating the ZIP with your changes…",
+        "retry": "Retry now",
+        "rebuild": "Rebuild now"
       }
     },
     "users": {
