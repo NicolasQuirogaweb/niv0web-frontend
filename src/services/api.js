@@ -12,6 +12,9 @@ const api = axios.create({
   timeout: 20000,
 });
 
+// Subidas del admin: hasta 15 minutos (un WAV de 100 MB con conexión lenta).
+const UPLOAD_TIMEOUT_MS = 15 * 60 * 1000;
+
 let unauthorizedHandler = () => {};
 export const setUnauthorizedHandler = (fn) => {
   unauthorizedHandler = fn;
@@ -160,16 +163,28 @@ export const adminService = {
       formData.append("folder", folder);
       return api.post("/api/admin/upload", formData, {
         headers: { "Content-Type": null },
+        // Un WAV de varios minutos (subida + B2 + MP3 de preview) tarda más que los 20 s
+        // generales de la API: con ese corte el admin daba error con archivos válidos.
+        timeout: UPLOAD_TIMEOUT_MS,
         onUploadProgress,
       });
     },
-    batch: (files, folder = "uploads") => {
-      const formData = new FormData();
-      files.forEach((f) => formData.append("files", f));
-      formData.append("folder", folder);
-      return api.post("/api/admin/upload/batch", formData, {
-        headers: { "Content-Type": null },
-      });
+    // Varios archivos, de a uno por pedido: el servidor tiene 512 MB y guarda cada archivo en
+    // memoria, así que diez WAV grandes en un solo pedido podían tirarlo. Si uno falla, siguen los demás.
+    // onFile(hechos, total) avisa el avance.
+    files: async (files, folder = "uploads", { onFile } = {}) => {
+      const results = [];
+      for (const file of files) {
+        try {
+          const res = await adminService.upload.file(file, folder);
+          results.push({ success: true, originalName: file.name, ...res.data });
+        } catch (err) {
+          const error = err.response?.data?.message || err.message || "Error";
+          results.push({ success: false, originalName: file.name, error });
+        }
+        onFile?.(results.length, files.length);
+      }
+      return { results };
     },
   },
 };
