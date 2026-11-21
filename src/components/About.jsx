@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { discographyService } from "../services/api";
-import { LanguageSwitcher } from "./common/LanguageSwitcher";
-import { ThemePicker } from "./common/ThemePicker";
+import { SettingsMenu } from "./common/SettingsMenu";
 import { RecordCrate } from "./common/RecordCrate";
 import { UpcomingRelease } from "./common/UpcomingRelease";
 import { PageBackground } from "./common/PageBackground";
@@ -38,10 +37,10 @@ const useReveal = (deps) => {
 };
 
 // Página pública (sin login), en formato documental (ADR 0009): video con el
-// nombre, la frase, la historia en dos columnas, el próximo disco y el cajón de
+// nombre, la historia en dos columnas, el próximo disco y el cajón de
 // discos con el tocadiscos. El logo lleva al home logueado si hay sesión.
 export const About = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const homePath = useHomePath();
   const [albums, setAlbums] = useState([]);
   const story = t("about.story", { returnObjects: true });
@@ -58,8 +57,8 @@ export const About = () => {
     };
   }, []);
 
-  const quote = t("about.quote", { returnObjects: true });
-  const pageRef = useReveal([albums.length]);
+  // Con el idioma cambian los párrafos: los nuevos también tienen que aparecer.
+  const pageRef = useReveal([albums.length, i18n.language]);
 
   return (
     <>
@@ -69,8 +68,7 @@ export const About = () => {
           <PageBackground media={ABOUT_BACKGROUND} contained />
           <div className="about-topbar">
             <Link to={homePath} className="about-logo">{t("nav.niv0Beats")}</Link>
-            <LanguageSwitcher />
-            <ThemePicker />
+            <SettingsMenu />
           </div>
           <div className="about-hero-text">
             <p className="about-kicker">{t("about.kicker")}</p>
@@ -79,15 +77,9 @@ export const About = () => {
         </header>
 
         <main className="about-main">
-          <figure className="about-quote reveal" aria-label={`${quote.before} ${quote.highlight} ${quote.after}`}>
-            <blockquote>
-              {quote.before} <em>{quote.highlight}</em> {quote.after}
-            </blockquote>
-          </figure>
-
           <section className="about-story">
             {ABOUT_PHOTO_URL && <img src={ABOUT_PHOTO_URL} alt={t("about.photoAlt")} className="about-photo reveal" />}
-            {Array.isArray(story) && story.map((paragraph) => <p key={paragraph} className="reveal">{paragraph}</p>)}
+            {Array.isArray(story) && story.map((paragraph, index) => <p key={index} className="reveal">{paragraph}</p>)}
           </section>
 
           <UpcomingRelease release={UPCOMING_RELEASE} />

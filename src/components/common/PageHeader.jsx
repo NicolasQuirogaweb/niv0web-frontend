@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../hooks/useAuth";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import { ThemePicker } from "./ThemePicker";
+import { SettingsMenu } from "./SettingsMenu";
 import "./PageHeader.css";
 
 // Header de las páginas privadas: logo que vuelve al home, idioma y logout.
@@ -17,8 +16,7 @@ export const PageHeader = ({ className, titleAs: Title = "h3", style }) => {
         <Link to="/homelogued">{t("nav.niv0Beats")}</Link>
       </Title>
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <LanguageSwitcher />
-        <ThemePicker />
+        <SettingsMenu />
         <button type="button" onClick={handleLogout} className="header-logout">
           {t("nav.logOut")}
         </button>

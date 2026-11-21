@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth, useLogout } from "../../hooks/useAuth";
 import { ToastProvider } from "../../hooks/useToast";
 import { ConfirmProvider } from "../../hooks/useConfirm";
-import { LanguageSwitcher } from "../common/LanguageSwitcher";
-import { ThemePicker } from "../common/ThemePicker";
+import { SettingsMenu } from "../common/SettingsMenu";
 import { Icons } from "./icons";
 import styles from "./admin.module.css";
 
@@ -72,8 +71,7 @@ export const AdminLayout = () => {
             {userEmail}
           </p>
           <div className={`${styles.langWrap} ${sidebarOpen ? "" : styles.langWrapHidden}`}>
-            <LanguageSwitcher />
-            <ThemePicker />
+            <SettingsMenu />
           </div>
           <button onClick={handleLogout} className={styles.signOutBtn} aria-label={t("admin.layout.signOut")}>
             <Icons.Logout size={20} className={styles.navIcon} />

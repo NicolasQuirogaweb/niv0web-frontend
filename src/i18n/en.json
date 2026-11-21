@@ -22,14 +22,10 @@
     "server": "Something went wrong on our side. Please try again in a while.",
     "retry": "Try again"
   },
-  "lang": {
-    "switch": "Switch to Spanish"
-  },
   "theme": {
-    "button": "COLOR",
-    "bar": "THEME",
+    "bar": "SETTINGS",
     "accent": "ACCENT",
-    "open": "Page color",
+    "open": "Settings",
     "title": "Color",
     "hue": "Hue",
     "presets": {
@@ -39,7 +35,9 @@
       "cyan": "Cyan",
       "mint": "Mint",
       "lime": "Lime"
-    }
+    },
+    "language": "LANGUAGE",
+    "color": "COLOR"
   },
   "seo": {
     "siteName": "niv0 prod",
@@ -432,18 +430,13 @@
       "A lover of beat making, guitar, writing, composing, art and, above all, music as a bridge.",
       "He has worked with leading artists from his province's local scene and from today's emerging Argentine scene in Buenos Aires, and he keeps experimenting and looking for challenging artistic expression on every level.",
       "He doesn't want to be pigeonholed or to be part of whatever the hegemony of the moment is. He is always working to break his own methods and rethink himself to reach more honest expression.",
-      "For him, music is made with the heart, not the head: it is all about getting something across and, above all, about INSPIRING."
+      "For him, music is made with the heart and not the head, it is all about getting something across and inspiring."
     ],
     "discography": "Discography",
     "listenOnSpotify": "Open in Spotify",
     "noCover": "No cover",
     "photoAlt": "Photo of niv0",
     "kicker": "Artist and producer · Villa Mercedes, San Luis",
-    "quote": {
-      "before": "Music is made with the",
-      "highlight": "heart",
-      "after": "not the head"
-    },
     "turntable": "Turntable",
     "pickRecord": "Pick a record from the crate",
     "upcoming": {

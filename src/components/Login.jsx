@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GOOGLE_CLIENT_ID } from "../config";
 import { authService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
-import { LanguageSwitcher } from "./common/LanguageSwitcher";
-import { ThemePicker } from "./common/ThemePicker";
+import { SettingsMenu } from "./common/SettingsMenu";
 import { SEO } from "./common/SEO";
 import "./Login.css";
 
@@ -56,8 +55,7 @@ export const Login = () => {
       <section className="login-section">
         <div className="login-container">
           <div style={{ position: "absolute", top: 16, right: 16 }}>
-            <LanguageSwitcher />
-            <ThemePicker />
+            <SettingsMenu />
           </div>
           <h1>{t("login.title")}</h1>
           {loading ? (
