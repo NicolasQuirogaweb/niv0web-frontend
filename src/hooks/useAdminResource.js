@@ -168,8 +168,10 @@ export const useAdminResource = ({ fetchData, createFn, updateFn, deleteFn, empt
     setBatchUploading(true);
     setBatchProgress(t("admin.uploader.uploadingToB2"));
     try {
-      const uploadRes = await adminService.upload.batch(batchFiles, batch.folder);
-      const results = uploadRes.data.results;
+      const { results } = await adminService.upload.files(batchFiles, batch.folder, {
+        onFile: (done, total) =>
+          setBatchProgress(`${t("admin.uploader.uploadingToB2")} ${Math.min(done + 1, total)}/${total}`),
+      });
       const succeeded = results.filter((r) => r.success);
       const failed = results.filter((r) => !r.success);
 

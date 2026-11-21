@@ -26,6 +26,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This file star
 - One type system for the whole site: Bebas Neue (vintage gear screen printing, with worn ink on big titles and a slashed zero so niv0 doesn't read "nivo") for headings, buttons and interface labels, Inter for reading text. Arial and hardcoded fonts are gone. ADR 0006.
 
 ### Fixed
+- Admin uploads of long or heavy WAV/MP3 files (a loop of more than a minute) failed: they used the API's general 20 s cut, and the upload plus the MP3 preview takes longer. Admin uploads now wait up to 15 minutes. Several files are sent one per request (progress shows 2/5) instead of all in one request, so the 512 MB server never holds several big WAVs at once, and one failing file does not stop the rest. Applies to every admin section (beats, loops, samples, Prod Mix Master, covers, videos).
 - Design review (Vercel interface guidelines + animation guide), visitor bugs:
   - Enter presses the control that has focus (language, color, a link) instead of the record or catalog the mouse picked before.
   - The home menu leaves browser shortcuts alone (Alt + ← goes back) and keys another widget already used.
